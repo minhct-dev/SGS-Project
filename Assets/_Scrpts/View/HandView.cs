@@ -15,7 +15,7 @@ public class HandView : MonoBehaviour
         cards.Add(cardView);
         yield return UpdateCardPosition(0.15f);
     }
-
+    //Remove card in hand
     public CardView RemoveCard(CardInstance card)
     {
         CardView cardView = GetCardView(card);
@@ -51,7 +51,6 @@ public class HandView : MonoBehaviour
             cards[i].transform.DORotate(Vector3.zero, duration);
         }
         yield return new WaitForSeconds(duration);
-    }
-
+    } 
     
 }

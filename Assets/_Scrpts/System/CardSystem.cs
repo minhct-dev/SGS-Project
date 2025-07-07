@@ -9,8 +9,10 @@ using UnityEngine;
 public class CardSystem : Singleton<CardSystem>
 {
     [SerializeField] private HandView handView;
+    [SerializeField] private PlayView playView;
     [SerializeField] private Transform drawPilePoint;
     [SerializeField] private Transform discardPilePoint;
+    [SerializeField] private Transform playCardViewPoint;
     private readonly List<CardInstance> drawPile = new();
     private readonly List<CardInstance> discardPile = new();
     private readonly List<CardInstance> hand = new();
@@ -18,6 +20,7 @@ public class CardSystem : Singleton<CardSystem>
     {
         ActionSystem.AttachPerformer<DrawCardGA>(DrawCardsPerformer);
         ActionSystem.AttachPerformer<DiscardAllCardGA>(DiscardAllCardPerformer);
+        ActionSystem.AttachPerformer<PlayCardGA>(PlayCardPerformer);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
@@ -26,6 +29,7 @@ public class CardSystem : Singleton<CardSystem>
     {
         ActionSystem.DetachPerformer<DrawCardGA>();
         ActionSystem.DetachPerformer<DiscardAllCardGA>();
+        ActionSystem.DetachPerformer<PlayCardGA>();
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
@@ -75,8 +79,6 @@ public class CardSystem : Singleton<CardSystem>
         yield return null;
     }
 
-
-
     private IEnumerator DiscardAllCardPerformer(DiscardAllCardGA discardAllCardGA)
     {
         foreach (CardInstance card in hand)
@@ -87,7 +89,19 @@ public class CardSystem : Singleton<CardSystem>
         }
         hand.Clear();
     }
-
+    //perform đang có vấn đề 
+    private IEnumerator PlayCardPerformer(PlayCardGA playCardGA)
+    {
+        hand.Remove(playCardGA.cardInstance); //remove lá bài trong list
+        CardView cardView = handView.RemoveCard(playCardGA.cardInstance);
+        CardViewHoveSystem.Instance.Hide(cardView);
+        playView.AddCard(cardView);
+        //Tween tween = cardView.transform.DOMove(playCardViewPoint.position,0.15f);
+        //yield return tween.WaitForCompletion();
+        yield return new WaitForSeconds(2f);
+        //yield return DiscardCard(cardView);
+        //perform effect
+    }
     
     //Helpers
     private void RefillDeck()

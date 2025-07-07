@@ -11,7 +11,7 @@ public class CardView : MonoBehaviour
     [SerializeField] private TMP_Text CardSuit;
     [SerializeField] private SpriteRenderer imageSR;
     [SerializeField] private GameObject wrapper;
-    private bool isSelected = false;    
+    private bool isSelected = false;
     public CardInstance Card { get; private set; }
 
     public void Setup(CardInstance card)
@@ -27,7 +27,10 @@ public class CardView : MonoBehaviour
         isSelected = false;
         wrapper.SetActive(true);
     }
-
+    public GameObject GetWrapper()
+    {
+        return wrapper;
+     }
     void OnMouseDown()
     {
         if (isSelected)

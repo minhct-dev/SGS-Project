@@ -21,10 +21,14 @@ public class CardViewHoveSystem : Singleton<CardViewHoveSystem>
     public void Hide(CardView source)
     {
         if (currentSelectedCard == source)
-        { 
+        {
             currentSelectedCard = null;
-            cardViewHover.gameObject.SetActive(false); 
+            cardViewHover.gameObject.SetActive(false);
         }
-        
+
+    }
+    public CardInstance GetPlayedCard()
+    {
+        return currentSelectedCard.Card;
     }
 }
