@@ -10,7 +10,7 @@ public class EnemySystem : MonoBehaviour
     }
     void OnDisable()
     {
-         ActionSystem.DetachPerformer<EnemyTurnGA>();
+        ActionSystem.DetachPerformer<EnemyTurnGA>();
     }
 
     //performers

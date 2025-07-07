@@ -32,7 +32,7 @@ public class CardView : MonoBehaviour
     {
         if (isSelected)
         {
-            CardViewHoveSystem.Instance.Hide(transform.position,this);
+            CardViewHoveSystem.Instance.Hide(this);
             wrapper.SetActive(true);
             isSelected = false;
         }

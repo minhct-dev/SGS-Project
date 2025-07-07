@@ -41,6 +41,11 @@ public class CardSystem : Singleton<CardSystem>
     //Reactions
     private void EnemyTurnPreReaction(EnemyTurnGA enemyTurnGA)
     {
+        CardView currectSelectedCard = CardViewHoveSystem.Instance.currentSelectedCard;
+        if (currectSelectedCard != null)
+        {
+            CardViewHoveSystem.Instance.Hide(currectSelectedCard);
+        }
         DiscardAllCardGA discardAllCardGA = new();
         ActionSystem.Instance.AddReaction(discardAllCardGA);
     }
@@ -101,6 +106,7 @@ public class CardSystem : Singleton<CardSystem>
     }
     private IEnumerator DiscardCard(CardView cardView)
     {
+        discardPile.Add(cardView.Card);
         cardView.transform.DOScale(Vector3.zero, 0.15f);
         Tween tween = cardView.transform.DOMove(discardPilePoint.position, 0.15f);
         yield return tween.WaitForCompletion();

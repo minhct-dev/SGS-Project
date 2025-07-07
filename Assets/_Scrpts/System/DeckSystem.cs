@@ -15,7 +15,8 @@ public class DeckSystem : Singleton<DeckSystem>
             new(satCard, 6, Suit.Club),
             new(satCard, 6, Suit.Club)
         };
-        // Shuffle
+        //Shuffle
+        
         return deck;
     }
 
