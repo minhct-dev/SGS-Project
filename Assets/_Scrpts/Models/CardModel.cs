@@ -2,12 +2,13 @@ using UnityEngine;
 
 public abstract class CardModel
 {
-    public string Name => Data.name;
-    public Sprite Image => Data.Image;
+    public virtual string Name => Data.CardName;
+    public virtual Sprite Image => Data.Image;
+    public virtual CardType CardType => Data.CardType;
     public readonly CardData Data;
 
-    public bool IsFaceUp { get; set; } = true;          // lật ngửa/úp
-    public bool IsDisabled { get; set; } = false;       // vô hiệu (bị Vô Giải, v.v.)
+    public virtual bool IsFaceUp { get; set; } = true;          // lật ngửa/úp
+    public virtual bool IsDisabled { get; set; } = false;       // vô hiệu (bị Vô Giải, v.v.)
 
     public CardModel(CardData data)
     {

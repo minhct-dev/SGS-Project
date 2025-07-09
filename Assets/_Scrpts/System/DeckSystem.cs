@@ -24,7 +24,10 @@ public class DeckSystem : Singleton<DeckSystem>
             new(daoCard, 6, Suit.Club),
             new(daoCard, 6, Suit.Club)
         };
-
+        foreach (var card in deck)
+        { 
+            Debug.Log(card.Type);
+        }
 
         return deck;
     }
