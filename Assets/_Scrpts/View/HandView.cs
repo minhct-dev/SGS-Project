@@ -45,6 +45,7 @@ public class HandView : MonoBehaviour
 
             // Convert sang world position
             Vector3 worldPos = HandViewGroup.TransformPoint(localPos);
+            cards[i].HandViewPosition = worldPos;
 
             cards[i].transform.DOMove(worldPos, duration);
 

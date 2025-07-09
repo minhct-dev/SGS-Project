@@ -4,9 +4,10 @@ public class PlayCardButtonUI : MonoBehaviour
 {
     public void OnClick()
     {
-        CardInstance playedCard = CardViewHoveSystem.Instance.currentSelectedCard.Card;
+        CardView playedCard = CardView.CurrentlySelectedCard;
         //Debug.Log(playedCard.Number + " " + playedCard.Suit.ToSymbol());
-        PlayCardGA playCardGA = new(playedCard);
+        if(playedCard == null) return;
+        PlayCardGA playCardGA = new(playedCard.Card);
         ActionSystem.Instance.Perform(playCardGA);
     } 
 }

@@ -1,49 +1,50 @@
+using System.Security.Cryptography;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
 
-public class CardView : MonoBehaviour
+public abstract class CardView : MonoBehaviour
 {
-    [Header("Poperty")]
-    [SerializeField] private TMP_Text CardName;
-    [SerializeField] private TMP_Text CardNumber;
-    [SerializeField] private TMP_Text CardSuit;
-    [SerializeField] private SpriteRenderer imageSR;
-    [SerializeField] private GameObject wrapper;
+    public abstract GameObject wrapper { get; set; }
+    public static CardView CurrentlySelectedCard { get; private set; }
     private bool isSelected = false;
     public CardInstance Card { get; private set; }
+    public Vector3 HandViewPosition { get;  set; }
 
-    public void Setup(CardInstance card)
+
+
+    public virtual void Setup(CardInstance card)
     {
         Card = card;
-        CardName.text = Card.Data.CardName;
-        CardNumber.text = Card.Number.ToString();
-        CardSuit.text = Card.Suit.ToSymbol();
-        imageSR.sprite = Card.Data.Image;
     }
-    public void ForceUnselect()
+    public virtual void ForceUnselect()
     {
         isSelected = false;
         wrapper.SetActive(true);
     }
-    public GameObject GetWrapper()
+    public virtual GameObject GetWrapper()
     {
         return wrapper;
      }
-    void OnMouseDown()
+    public virtual void OnMouseDown()
     {
+        if(PlayView.Instance.playedCards.Contains(this)) return;
         if (isSelected)
         {
-            CardViewHoveSystem.Instance.Hide(this);
-            wrapper.SetActive(true);
+            //CardViewHoveSystem.Instance.Hide(this);
+            ///wrapper.SetActive(true);
+            this.transform.DOMove(HandViewPosition,0.2f).SetEase(Ease.OutCubic);
             isSelected = false;
         }
         else
         {
-            wrapper.SetActive(false);
+            //wrapper.SetActive(false);
             Vector3 pos = new(transform.position.x, -5f, 0f);
-            CardViewHoveSystem.Instance.Show(Card, transform.position, pos, this);
+            //CardViewHoveSystem.Instance.Show(Card, transform.position, pos, this);
+            this.transform.DOMove(pos,0.2f).SetEase(Ease.OutCubic);
             isSelected = true;
         }
     }

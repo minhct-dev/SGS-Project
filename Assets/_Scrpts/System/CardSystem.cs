@@ -5,6 +5,7 @@ using System.Runtime.ExceptionServices;
 using DG.Tweening;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class CardSystem : Singleton<CardSystem>
 {
@@ -45,10 +46,10 @@ public class CardSystem : Singleton<CardSystem>
     //Reactions
     private void EnemyTurnPreReaction(EnemyTurnGA enemyTurnGA)
     {
-        CardView currectSelectedCard = CardViewHoveSystem.Instance.currentSelectedCard;
+        CardView currectSelectedCard = CardView.CurrentlySelectedCard;
         if (currectSelectedCard != null)
         {
-            CardViewHoveSystem.Instance.Hide(currectSelectedCard);
+            ///CardViewHoveSystem.Instance.Hide(currectSelectedCard);
         }
         DiscardAllCardGA discardAllCardGA = new();
         ActionSystem.Instance.AddReaction(discardAllCardGA);
@@ -94,11 +95,10 @@ public class CardSystem : Singleton<CardSystem>
     {
         hand.Remove(playCardGA.cardInstance); //remove lá bài trong list
         CardView cardView = handView.RemoveCard(playCardGA.cardInstance);
-        CardViewHoveSystem.Instance.Hide(cardView);
-        playView.AddCard(cardView);
+        //CardViewHoveSystem.Instance.Hide(cardView);
+        yield return playView.AddCard(cardView); 
         //Tween tween = cardView.transform.DOMove(playCardViewPoint.position,0.15f);
         //yield return tween.WaitForCompletion();
-        yield return new WaitForSeconds(2f);
         //yield return DiscardCard(cardView);
         //perform effect
     }
@@ -108,7 +108,6 @@ public class CardSystem : Singleton<CardSystem>
     {
         drawPile.AddRange(discardPile);
         discardPile.Clear();
-
     }
 
     private IEnumerator DrawCard()

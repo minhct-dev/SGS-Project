@@ -10,9 +10,7 @@ public class CardViewHoveSystem : Singleton<CardViewHoveSystem>
         {
             currentSelectedCard.ForceUnselect(); // gọi hàm bên CardView
         }
-
         currentSelectedCard = source;
-
         cardViewHover.gameObject.SetActive(true);
         cardViewHover.Setup(card);
         cardViewHover.transform.position = oldPosition;
@@ -25,7 +23,6 @@ public class CardViewHoveSystem : Singleton<CardViewHoveSystem>
             currentSelectedCard = null;
             cardViewHover.gameObject.SetActive(false);
         }
-
     }
     public CardInstance GetPlayedCard()
     {

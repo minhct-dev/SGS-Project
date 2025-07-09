@@ -5,14 +5,14 @@ using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 
-public class PlayView : MonoBehaviour
+public class PlayView : Singleton<PlayView>
 {
     [SerializeField] private RectTransform PlayCardGroup;
-    private readonly List<CardView> playedCards = new();
+    public readonly List<CardView> playedCards = new();
 
     public IEnumerator AddCard(CardView cardView)
     {
-        cardView.GetWrapper().SetActive(true);
+        cardView.ForceUnselect();
         playedCards.Add(cardView);
         yield return UpdateCardPosition(0.15f);
     }
@@ -37,7 +37,7 @@ public class PlayView : MonoBehaviour
         float margin = 150f;
         float usableWidth = totalWidth - margin * 2f;
         float cardSpacing = Mathf.Min(300f, usableWidth / (playedCards.Count - 1));
-        float firstCardPosition = PlayCardGroup.transform.position.x - totalWidth / 2f + 150f;
+        float firstCardPosition = PlayCardGroup.transform.position.x - (playedCards.Count - 1) * cardSpacing / 2;
 
         for (int i = 0; i < playedCards.Count; i++)
         {
