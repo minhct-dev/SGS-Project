@@ -8,7 +8,7 @@ public abstract class CardData : ScriptableObject
     [SerializeField] private string cardName;
     [SerializeField] private Sprite image;
     [SerializeField] private CardType cardType;
-    [SerializeField] private List<Effect> effects;
+    [field: SerializeReference, SR] private List<Effect> effects;
 
     public string CardName => cardName;
     public Sprite Image => image;

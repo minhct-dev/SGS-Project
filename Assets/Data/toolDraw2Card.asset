@@ -15,4 +15,13 @@ MonoBehaviour:
   cardName: "V\xF4 Trung Sinh H\u1EEFu"
   image: {fileID: 21300000, guid: 74b00918f215f3742ba806d9afcfd62f, type: 3}
   cardType: 1
+  effects:
+  - rid: 2125067023938748484
   <Description>k__BackingField: "R\xFAt 2 l\xE1 b\xE0i "
+  references:
+    version: 2
+    RefIds:
+    - rid: 2125067023938748484
+      type: {class: DrawCardsEffect, ns: , asm: Assembly-CSharp}
+      data:
+        drawAmount: 2
