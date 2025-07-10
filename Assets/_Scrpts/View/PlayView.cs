@@ -12,7 +12,7 @@ public class PlayView : Singleton<PlayView>
 
     public IEnumerator AddCard(CardView cardView)
     {
-        cardView.ForceUnselect();
+        cardView.ChooseCard();
         playedCards.Add(cardView);
         yield return UpdateCardPosition(0.15f);
     }

@@ -96,11 +96,15 @@ public class CardSystem : Singleton<CardSystem>
         hand.Remove(playCardGA.cardInstance); //remove lá bài trong list
         CardView cardView = handView.RemoveCard(playCardGA.cardInstance);
         //CardViewHoveSystem.Instance.Hide(cardView);
-        yield return playView.AddCard(cardView); 
-        //Tween tween = cardView.transform.DOMove(playCardViewPoint.position,0.15f);
-        //yield return tween.WaitForCompletion();
-        //yield return DiscardCard(cardView);
+        yield return playView.AddCard(cardView);
+        yield return new WaitForSeconds(2f);
+        yield return DiscardCard(cardView);
         //perform effect
+        foreach (var effect in playCardGA.cardInstance.Data.Effects)
+        {
+            PerformEffectGA performEffectGA = new(effect);
+            ActionSystem.Instance.AddReaction(performEffectGA);
+        }
     }
     
     //Helpers
