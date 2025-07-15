@@ -1,15 +1,21 @@
 using System.Collections.Generic;
+using System.Linq;
+using Mirror;
 using UnityEngine;
 
-public class DeckSystem : Singleton<DeckSystem>
+public class DeckSystem : NetworkBehaviour
 {
     [SerializeField] private BasicCardData satCard;
     [SerializeField] private BasicCardData daoCard;
-
     [SerializeField] private ToolCardData toolDraw2Card;
-    public List<CardInstance> BuildFullDeck()
+    public List<CardInstance> drawPile { get; private set; } = new();
+    public List<CardInstance> discardPile { get; private set; } = new();
+    public List<CardInstance> currentDeck { get; private set; } = new();
+
+    [Server]
+    public void BuildFullDeck()
     {
-        var deck = new List<CardInstance>
+        drawPile = new List<CardInstance>
         {
             new(satCard, 5, Suit.Spade),
             new(satCard, 8, Suit.Heart),
@@ -27,9 +33,15 @@ public class DeckSystem : Singleton<DeckSystem>
         // foreach (var card in deck)
         // { 
         //     Debug.Log(card.Type);
-        // } debuging :)
+        // }   //debuging :)
+        RpcSyncDeck(currentDeck.Select(card => new CardInstanceData(card)).ToList());
+    }
 
-        return deck;
+    [ClientRpc]
+    void RpcSyncDeck(List<CardInstanceData> deckData)
+    {
+        currentDeck = deckData.Select(data => data.ToCardInstance()).ToList();
+        Debug.Log("Client deck synced! " + currentDeck.Count);
     }
 
 

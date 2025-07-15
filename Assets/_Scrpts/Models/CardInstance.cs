@@ -1,9 +1,16 @@
-public class CardInstance 
+public class CardInstance
 {
     public CardData Data { get; private set; }      // Trỏ đến dữ liệu gốc
     public int Number { get; private set; }         // 1–13
     public Suit Suit { get; private set; }          // ♠ ♥ ♦ ♣
     public bool IsFaceUp { get; set; } = true;
+
+    public CardInstance(CardData data, int number, Suit suit)
+    {
+        Data = data;
+        Number = number;
+        Suit = suit;
+    }
     public CardInstance(ToolCardData data, int number, Suit suit)
     {
         Data = data;
@@ -17,4 +24,5 @@ public class CardInstance
         Suit = suit;
     }
     public CardType Type => Data.CardType;
+    public string CardId => Data.CardId;
 }

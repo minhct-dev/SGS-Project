@@ -38,10 +38,10 @@ public class CardSystem : Singleton<CardSystem>
     //publics
     public void Setup()
     {
-        foreach (CardInstance card in DeckSystem.Instance.BuildFullDeck())
-        { 
-            drawPile.Add(card);
-        }    
+    //     foreach (CardInstance card in DeckSystem.Instance.BuildFullDeck())
+    //     { 
+    //         drawPile.Add(card);
+    //     }    
     }
     //Reactions
     private void EnemyTurnPreReaction(EnemyTurnGA enemyTurnGA)
