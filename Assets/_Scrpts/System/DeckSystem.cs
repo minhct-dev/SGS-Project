@@ -10,7 +10,7 @@ public class DeckSystem : NetworkBehaviour
     [SerializeField] private ToolCardData toolDraw2Card;
     public List<CardInstance> drawPile { get; private set; } = new();
     public List<CardInstance> discardPile { get; private set; } = new();
-    public List<CardInstance> currentDeck { get; private set; } = new();
+
 
     [Server]
     public void BuildFullDeck()
@@ -34,14 +34,19 @@ public class DeckSystem : NetworkBehaviour
         // { 
         //     Debug.Log(card.Type);
         // }   //debuging :)
-        RpcSyncDeck(currentDeck.Select(card => new CardInstanceData(card)).ToList());
+        RpcSyncDeck(drawPile.Select(card => new CardInstanceData(card)).ToList());
     }
 
     [ClientRpc]
-    void RpcSyncDeck(List<CardInstanceData> deckData)
+    public void RpcSyncDeck(List<CardInstanceData> deckData)
     {
-        currentDeck = deckData.Select(data => data.ToCardInstance()).ToList();
-        Debug.Log("Client deck synced! " + currentDeck.Count);
+        if (deckData == null || deckData.Count == 0)
+        {
+            Debug.Log("recieved empty deck from sever!");
+            return;
+        }
+        drawPile = deckData.Select(data => data.ToCardInstance()).ToList();
+        Debug.Log("Client deck synced! " + drawPile.Count);
     }
 
 

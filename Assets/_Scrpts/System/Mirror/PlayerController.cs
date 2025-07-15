@@ -1,86 +1,106 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
-
-/*
-	Documentation: https://mirror-networking.gitbook.io/docs/guides/networkbehaviour
-	API Reference: https://mirror-networking.com/docs/api/Mirror.NetworkBehaviour.html
-*/
-
+using System;
+[Serializable]
 public class PlayerController : NetworkBehaviour
 {
-    #region Unity Callbacks
+    [Header("Player Info")]
+    [SyncVar(hook = nameof(UpdatePlayerName))] public string username;
+    // SyncVar hook to call a command whenever a username changes (like when players load in initially).
 
-    /// <summary>
-    /// Add your validation code here after the base.OnValidate(); call.
-    /// </summary>
-    protected override void OnValidate()
+    //[Header("Portrait")]
+    //public Sprite portrait; //For the player's icon at the top left of the screen & in the PartyHUD.(now it for nothing tho)
+
+    [Header("Deck and Hand")]
+    public List<CardInstance> hand;
+
+    [Header("Stats")]
+    [SyncVar] public int maxHP = 10;
+    [SyncVar] public int currentHP = 0;
+
+    // Quicker access for UI scripts
+    [HideInInspector] public static PlayerController localPlayer;
+    [HideInInspector] public bool hasOpponent = false;
+
+    //[HideInInspector] public PlayerInfo opponentInfo; // We can't pass a Player class through the Network, but we can pass structs. 
+    // We store all our enemy's info in a PlayerInfo struct so we can pass it through the network when needed.
+
+    // [HideInInspector] public static GameManager gameManager;
+    [SyncVar, HideInInspector] public bool firstPlayer = false;
+    //overide from networkbehavior
+    private void Start()
     {
-        base.OnValidate();
+        //popup for player choose card 
     }
 
-    // NOTE: Do not put objects in DontDestroyOnLoad (DDOL) in Awake.  You can do that in Start instead.
-    void Awake()
+    public void Update()
     {
+
+        // Get EnemyInfo as soon as another player connects. Only start updating once our Player has been loaded in properly (username will be set if loaded in).
+        if (!hasOpponent && username != "")
+        {
+            UpdateEnemyInfo();
+        }
+        // start game by G button on keyboard
+        // if (Input.GetKeyDown(KeyCode.G) && isLocalPlayer)
+        // {
+        //     gameManager.StartGame();
+        // }
+    }
+    public override void OnStartLocalPlayer()
+    {
+        localPlayer = this;
+
+        // Get and update the player's username and stats
+        CmdLoadPlayer(PlayerPrefs.GetString("Name"));
+
     }
 
-    void Start()
+
+    //---------------------
+    public void UpdatePlayerName(string oldUser, string newUser)
     {
+        // Update username
+        username = newUser;
+        // Update game object's name in editor (only useful for debugging).
+        gameObject.name = username;
     }
 
-    #endregion
+    [Command]
+    public void CmdLoadPlayer(string user)
+    {
+        // Update the player's username, which calls a SyncVar hook.
+        // Learn more here : https://mirror-networking.com/docs/Guides/Sync/SyncVarHook.html
+        username = user;
+    }
+    
+    public void UpdateEnemyInfo()
+    {
+        // Find all Players and add them to the list.
+        PlayerController[] onlinePlayers = FindObjectsOfType<PlayerController>();
 
-    #region Start & Stop Callbacks
-
-    /// <summary>
-    /// This is invoked for NetworkBehaviour objects when they become active on the server.
-    /// <para>This could be triggered by NetworkServer.Listen() for objects in the scene, or by NetworkServer.Spawn() for objects that are dynamically created.</para>
-    /// <para>This will be called for objects on a "host" as well as for object on a dedicated server.</para>
-    /// </summary>
-    public override void OnStartServer() { }
-
-    /// <summary>
-    /// Invoked on the server when the object is unspawned
-    /// <para>Useful for saving object data in persistent storage</para>
-    /// </summary>
-    public override void OnStopServer() { }
-
-    /// <summary>
-    /// Called on every NetworkBehaviour when it is activated on a client.
-    /// <para>Objects on the host have this function called, as there is a local client on the host. The values of SyncVars on object are guaranteed to be initialized correctly with the latest state from the server when this function is called on the client.</para>
-    /// </summary>
-    public override void OnStartClient() { }
-
-    /// <summary>
-    /// This is invoked on clients when the server has caused this object to be destroyed.
-    /// <para>This can be used as a hook to invoke effects or do client specific cleanup.</para>
-    /// </summary>
-    public override void OnStopClient() { }
-
-    /// <summary>
-    /// Called when the local player object has been set up.
-    /// <para>This happens after OnStartClient(), as it is triggered by an ownership message from the server. This is an appropriate place to activate components or functionality that should only be active for the local player, such as cameras and input.</para>
-    /// </summary>
-    public override void OnStartLocalPlayer() { }
-
-    /// <summary>
-    /// Called when the local player object is being stopped.
-    /// <para>This happens before OnStopClient(), as it may be triggered by an ownership message from the server, or because the player object is being destroyed. This is an appropriate place to deactivate components or functionality that should only be active for the local player, such as cameras and input.</para>
-    /// </summary>
-    public override void OnStopLocalPlayer() {}
-
-    /// <summary>
-    /// This is invoked on behaviours that have authority, based on context and <see cref="NetworkIdentity.hasAuthority">NetworkIdentity.hasAuthority</see>.
-    /// <para>This is called after <see cref="OnStartServer">OnStartServer</see> and before <see cref="OnStartClient">OnStartClient.</see></para>
-    /// <para>When <see cref="NetworkIdentity.AssignClientAuthority">AssignClientAuthority</see> is called on the server, this will be called on the client that owns the object. When an object is spawned with <see cref="NetworkServer.Spawn">NetworkServer.Spawn</see> with a NetworkConnectionToClient parameter included, this will be called on the client that owns the object.</para>
-    /// </summary>
-    public override void OnStartAuthority() { }
-
-    /// <summary>
-    /// This is invoked on behaviours when authority is removed.
-    /// <para>When NetworkIdentity.RemoveClientAuthority is called on the server, this will be called on the client that owns the object.</para>
-    /// </summary>
-    public override void OnStopAuthority() { }
-
-    #endregion
+        // Loop through all online Players (should just be one other Player)
+        foreach (PlayerController players in onlinePlayers)
+        {
+            // Make sure the players are loaded properly (we load the usernames first)
+            if (players.username != "")
+            {
+                // There should only be one other Player online, so if it's not us then it's the enemy.
+                if (players != this)
+                {
+                    //Get & Set PlayerInfo from our Enemy's gameObject
+                    //PlayerInfo currentPlayer = new PlayerInfo(players.gameObject);
+                    //enemyInfo = currentPlayer;
+                    hasOpponent = true;
+                    //enemyInfo.data.casterType = Target.OPPONENT;
+                    //Debug.LogError("Player " + username + " Enemy " + enemy.username + " / " + enemyInfo.username); // Used for Debugging
+                }
+            }
+        }
+    }
+    
+    public bool IsDead() => currentHP <= 0;
+    //public bool CanAttack() => Player.gameManager.isOurTurn && waitTurn == 0 && casterType == Target.FRIENDLIES; (extension for future)
+    //public bool CantAttack() => Player.gameManager.isOurTurn && waitTurn > 0 && casterType == Target.FRIENDLIES; (extension for future)
 }
