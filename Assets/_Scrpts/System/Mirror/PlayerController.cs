@@ -19,9 +19,12 @@ public class PlayerController : NetworkBehaviour
     [SyncVar] public int maxHP = 10;
     [SyncVar] public int currentHP = 0;
 
+    [SyncVar] public PlayerType playerType;
+
     // Quicker access for UI scripts
     [HideInInspector] public static PlayerController localPlayer;
     [HideInInspector] public bool hasOpponent = false;
+    [HideInInspector] public static bool isLocalPlayer = false;
 
     //[HideInInspector] public PlayerInfo opponentInfo; // We can't pass a Player class through the Network, but we can pass structs. 
     // We store all our enemy's info in a PlayerInfo struct so we can pass it through the network when needed.
@@ -32,6 +35,7 @@ public class PlayerController : NetworkBehaviour
     private void Start()
     {
         //popup for player choose card 
+
     }
 
     public void Update()
@@ -51,7 +55,7 @@ public class PlayerController : NetworkBehaviour
     public override void OnStartLocalPlayer()
     {
         localPlayer = this;
-
+        localPlayer.playerType = PlayerType.LOCAL;
         // Get and update the player's username and stats
         CmdLoadPlayer(PlayerPrefs.GetString("Name"));
 
