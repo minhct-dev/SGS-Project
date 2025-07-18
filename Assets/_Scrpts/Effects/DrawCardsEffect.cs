@@ -5,7 +5,8 @@ public class DrawCardsEffect : Effect
     [SerializeField] private int drawAmount;
     public override GameAction GetGameAction()
     {
-        DrawCardGA drawCardGA = new(drawAmount);
-        return drawCardGA;
+        //DrawCardGA drawCardGA = new(drawAmount);
+        //return drawCardGA;
+        return null;
     }
 }

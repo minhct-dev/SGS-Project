@@ -19,7 +19,7 @@ public class CardSystem : Singleton<CardSystem>
     private readonly List<CardInstance> hand = new();
     void OnEnable()
     {
-        ActionSystem.AttachPerformer<DrawCardGA>(DrawCardsPerformer);
+        //ActionSystem.AttachPerformer<DrawCardGA>(DrawCardsPerformer);
         ActionSystem.AttachPerformer<DiscardAllCardGA>(DiscardAllCardPerformer);
         ActionSystem.AttachPerformer<PlayCardGA>(PlayCardPerformer);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
@@ -28,7 +28,7 @@ public class CardSystem : Singleton<CardSystem>
 
     void OnDisable()
     {
-        ActionSystem.DetachPerformer<DrawCardGA>();
+        //ActionSystem.DetachPerformer<DrawCardGA>();
         ActionSystem.DetachPerformer<DiscardAllCardGA>();
         ActionSystem.DetachPerformer<PlayCardGA>();
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
@@ -56,29 +56,29 @@ public class CardSystem : Singleton<CardSystem>
     }
     private void EnemyTurnPostReaction(EnemyTurnGA enemyTurnGA)
     {
-        DrawCardGA drawCardGA = new(5);
-        ActionSystem.Instance.AddReaction(drawCardGA);
+        //DrawCardGA drawCardGA = new(5);
+        //ActionSystem.Instance.AddReaction(drawCardGA);
     }
 
     //Performers
-    private IEnumerator DrawCardsPerformer(DrawCardGA drawCardGA)
-    {
-        int actualAmount = Mathf.Min(drawCardGA.Amount, drawPile.Count);
-        int notDrawAmount = drawCardGA.Amount - actualAmount;
-        for (int i = 0; i < actualAmount; i++)
-        {
-            yield return DrawCard();
-        }
-        if (notDrawAmount > 0)
-        {
-            RefillDeck();
-            for (int i = 0; i < notDrawAmount; i++)
-            {
-                yield return DrawCard();
-            }
-        }
-        yield return null;
-    }
+    // private IEnumerator DrawCardsPerformer(DrawCardGA drawCardGA)
+    // {
+    //     int actualAmount = Mathf.Min(drawCardGA.Amount, drawPile.Count);
+    //     int notDrawAmount = drawCardGA.Amount - actualAmount;
+    //     for (int i = 0; i < actualAmount; i++)
+    //     {
+    //         yield return DrawCard();
+    //     }
+    //     if (notDrawAmount > 0)
+    //     {
+    //         RefillDeck();
+    //         for (int i = 0; i < notDrawAmount; i++)
+    //         {
+    //             yield return DrawCard();
+    //         }
+    //     }
+    //     yield return null;
+    // }
 
     private IEnumerator DiscardAllCardPerformer(DiscardAllCardGA discardAllCardGA)
     {
@@ -114,9 +114,8 @@ public class CardSystem : Singleton<CardSystem>
         discardPile.Clear();
     }
 
-    private IEnumerator DrawCard()
+    public IEnumerator DrawCard(CardInstance card)
     {
-        CardInstance card = drawPile.Draw();
         hand.Add(card);
         CardView cardView = CardViewCreator.Instance.CreateCardView(card, drawPilePoint.position, drawPilePoint.rotation);
         yield return handView.AddCard(cardView);

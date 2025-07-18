@@ -4,7 +4,7 @@ public class CardViewCreator : Singleton<CardViewCreator>
 {
     [SerializeField] private CardView basicCardViewPrefap;
     [SerializeField] private CardView toolCardViewPrefap;
-
+    //create card view by prefap 
     public CardView CreateCardView(CardInstance Card, Vector3 position, Quaternion rotation)
     {
         CardView cardView = Instantiate(GetPrefabForCard(Card), position, rotation); //bug here

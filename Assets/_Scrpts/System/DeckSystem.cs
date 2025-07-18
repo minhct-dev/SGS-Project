@@ -1,18 +1,37 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Mirror;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DeckSystem : NetworkBehaviour
 {
+    [Header("Card Data")]
     [SerializeField] private BasicCardData satCard;
     [SerializeField] private BasicCardData daoCard;
     [SerializeField] private ToolCardData toolDraw2Card;
+    [Header("UI Ref")]
+    [SerializeField] private HandView handView;
+    [Header("Game Item")]
+    //drawPile is full of 160 playcard in SGS where decksystem will take card from here and send to player
     public List<CardInstance> drawPile { get; private set; } = new();
+
+    //discardPile is where player discard card and card will add to discardPile
     public List<CardInstance> discardPile { get; private set; } = new();
 
+    void OnEnable()
+    {
+        ActionSystem.AttachPerformer<DrawCardGA>(DrawCardPerform);
+    }
+
+    void OnDisable()
+    {
+        ActionSystem.DetachPerformer<DrawCardGA>();
+    }
 
     [Server]
+    //Use to create full deck from the begining of the match 
     public void BuildFullDeck()
     {
         drawPile = new List<CardInstance>
@@ -30,23 +49,19 @@ public class DeckSystem : NetworkBehaviour
             new(daoCard, 6, Suit.Club),
             new(daoCard, 6, Suit.Club)
         };
-        // foreach (var card in deck)
-        // { 
-        //     Debug.Log(card.Type);
-        // }   //debuging :)
-        RpcSyncDeck(drawPile.Select(card => new CardInstanceData(card)).ToList());
-    }
 
-    [ClientRpc]
-    public void RpcSyncDeck(List<CardInstanceData> deckData)
+    }
+    //PlayerController player, int amount
+    [Server]
+    public IEnumerator DrawCardPerform(DrawCardGA drawCardGA)
     {
-        if (deckData == null || deckData.Count == 0)
+        for (int i = 0; i < drawCardGA.Amount; i++)
         {
-            Debug.Log("recieved empty deck from sever!");
-            return;
+            CardInstance drawCard = drawPile.Draw();
+            drawCardGA.Player.currentHand.Add(new CardInstanceData(drawCard));
         }
-        drawPile = deckData.Select(data => data.ToCardInstance()).ToList();
-        Debug.Log("Client deck synced! " + drawPile.Count);
+        return null;
+
     }
 
 

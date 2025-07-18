@@ -1,5 +1,6 @@
+using System;
+using System.Collections.Generic;
 using Mirror;
-using Newtonsoft.Json;
 using UnityEngine;
 
 public class MatchSetupSystem : NetworkBehaviour
@@ -7,13 +8,27 @@ public class MatchSetupSystem : NetworkBehaviour
     [SerializeField] private GameObject PlayCardButtonUI;
     [SerializeField] private GameObject EndTurnButtonUI;
     [SerializeField] private GameObject StartGameButtonUI;
-
+    
+    [SerializeField] private DeckSystem deckSystem;
+    [Server]
     public void StartGame()
     {
-        
-        //     CardSystem.Instance.Setup();
-        //     DrawCardGA drawCardGA = new(4);
-        //     ActionSystem.Instance.Perform(drawCardGA);
+        deckSystem.BuildFullDeck();
+        PlayerController[] players = FindObjectsOfType<PlayerController>();
+        foreach (PlayerController player in players)
+        {
+            //deckSystem.DrawCardPerform(player, 4);
+            DrawCardGA drawCardGA = new(player, 4);
+            ActionSystem.Instance.Perform(drawCardGA);
+        }
+        foreach (PlayerController player in players)
+        {
+            Debug.Log("number of card " + player.currentHand.Count);
+            foreach (var card in player.currentHand)
+            {
+                Debug.Log(card.Number + " " + card.Suit);
+            }
+        }
     }
 
     [Command(requiresAuthority = false)]
@@ -23,9 +38,11 @@ public class MatchSetupSystem : NetworkBehaviour
     }
     [ClientRpc]
     public void RpcStartGame()
-    { 
+    {
         StartGameButtonUI.SetActive(false);
         PlayCardButtonUI.SetActive(true);
         EndTurnButtonUI.SetActive(true);
+        StartGame();
+
     }
 }

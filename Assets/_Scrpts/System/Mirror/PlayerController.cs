@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using System;
+using System.Collections;
+using Unity.VisualScripting;
 [Serializable]
 public class PlayerController : NetworkBehaviour
 {
@@ -13,14 +15,13 @@ public class PlayerController : NetworkBehaviour
     //public Sprite portrait; //For the player's icon at the top left of the screen & in the PartyHUD.(now it for nothing tho)
 
     [Header("Deck and Hand")]
-    public List<CardInstance> hand;
+    public readonly SyncListCardInstance currentHand = new();
 
     [Header("Stats")]
     [SyncVar] public int maxHP = 18;
     [SyncVar] public int currentHP = 0;
 
     [SyncVar] public PlayerType playerType;
-
     // Quicker access for UI scripts
     [HideInInspector] public static PlayerController localPlayer;
     [HideInInspector] public bool hasOpponent = false;
@@ -47,11 +48,6 @@ public class PlayerController : NetworkBehaviour
         {
             UpdateEnemyInfo();
         }
-        // start game by G button on keyboard
-        // if (Input.GetKeyDown(KeyCode.G) && isLocalPlayer)
-        // {
-        //     gameManager.StartGame();
-        // }
     }
     public override void OnStartLocalPlayer()
     {
@@ -69,6 +65,10 @@ public class PlayerController : NetworkBehaviour
         {
             playerType = PlayerType.OTHER;
         }
+        if (isLocalPlayer)
+        {
+            currentHand.Callback += OnHandChanged;
+        }
     }
 
     //---------------------
@@ -79,6 +79,23 @@ public class PlayerController : NetworkBehaviour
         // Update game object's name in editor (only useful for debugging).
         gameObject.name = username;
     }
+
+    private void OnHandChanged(SyncListCardInstance.Operation op, int index, CardInstanceData oldItem, CardInstanceData newItem)
+    {
+        if (!isLocalPlayer) return;
+        if (op == SyncListCardInstance.Operation.OP_ADD)
+        {
+            Debug.Log("Card added to current hand");
+            StartCoroutine(CardSystem.Instance.DrawCard(newItem.ToCardInstance()));
+        }
+    }
+
+    // private IEnumerator HandleAddCard(CardInstance newItem)
+    // {
+    //     CardView cardView = CardViewCreator.Instance.CreateCardView(newItem, drawPilePoint.position, drawPilePoint.rotation);
+    //     yield return handView.AddCard(cardView);
+    // }
+
 
     [Command]
     public void CmdLoadPlayer(string user)
@@ -119,6 +136,7 @@ public class PlayerController : NetworkBehaviour
             }
         }
     }
+    
 
     public bool IsDead() => currentHP <= 0;
     //public bool CanAttack() => Player.gameManager.isOurTurn && waitTurn == 0 && casterType == Target.FRIENDLIES; (extension for future)

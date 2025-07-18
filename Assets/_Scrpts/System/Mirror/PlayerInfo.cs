@@ -26,6 +26,6 @@ public partial struct PlayerInfo
     public int maxHP => data.maxHP;
 
     // Card count for UI
-    public int handCount => data.hand.Count;
+    public int handCount => data.currentHand.Count;
 }
 public class SyncListPlayerInfo : SyncList<PlayerInfo> { }
