@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerPortraitCreator : Singleton<PlayerPortraitCreator>
 {
     
-    public static int currentIndex = -1;
+    public static int currentIndex = 0;
     private static readonly Vector3[] PortraitPositions = {
         new Vector3(0,375,0),
         new Vector3(-455,375,0),

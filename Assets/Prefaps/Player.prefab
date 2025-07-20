@@ -68,5 +68,8 @@ MonoBehaviour:
   username: 
   maxHP: 10
   currentHP: 0
+  playerType: 0
   hasOpponent: 0
+  playerPosition: {fileID: 0}
+  otherPlayerPortraitPrefap: {fileID: 5630990774579027388, guid: c3f98ea672a187f48a9b1c8d15d47202, type: 3}
   firstPlayer: 0

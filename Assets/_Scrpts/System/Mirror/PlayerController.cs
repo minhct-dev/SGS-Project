@@ -42,6 +42,7 @@ public class PlayerController : NetworkBehaviour
 
     public void Update()
     {
+
         // Get EnemyInfo as soon as another player connects. Only start updating once our Player has been loaded in properly (username will be set if loaded in).
         if (!hasOpponent && username != "")
         {
@@ -63,6 +64,7 @@ public class PlayerController : NetworkBehaviour
         {
             playerType = PlayerType.OTHER;
             int positionIndex = PlayerPortraitCreator.Instance.GetNextAvailableIndex();
+            
             PlayerPortraitCreator.Instance.CreatePlayerPotrait(otherPlayerPortraitPrefap,this,positionIndex);
         }
         

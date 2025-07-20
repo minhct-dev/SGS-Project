@@ -1,2 +1,13 @@
 fileFormatVersion: 2
 guid: 3e70ee1d9dbe2b64b946b3b03d5ea609
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - playerPosition: {instanceID: 0}
+  - otherPlayerPortraitPrefap: {fileID: 5630990774579027388, guid: c3f98ea672a187f48a9b1c8d15d47202, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
