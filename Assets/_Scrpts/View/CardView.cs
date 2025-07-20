@@ -20,7 +20,7 @@ public abstract class CardView : MonoBehaviour
     {
         Card = card;
     }
-    public virtual void ForceUnselect()
+    public static void ForceUnselect()
     {
         if (CurrentlySelectedCard != null)
         {
@@ -31,7 +31,7 @@ public abstract class CardView : MonoBehaviour
         }
         
     }
-    public virtual void ChooseCard()
+    public static void ChooseCard()
     {
         isOneCardSelected = false;
         CurrentlySelectedCard = null;

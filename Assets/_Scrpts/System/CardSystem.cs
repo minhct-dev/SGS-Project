@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
 using DG.Tweening;
+using Mirror.Examples.Basic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -16,11 +17,10 @@ public class CardSystem : Singleton<CardSystem>
     [SerializeField] private Transform playCardViewPoint;
     private readonly List<CardInstance> drawPile = new();
     private readonly List<CardInstance> discardPile = new();
-    private readonly List<CardInstance> hand = new();
+    
     void OnEnable()
     {
-        //ActionSystem.AttachPerformer<DrawCardGA>(DrawCardsPerformer);
-        ActionSystem.AttachPerformer<DiscardAllCardGA>(DiscardAllCardPerformer);
+        //ActionSystem.AttachPerformer<DiscardAllCardGA>(DiscardAllCardPerformer);
         ActionSystem.AttachPerformer<PlayCardGA>(PlayCardPerformer);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
@@ -28,8 +28,7 @@ public class CardSystem : Singleton<CardSystem>
 
     void OnDisable()
     {
-        //ActionSystem.DetachPerformer<DrawCardGA>();
-        ActionSystem.DetachPerformer<DiscardAllCardGA>();
+        //ActionSystem.DetachPerformer<DiscardAllCardGA>();
         ActionSystem.DetachPerformer<PlayCardGA>();
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
@@ -37,11 +36,7 @@ public class CardSystem : Singleton<CardSystem>
 
     //publics
     public void Setup()
-    {
-    //     foreach (CardInstance card in DeckSystem.Instance.BuildFullDeck())
-    //     { 
-    //         drawPile.Add(card);
-    //     }    
+    {  
     }
     //Reactions
     private void EnemyTurnPreReaction(EnemyTurnGA enemyTurnGA)
@@ -61,48 +56,35 @@ public class CardSystem : Singleton<CardSystem>
     }
 
     //Performers
-    // private IEnumerator DrawCardsPerformer(DrawCardGA drawCardGA)
+    // private IEnumerator DiscardAllCardPerformer(DiscardAllCardGA discardAllCardGA)
     // {
-    //     int actualAmount = Mathf.Min(drawCardGA.Amount, drawPile.Count);
-    //     int notDrawAmount = drawCardGA.Amount - actualAmount;
-    //     for (int i = 0; i < actualAmount; i++)
+    //     foreach (CardInstance card in hand)
     //     {
-    //         yield return DrawCard();
+    //         discardPile.Add(card);
+    //         CardView cardView = handView.RemoveCard(card);
+    //         yield return DiscardCard(cardView);
     //     }
-    //     if (notDrawAmount > 0)
-    //     {
-    //         RefillDeck();
-    //         for (int i = 0; i < notDrawAmount; i++)
-    //         {
-    //             yield return DrawCard();
-    //         }
-    //     }
-    //     yield return null;
+    //     hand.Clear();
     // }
-
-    private IEnumerator DiscardAllCardPerformer(DiscardAllCardGA discardAllCardGA)
-    {
-        foreach (CardInstance card in hand)
-        {
-            discardPile.Add(card);
-            CardView cardView = handView.RemoveCard(card);
-            yield return DiscardCard(cardView);
-        }
-        hand.Clear();
-    }
-    //perform đang có vấn đề 
     private IEnumerator PlayCardPerformer(PlayCardGA playCardGA)
     {
-        hand.Remove(playCardGA.cardInstance); //remove lá bài trong list
-        CardView cardView = handView.RemoveCard(playCardGA.cardInstance);
-        //CardViewHoveSystem.Instance.Hide(cardView);
-        yield return playView.AddCard(cardView);
-        yield return new WaitForSeconds(2f);
-        yield return DiscardCard(cardView);
-        //perform effect
-        foreach (var effect in playCardGA.cardInstance.Data.Effects)
+        PlayerController user = playCardGA.user;
+        if (user.playerType == PlayerType.LOCAL)
         {
-            PerformEffectGA performEffectGA = new(effect);
+            //remove lá bài trong list
+            CardView cardView = handView.RemoveCard(playCardGA.cardInstanceData.ToCardInstance());
+            //Debug.Log(cardView);
+            //CardViewHoveSystem.Instance.Hide(cardView);
+            yield return playView.AddCard(cardView);
+            yield return new WaitForSeconds(2f);
+            yield return DiscardCard(cardView);
+            PlayView.Instance.RemoveCard(cardView.Card);
+        }
+        
+        //perform effect
+        foreach (var effect in playCardGA.cardInstanceData.ToCardInstance().Data.Effects)
+        {
+            PerformEffectGA performEffectGA = new(effect,playCardGA.user);
             ActionSystem.Instance.AddReaction(performEffectGA);
         }
     }
@@ -116,7 +98,6 @@ public class CardSystem : Singleton<CardSystem>
 
     public IEnumerator DrawCard(CardInstance card)
     {
-        hand.Add(card);
         CardView cardView = CardViewCreator.Instance.CreateCardView(card, drawPilePoint.position, drawPilePoint.rotation);
         yield return handView.AddCard(cardView);
     }

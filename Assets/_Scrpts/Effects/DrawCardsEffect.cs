@@ -3,10 +3,9 @@ using UnityEngine;
 public class DrawCardsEffect : Effect
 {
     [SerializeField] private int drawAmount;
-    public override GameAction GetGameAction()
+    public override GameAction GetGameAction(PlayerController user)
     {
-        //DrawCardGA drawCardGA = new(drawAmount);
-        //return drawCardGA;
-        return null;
+        DrawCardGA drawCardGA = new(user,drawAmount);
+        return drawCardGA;
     }
 }

@@ -18,6 +18,7 @@ public class HandView : MonoBehaviour
     //Remove card in hand
     public CardView RemoveCard(CardInstance card)
     {
+        ///Debug.Log(card.Number+" "+card.Suit.ToSymbol());
         CardView cardView = GetCardView(card);
         if (cardView == null) return null;
         cards.Remove(cardView);
@@ -25,17 +26,20 @@ public class HandView : MonoBehaviour
         return cardView;
     }
     public CardView GetCardView(CardInstance card) {
-        return cards.Where(cardView => cardView.Card == card).FirstOrDefault();
+        return cards.Where(cardView =>
+                            cardView.Card.CardId == card.CardId &&
+                            cardView.Card.Number == card.Number &&
+                            cardView.Card.Suit == card.Suit).FirstOrDefault();
     }
     private IEnumerator UpdateCardPosition(float duration)
     {
         if (cards.Count == 0) yield break;
 
         float totalWidth = HandViewGroup.rect.width;
-        float margin = 150f;
+        float margin = 80f;
         float usableWidth = totalWidth - margin * 2f;
-        float cardSpacing = Mathf.Min(300f, usableWidth / (cards.Count - 1));
-        float firstCardPosition = HandViewGroup.transform.position.x - totalWidth / 2f + 150f;
+        float cardSpacing = Mathf.Min(140f, usableWidth / (cards.Count - 1));
+        float firstCardPosition = HandViewGroup.transform.position.x - totalWidth / 2f + 80f;
 
         for (int i = 0; i < cards.Count; i++)
         {

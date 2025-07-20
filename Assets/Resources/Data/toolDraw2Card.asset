@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0e38d0995890a54b912df632f09524a, type: 3}
   m_Name: toolDraw2Card
   m_EditorClassIdentifier: 
+  id: 4dca661ceece013489c2450448120ccd
   cardName: "V\xF4 Trung Sinh H\u1EEFu"
   image: {fileID: 21300000, guid: 74b00918f215f3742ba806d9afcfd62f, type: 3}
   cardType: 1
   effects:
   - rid: 2125067023938748484
-  <Description>k__BackingField: "R\xFAt 2 l\xE1 b\xE0i "
+  description: "R\xFAt 2 l\xE1 b\xE0i"
   references:
     version: 2
     RefIds:

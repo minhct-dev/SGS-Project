@@ -11,7 +11,7 @@ public class NetworkManagerSGS : NetworkManager
     {
         Transform startPos = GetStartPosition();
         GameObject player = Instantiate(playerPrefab);
-
         NetworkServer.AddPlayerForConnection(conn, player);
+        
     }
 }

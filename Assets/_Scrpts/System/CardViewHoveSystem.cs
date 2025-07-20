@@ -8,7 +8,7 @@ public class CardViewHoveSystem : Singleton<CardViewHoveSystem>
     {
         if (currentSelectedCard != null && currentSelectedCard != source)
         {
-            currentSelectedCard.ForceUnselect(); // gọi hàm bên CardView
+            CardView.ForceUnselect(); // gọi hàm bên CardView
         }
         currentSelectedCard = source;
         cardViewHover.gameObject.SetActive(true);

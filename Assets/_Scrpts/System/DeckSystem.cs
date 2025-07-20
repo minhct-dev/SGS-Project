@@ -51,17 +51,36 @@ public class DeckSystem : NetworkBehaviour
         };
 
     }
-    //PlayerController player, int amount
+    //refilldeck use to take all card in discardPile and refill the drawPile 
+    [Server]
+    private void RefillDeck()
+    {
+        drawPile.AddRange(discardPile);
+        discardPile.Clear();
+    }
+    //DrawcardPerform will done at sever and while it add card into current hand of player
+    //it will trigger a callback OnHandChanged
     [Server]
     public IEnumerator DrawCardPerform(DrawCardGA drawCardGA)
     {
-        for (int i = 0; i < drawCardGA.Amount; i++)
+        int actualAmount = Mathf.Min(drawCardGA.Amount, drawPile.Count);
+        int notDrawAmount = drawCardGA.Amount - actualAmount;
+        for (int i = 0; i < actualAmount; i++)
         {
             CardInstance drawCard = drawPile.Draw();
             drawCardGA.Player.currentHand.Add(new CardInstanceData(drawCard));
         }
-        return null;
-
+        if (notDrawAmount > 0)
+        {
+            RefillDeck();
+            for (int i = 0; i < notDrawAmount; i++)
+        {
+            CardInstance drawCard = drawPile.Draw();
+            drawCardGA.Player.currentHand.Add(new CardInstanceData(drawCard));
+        }
+        }
+        //mightbug here dueto network speed
+        yield return drawCardGA.Player.ProcessDrawCards();
     }
 
 

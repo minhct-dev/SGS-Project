@@ -20,17 +20,17 @@ public class PlayerController : NetworkBehaviour
     [Header("Stats")]
     [SyncVar] public int maxHP = 18;
     [SyncVar] public int currentHP = 0;
-
     [SyncVar] public PlayerType playerType;
     // Quicker access for UI scripts
     [HideInInspector] public static PlayerController localPlayer;
     [HideInInspector] public bool hasOpponent = false;
-
+    [HideInInspector] public Transform playerPosition;
     [HideInInspector] public static MatchSetupSystem matchSetupSystem;
+    [SerializeField] private OtherPlayerPortrait otherPlayerPortraitPrefap;
 
     //[HideInInspector] public PlayerInfo opponentInfo; // We can't pass a Player class through the Network, but we can pass structs. 
     // We store all our enemy's info in a PlayerInfo struct so we can pass it through the network when needed.
-
+    private Queue<CardInstance> pendingCards = new();
     // [HideInInspector] public static GameManager gameManager;
     [SyncVar, HideInInspector] public bool firstPlayer = false;
     //overide from networkbehavior
@@ -42,7 +42,6 @@ public class PlayerController : NetworkBehaviour
 
     public void Update()
     {
-
         // Get EnemyInfo as soon as another player connects. Only start updating once our Player has been loaded in properly (username will be set if loaded in).
         if (!hasOpponent && username != "")
         {
@@ -60,11 +59,14 @@ public class PlayerController : NetworkBehaviour
 
     public override void OnStartClient()
     {
-        base.OnStartClient();
         if (!isLocalPlayer)
         {
             playerType = PlayerType.OTHER;
+            int positionIndex = PlayerPortraitCreator.Instance.GetNextAvailableIndex();
+            PlayerPortraitCreator.Instance.CreatePlayerPotrait(otherPlayerPortraitPrefap,this,positionIndex);
         }
+        
+        base.OnStartClient();
         if (isLocalPlayer)
         {
             currentHand.Callback += OnHandChanged;
@@ -79,24 +81,30 @@ public class PlayerController : NetworkBehaviour
         // Update game object's name in editor (only useful for debugging).
         gameObject.name = username;
     }
-
+    //hook: OnHandChanged triggered when hand add more new card
     private void OnHandChanged(SyncListCardInstance.Operation op, int index, CardInstanceData oldItem, CardInstanceData newItem)
     {
         if (!isLocalPlayer) return;
         if (op == SyncListCardInstance.Operation.OP_ADD)
         {
             Debug.Log("Card added to current hand");
-            StartCoroutine(CardSystem.Instance.DrawCard(newItem.ToCardInstance()));
+            //CardSystem.Instance.DrawCard(newItem.ToCardInstance());
+            pendingCards.Enqueue(newItem.ToCardInstance());
+        }
+    }
+    //proccess addcard
+    public IEnumerator ProcessDrawCards()
+    {
+        //Cant use  waitforsecond like this because it depend on internet speed per client 
+        //yield return new WaitForSeconds(0.2f);
+        while (pendingCards.Count > 0)
+        {
+            var card = pendingCards.Dequeue();
+            yield return CardSystem.Instance.DrawCard(card);
         }
     }
 
-    // private IEnumerator HandleAddCard(CardInstance newItem)
-    // {
-    //     CardView cardView = CardViewCreator.Instance.CreateCardView(newItem, drawPilePoint.position, drawPilePoint.rotation);
-    //     yield return handView.AddCard(cardView);
-    // }
-
-
+    //Load UI -----------------------------------------
     [Command]
     public void CmdLoadPlayer(string user)
     {
@@ -111,6 +119,23 @@ public class PlayerController : NetworkBehaviour
         maxHP = hp;
         currentHP = hp;
     }
+
+    //Command to reduce card in hand when playcard
+    [Command]
+    public void CmdPlayCard(CardInstanceData cardInstanceData)
+    {
+        currentHand.Remove(cardInstanceData); 
+        RpcPlayCard(this.netId,cardInstanceData);
+    }
+
+    [ClientRpc]
+    public void RpcPlayCard(uint netid,CardInstanceData cardInstanceData)
+    {
+        var player = NetworkServer.spawned[netid].GetComponent<PlayerController>();
+        PlayCardGA playCardGA = new PlayCardGA(player, cardInstanceData);
+        ActionSystem.Instance.Perform(playCardGA);
+    }
+
 
     public void UpdateEnemyInfo()
     {

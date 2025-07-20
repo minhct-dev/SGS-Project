@@ -2,9 +2,11 @@ using UnityEngine;
 
 public class PlayCardGA : GameAction
 {
-    public CardInstance cardInstance;
-    public PlayCardGA(CardInstance cardInstance)
+    public CardInstanceData cardInstanceData;
+    public PlayerController user;
+    public PlayCardGA(PlayerController user, CardInstanceData cardInstanceData)
     {
-        this.cardInstance = cardInstance;
+        this.cardInstanceData = cardInstanceData;
+        this.user = user;
     }
 }

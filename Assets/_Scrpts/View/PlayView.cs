@@ -12,7 +12,7 @@ public class PlayView : Singleton<PlayView>
 
     public IEnumerator AddCard(CardView cardView)
     {
-        cardView.ChooseCard();
+        //Debug.Log(cardView.Card.Number.ToString()+" "+cardView.Card.Suit.ToSymbol());
         playedCards.Add(cardView);
         yield return UpdateCardPosition(0.15f);
     }
@@ -27,18 +27,19 @@ public class PlayView : Singleton<PlayView>
     }
     public CardView GetCardView(CardInstance card)
     {
-        return playedCards.Where(cardView => cardView.Card == card).FirstOrDefault();
+        return playedCards.Where(cardView =>
+                            cardView.Card.CardId == card.CardId &&
+                            cardView.Card.Number == card.Number &&
+                            cardView.Card.Suit == card.Suit).FirstOrDefault();
     }
     private IEnumerator UpdateCardPosition(float duration)
     {
         if (playedCards.Count == 0) yield break;
-
         float totalWidth = PlayCardGroup.rect.width;
         float margin = 150f;
         float usableWidth = totalWidth - margin * 2f;
         float cardSpacing = Mathf.Min(300f, usableWidth / (playedCards.Count - 1));
         float firstCardPosition = PlayCardGroup.transform.position.x - (playedCards.Count - 1) * cardSpacing / 2;
-
         for (int i = 0; i < playedCards.Count; i++)
         {
             // Tính vị trí local bắt đầu từ trái

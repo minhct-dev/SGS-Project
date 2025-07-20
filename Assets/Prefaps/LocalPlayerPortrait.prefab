@@ -350,7 +350,7 @@ RectTransform:
   m_GameObject: {fileID: 4499528374950767830}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 50, y: 50, z: 50}
+  m_LocalScale: {x: 45, y: 45, z: 45}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1455088847686496577}
@@ -358,9 +358,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 663, y: -344}
+  m_AnchoredPosition: {x: 775.8917, y: -344}
   m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.52257836, y: 0.5}
 --- !u!222 &1079202385195386956
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -385,7 +385,6 @@ MonoBehaviour:
   DeputyCommanderPortrait: {fileID: 8090034220577295722}
   HP: {fileID: 7247309476663733905}
   PlayerName: {fileID: 8012087464434417532}
-  <wrapper>k__BackingField: {fileID: 7572647856267412739}
 --- !u!1 &4564540849737517912
 GameObject:
   m_ObjectHideFlags: 0
