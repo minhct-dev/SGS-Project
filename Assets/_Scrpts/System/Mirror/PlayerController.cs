@@ -4,11 +4,13 @@ using Mirror;
 using System;
 using System.Collections;
 using Unity.VisualScripting;
+using Mirror.Examples.Basic;
 [Serializable]
 public class PlayerController : NetworkBehaviour
 {
     [Header("Player Info")]
     [SyncVar(hook = nameof(UpdatePlayerName))] public string username;
+    
     // SyncVar hook to call a command whenever a username changes (like when players load in initially).
 
     //[Header("Portrait")]
@@ -16,21 +18,23 @@ public class PlayerController : NetworkBehaviour
 
     [Header("Deck and Hand")]
     public readonly SyncListCardInstance currentHand = new();
+    private Queue<CardInstance> pendingCards = new();
 
     [Header("Stats")]
     [SyncVar] public int maxHP = 18;
     [SyncVar] public int currentHP = 0;
     [SyncVar] public PlayerType playerType;
+    [SyncVar] public Vector3 playerPosition;
     // Quicker access for UI scripts
     [HideInInspector] public static PlayerController localPlayer;
     [HideInInspector] public bool hasOpponent = false;
-    [HideInInspector] public Transform playerPosition;
+    
     [HideInInspector] public static MatchSetupSystem matchSetupSystem;
     [SerializeField] private OtherPlayerPortrait otherPlayerPortraitPrefap;
 
     //[HideInInspector] public PlayerInfo opponentInfo; // We can't pass a Player class through the Network, but we can pass structs. 
     // We store all our enemy's info in a PlayerInfo struct so we can pass it through the network when needed.
-    private Queue<CardInstance> pendingCards = new();
+    
     // [HideInInspector] public static GameManager gameManager;
     [SyncVar, HideInInspector] public bool firstPlayer = false;
     //overide from networkbehavior
@@ -53,6 +57,7 @@ public class PlayerController : NetworkBehaviour
     {
         localPlayer = this;
         localPlayer.playerType = PlayerType.LOCAL;
+        //Debug.Log($"OnStartLocalPlayer {gameObject.name}");
         // Get and update the player's username and stats
         CmdLoadPlayer(PlayerPrefs.GetString("Name"));
         CmdLoadHP(20);
@@ -60,15 +65,16 @@ public class PlayerController : NetworkBehaviour
 
     public override void OnStartClient()
     {
+        base.OnStartClient();
+        //Debug.Log($"OnStartClient {gameObject.name} isLocalPlayer = {isLocalPlayer}");
         if (!isLocalPlayer)
         {
+            // không nhật thiết là phải dùng player type vì Mirror đã quản lý sẵn r !!!
             playerType = PlayerType.OTHER;
             int positionIndex = PlayerPortraitCreator.Instance.GetNextAvailableIndex();
-            
-            PlayerPortraitCreator.Instance.CreatePlayerPotrait(otherPlayerPortraitPrefap,this,positionIndex);
+            OtherPlayerPortrait playerportrait = PlayerPortraitCreator.Instance.CreatePlayerPotrait(otherPlayerPortraitPrefap, this, positionIndex);
+            playerPosition = playerportrait.gameObject.transform.position;
         }
-        
-        base.OnStartClient();
         if (isLocalPlayer)
         {
             currentHand.Callback += OnHandChanged;

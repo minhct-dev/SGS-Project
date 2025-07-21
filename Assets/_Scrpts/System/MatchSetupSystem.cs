@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Mirror;
 using UnityEngine;
 
@@ -14,34 +15,32 @@ public class MatchSetupSystem : NetworkBehaviour
     public void StartGame()
     {
         deckSystem.BuildFullDeck();
-        PlayerController[] players = FindObjectsOfType<PlayerController>();
-        foreach (PlayerController player in players)
-        {
-            DrawCardGA drawCardGA = new(player, 4);
-            ActionSystem.Instance.Perform(drawCardGA);
-        }
+        PlayerController[] players = FindObjectsOfType<PlayerController>().Reverse().ToArray();
         // foreach (PlayerController player in players)
         // {
-        //     Debug.Log("number of card " + player.currentHand.Count);
-        //     foreach (var card in player.currentHand)
-        //     {
-        //         Debug.Log(card.Number + " " + card.Suit);
-        //     }
+        //     Debug.Log("Player :" +player.name);
         // }   //debug perpose 
+        GameAction drawCardStartGame = new DrawCardGA(null, 0);
+        foreach (PlayerController player in players)
+        {
+            DrawCardGA drawCardGA = new DrawCardGA(player, 4);
+            drawCardStartGame.PerformReactions.Add(drawCardGA);
+        }
+        ActionSystem.Instance.Perform(drawCardStartGame);
+        
     }
 
     [Command(requiresAuthority = false)]
     public void CmdStartGame()
     {
-        RpcStartGame();
+        StartGame();
+        RpcStartGameUI();
     }
     [ClientRpc]
-    public void RpcStartGame()
+    public void RpcStartGameUI()
     {
         StartGameButtonUI.SetActive(false);
         PlayCardButtonUI.SetActive(true);
         EndTurnButtonUI.SetActive(true);
-        StartGame();
-
     }
 }

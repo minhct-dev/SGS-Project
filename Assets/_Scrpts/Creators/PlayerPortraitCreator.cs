@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerPortraitCreator : Singleton<PlayerPortraitCreator>
 {
-    
+    [SerializeField] private GameObject parentInstantiate;
     public static int currentIndex = 0;
     private static readonly Vector3[] PortraitPositions = {
         new Vector3(0,375,0),
@@ -21,7 +21,9 @@ public class PlayerPortraitCreator : Singleton<PlayerPortraitCreator>
             Debug.LogWarning("Invalid portrait position index.");
             return null;
         }
-        OtherPlayerPortrait playerPortrait = Instantiate(prefaps, PortraitPositions[positionIndex], Quaternion.identity);
+        //, PortraitPositions[positionIndex], Quaternion.identity
+        OtherPlayerPortrait playerPortrait = Instantiate(prefaps, parentInstantiate.transform);
+        playerPortrait.GetComponent<RectTransform>().anchoredPosition = PortraitPositions[positionIndex];
         playerPortrait.assignPlayer = player;
         return playerPortrait;
     }

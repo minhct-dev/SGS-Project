@@ -63,6 +63,8 @@ public class DeckSystem : NetworkBehaviour
     [Server]
     public IEnumerator DrawCardPerform(DrawCardGA drawCardGA)
     {
+        if(drawCardGA.Player == null) yield break;
+        Debug.Log("Player :" +drawCardGA.Player.name +" Start Drawing");
         int actualAmount = Mathf.Min(drawCardGA.Amount, drawPile.Count);
         int notDrawAmount = drawCardGA.Amount - actualAmount;
         for (int i = 0; i < actualAmount; i++)
@@ -74,12 +76,11 @@ public class DeckSystem : NetworkBehaviour
         {
             RefillDeck();
             for (int i = 0; i < notDrawAmount; i++)
-        {
-            CardInstance drawCard = drawPile.Draw();
-            drawCardGA.Player.currentHand.Add(new CardInstanceData(drawCard));
+            {
+                CardInstance drawCard = drawPile.Draw();
+                drawCardGA.Player.currentHand.Add(new CardInstanceData(drawCard));
+            }
         }
-        }
-        //mightbug here dueto network speed
         yield return drawCardGA.Player.ProcessDrawCards();
     }
 
