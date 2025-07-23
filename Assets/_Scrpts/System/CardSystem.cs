@@ -69,7 +69,7 @@ public class CardSystem : Singleton<CardSystem>
     private IEnumerator PlayCardPerformer(PlayCardGA playCardGA)
     {
         PlayerController user = playCardGA.user;
-        if (user.playerType == PlayerType.LOCAL)
+        if (user.isLocalPlayer)
         {
             //remove lá bài trong list
             CardView cardView = handView.RemoveCard(playCardGA.cardInstanceData.ToCardInstance());

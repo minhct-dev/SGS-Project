@@ -122,6 +122,21 @@ public class PlayerController : NetworkBehaviour
             yield return CardSystem.Instance.DrawCard(card);
         }
     }
+    //Command to reduce card in hand when playcard
+    [Command]
+    public void CmdPlayCard(CardInstanceData cardInstanceData)
+    {
+        currentHand.Remove(cardInstanceData); 
+        RpcPlayCard(this.netId,cardInstanceData);
+    }
+    //Playcard RPC
+    [ClientRpc]
+    public void RpcPlayCard(uint netid,CardInstanceData cardInstanceData)
+    {
+        var player = NetworkClient.spawned[netid].GetComponent<PlayerController>();
+        PlayCardGA playCardGA = new PlayCardGA(player, cardInstanceData);
+        ActionSystem.Instance.Perform(playCardGA);
+    }
 
     //Load UI -----------------------------------------
     [Command]
@@ -138,23 +153,6 @@ public class PlayerController : NetworkBehaviour
         maxHP = hp;
         currentHP = hp;
     }
-
-    //Command to reduce card in hand when playcard
-    [Command]
-    public void CmdPlayCard(CardInstanceData cardInstanceData)
-    {
-        currentHand.Remove(cardInstanceData); 
-        RpcPlayCard(this.netId,cardInstanceData);
-    }
-
-    [ClientRpc]
-    public void RpcPlayCard(uint netid,CardInstanceData cardInstanceData)
-    {
-        var player = NetworkServer.spawned[netid].GetComponent<PlayerController>();
-        PlayCardGA playCardGA = new PlayCardGA(player, cardInstanceData);
-        ActionSystem.Instance.Perform(playCardGA);
-    }
-
 
     public void UpdateEnemyInfo()
     {
