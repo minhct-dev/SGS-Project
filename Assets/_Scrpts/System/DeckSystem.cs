@@ -63,8 +63,8 @@ public class DeckSystem : NetworkBehaviour
     [Server]
     public IEnumerator DrawCardPerform(DrawCardGA drawCardGA)
     {
-        if(drawCardGA.Player == null) yield break;
-        Debug.Log("Player :" +drawCardGA.Player.name +" Start Drawing");
+        if (drawCardGA.Player == null) yield break;
+        Debug.Log("Player :" + drawCardGA.Player.name + " Start Drawing");
         int actualAmount = Mathf.Min(drawCardGA.Amount, drawPile.Count);
         int notDrawAmount = drawCardGA.Amount - actualAmount;
         for (int i = 0; i < actualAmount; i++)
@@ -81,7 +81,8 @@ public class DeckSystem : NetworkBehaviour
                 drawCardGA.Player.currentHand.Add(new CardInstanceData(drawCard));
             }
         }
-        yield return drawCardGA.Player.ProcessDrawCards();
+        drawCardGA.Player.TargetDrawCardUI(drawCardGA.Player.connectionToClient, drawCardGA.Amount); 
+        yield break;
     }
 
 

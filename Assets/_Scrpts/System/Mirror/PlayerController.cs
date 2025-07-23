@@ -100,13 +100,24 @@ public class PlayerController : NetworkBehaviour
             pendingCards.Enqueue(newItem.ToCardInstance());
         }
     }
+    //target RPC to tell player  in client perform drawcard UI
+    [TargetRpc]
+    public void TargetDrawCardUI(NetworkConnection conn, int amountCards)
+    {
+        
+        //Debug.Log("Draw "+pendingCards.Count +" card UI");
+        if (!isLocalPlayer) return;
+        StartCoroutine(ProcessDrawCards(amountCards)); 
+    }
     //proccess addcard
-    public IEnumerator ProcessDrawCards()
+    public IEnumerator ProcessDrawCards(int amountCards)
     {
         //Cant use  waitforsecond like this because it depend on internet speed per client 
-        //yield return new WaitForSeconds(0.2f);
+        yield return new WaitUntil(() => pendingCards.Count == amountCards);
+        //int i = 0;
         while (pendingCards.Count > 0)
         {
+            //Debug.Log("draw " + i++);
             var card = pendingCards.Dequeue();
             yield return CardSystem.Instance.DrawCard(card);
         }
