@@ -109,7 +109,7 @@ public class PlayerController : NetworkBehaviour
         if (!isLocalPlayer) return;
         StartCoroutine(ProcessDrawCards(amountCards)); 
     }
-    //proccess addcard
+    //proccess addcard to client 
     public IEnumerator ProcessDrawCards(int amountCards)
     {
         //Cant use  waitforsecond like this because it depend on internet speed per client 
