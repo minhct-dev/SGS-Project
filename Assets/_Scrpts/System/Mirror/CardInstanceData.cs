@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Mirror;
 using UnityEngine;
 [Serializable]
-public struct CardInstanceData 
+public struct CardInstanceData
 {
     public string cardId;
     public int Number;
@@ -11,7 +11,7 @@ public struct CardInstanceData
     public bool IsFaceUp;
     public CardInstanceData(CardInstance data)
     {
-        cardId = data.CardId;
+        cardId = data.CardID;
         Number = data.Number;
         Suit = data.Suit;
         IsFaceUp = data.IsFaceUp;

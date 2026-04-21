@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ToolCardView : CardView
@@ -14,11 +15,10 @@ public class ToolCardView : CardView
     public override void Setup(CardInstance card)
     {
         base.Setup(card);
-        ToolCardData toolData = card.Data as ToolCardData;
-        CardName.text = toolData.CardName;
+        CardName.text = card.Name;
         CardNumber.text = card.Number.ToString();
         CardSuit.text = card.Suit.ToSymbol();
-        imageSR.sprite = toolData.Image;
-        Description.text = toolData.Description;
+        imageSR.sprite = card.Image;
+        Description.text = card.GetDescription();
     }
 }

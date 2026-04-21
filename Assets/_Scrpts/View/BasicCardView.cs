@@ -13,10 +13,10 @@ public class BasicCardView : CardView
     public override void Setup(CardInstance card)
     {
         base.Setup(card);
-        BasicCardData basicData = card.Data as BasicCardData;
-        CardName.text = basicData.CardName;
+        //BasicCardData basicData = card.Data as BasicCardData;
+        CardName.text = card.Name;
         CardNumber.text = card.Number.ToString();
         CardSuit.text = card.Suit.ToSymbol();
-        imageSR.sprite = basicData.Image;
+        imageSR.sprite = card.Image;
     }
 }

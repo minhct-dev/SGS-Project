@@ -28,7 +28,7 @@ public class PlayView : Singleton<PlayView>
     public CardView GetCardView(CardInstance card)
     {
         return playedCards.Where(cardView =>
-                            cardView.Card.CardId == card.CardId &&
+                            cardView.Card.CardID == card.CardID &&
                             cardView.Card.Number == card.Number &&
                             cardView.Card.Suit == card.Suit).FirstOrDefault();
     }
@@ -54,7 +54,7 @@ public class PlayView : Singleton<PlayView>
             playedCards[i].transform.DORotate(Vector3.zero, duration);
         }
         yield return new WaitForSeconds(duration);
-    } 
-    
-    
+    }
+
+
 }

@@ -1,9 +1,17 @@
+using UnityEngine;
+
+[System.Serializable]
 public class CardInstance
 {
-    public CardData Data { get; private set; }      // Trỏ đến dữ liệu gốc
+    public readonly CardData Data;
+    public string Name => Data.CardName;
+    public CardType Type => Data.CardType;
+    public string CardID => Data.CardId;
+    public Sprite Image => Data.Image;    // Trỏ đến dữ liệu gốc
     public int Number { get; private set; }         // 1–13
     public Suit Suit { get; private set; }          // ♠ ♥ ♦ ♣
     public bool IsFaceUp { get; set; } = true;
+    public bool IsDisabled { get; set; } = false;
 
     public CardInstance(CardData data, int number, Suit suit)
     {
@@ -11,18 +19,16 @@ public class CardInstance
         Number = number;
         Suit = suit;
     }
-    public CardInstance(ToolCardData data, int number, Suit suit)
+    public string GetDescription()
     {
-        Data = data;
-        Number = number;
-        Suit = suit;
+        if (Data is ToolCardData toolData)
+        {
+            return toolData.Description;
+        }
+        // Nếu sau này BasicCardData cũng có Description, bạn có thể thêm ở đây
+
+        return string.Empty;
     }
-    public CardInstance(BasicCardData data, int number, Suit suit)
-    {
-        Data = data;
-        Number = number;
-        Suit = suit;
-    }
-    public CardType Type => Data.CardType;
-    public string CardId => Data.CardId;
+
+
 }

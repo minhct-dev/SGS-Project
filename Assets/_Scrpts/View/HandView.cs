@@ -25,9 +25,10 @@ public class HandView : MonoBehaviour
         StartCoroutine(UpdateCardPosition(0.15f));
         return cardView;
     }
-    public CardView GetCardView(CardInstance card) {
+    public CardView GetCardView(CardInstance card)
+    {
         return cards.Where(cardView =>
-                            cardView.Card.CardId == card.CardId &&
+                            cardView.Card.CardID == card.CardID &&
                             cardView.Card.Number == card.Number &&
                             cardView.Card.Suit == card.Suit).FirstOrDefault();
     }
@@ -56,6 +57,6 @@ public class HandView : MonoBehaviour
             cards[i].transform.DORotate(Vector3.zero, duration);
         }
         yield return new WaitForSeconds(duration);
-    } 
-    
+    }
+
 }
