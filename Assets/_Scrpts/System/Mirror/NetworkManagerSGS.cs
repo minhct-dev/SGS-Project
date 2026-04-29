@@ -12,6 +12,14 @@ public class NetworkManagerSGS : NetworkManager
         Transform startPos = GetStartPosition();
         GameObject player = Instantiate(playerPrefab);
         NetworkServer.AddPlayerForConnection(conn, player);
-        
+        PlayerController newPlayer = conn.identity.GetComponent<PlayerController>();
+        if (numPlayers == 1)
+        {
+            newPlayer.isRoomMaster = true;
+        }
+        else
+        {
+            newPlayer.isRoomMaster = false;
+        }
     }
 }
