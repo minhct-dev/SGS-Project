@@ -59,4 +59,27 @@ public class HandView : MonoBehaviour
         yield return new WaitForSeconds(duration);
     }
 
+    // adjust card position after changing client size 
+    private int screenWidth;
+    private int screenHeight;
+
+    private void Start()
+    {
+        // Lưu lại kích thước màn hình lúc mới vào game
+        screenWidth = Screen.width;
+        screenHeight = Screen.height;
+    }
+
+    private void Update()
+    {
+        // Nếu phát hiện cửa sổ bị kéo giãn hoặc thu nhỏ
+        if (Screen.width != screenWidth || Screen.height != screenHeight)
+        {
+            screenWidth = Screen.width;
+            screenHeight = Screen.height;
+
+            // Xếp lại bài ngay lập tức (để thời gian = 0f cho khỏi bị giật lag animation)
+            StartCoroutine(UpdateCardPosition(0f));
+        }
+    }
 }

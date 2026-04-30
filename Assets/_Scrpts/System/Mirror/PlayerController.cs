@@ -8,9 +8,11 @@ using Mirror.Examples.Basic;
 [Serializable]
 public class PlayerController : NetworkBehaviour
 {
+    [SyncVar(hook = nameof(OnRoomMasterChanged))]
+    public bool isRoomMaster = false;
     [Header("Player Info")]
     [SyncVar(hook = nameof(UpdatePlayerName))] public string username;
-    
+
     // SyncVar hook to call a command whenever a username changes (like when players load in initially).
 
     //[Header("Portrait")]
@@ -23,18 +25,17 @@ public class PlayerController : NetworkBehaviour
     [Header("Stats")]
     [SyncVar] public int maxHP = 18;
     [SyncVar] public int currentHP = 0;
-    [SyncVar] public PlayerType playerType;
     [SyncVar] public Vector3 playerPosition;
     // Quicker access for UI scripts
     [HideInInspector] public static PlayerController localPlayer;
     [HideInInspector] public bool hasOpponent = false;
-    
+
     [HideInInspector] public static MatchSetupSystem matchSetupSystem;
     [SerializeField] private OtherPlayerPortrait otherPlayerPortraitPrefap;
 
     //[HideInInspector] public PlayerInfo opponentInfo; // We can't pass a Player class through the Network, but we can pass structs. 
     // We store all our enemy's info in a PlayerInfo struct so we can pass it through the network when needed.
-    
+
     // [HideInInspector] public static GameManager gameManager;
     [SyncVar, HideInInspector] public bool firstPlayer = false;
     //overide from networkbehavior
@@ -53,10 +54,13 @@ public class PlayerController : NetworkBehaviour
             UpdateEnemyInfo();
         }
     }
+    void OnRoomMasterChanged(bool oldVal, bool newVal)
+    {
+        Debug.Log($"{username} is Room Master: {newVal}");
+    }
     public override void OnStartLocalPlayer()
     {
         localPlayer = this;
-        localPlayer.playerType = PlayerType.LOCAL;
         //Debug.Log($"OnStartLocalPlayer {gameObject.name}");
         // Get and update the player's username and stats
         CmdLoadPlayer(PlayerPrefs.GetString("Name"));
@@ -69,8 +73,6 @@ public class PlayerController : NetworkBehaviour
         //Debug.Log($"OnStartClient {gameObject.name} isLocalPlayer = {isLocalPlayer}");
         if (!isLocalPlayer)
         {
-            // không nhật thiết là phải dùng player type vì Mirror đã quản lý sẵn r !!!
-            playerType = PlayerType.OTHER;
             int positionIndex = PlayerPortraitCreator.Instance.GetNextAvailableIndex();
             OtherPlayerPortrait playerportrait = PlayerPortraitCreator.Instance.CreatePlayerPotrait(otherPlayerPortraitPrefap, this, positionIndex);
             playerPosition = playerportrait.gameObject.transform.position;
@@ -104,10 +106,10 @@ public class PlayerController : NetworkBehaviour
     [TargetRpc]
     public void TargetDrawCardUI(NetworkConnection conn, int amountCards)
     {
-        
+
         //Debug.Log("Draw "+pendingCards.Count +" card UI");
         if (!isLocalPlayer) return;
-        StartCoroutine(ProcessDrawCards(amountCards)); 
+        StartCoroutine(ProcessDrawCards(amountCards));
     }
     //proccess addcard to client 
     public IEnumerator ProcessDrawCards(int amountCards)
@@ -126,12 +128,12 @@ public class PlayerController : NetworkBehaviour
     [Command]
     public void CmdPlayCard(CardInstanceData cardInstanceData)
     {
-        currentHand.Remove(cardInstanceData); 
-        RpcPlayCard(this.netId,cardInstanceData);
+        currentHand.Remove(cardInstanceData);
+        RpcPlayCard(this.netId, cardInstanceData);
     }
     //Playcard RPC
     [ClientRpc]
-    public void RpcPlayCard(uint netid,CardInstanceData cardInstanceData)
+    public void RpcPlayCard(uint netid, CardInstanceData cardInstanceData)
     {
         var player = NetworkClient.spawned[netid].GetComponent<PlayerController>();
         PlayCardGA playCardGA = new PlayCardGA(player, cardInstanceData);
@@ -178,7 +180,7 @@ public class PlayerController : NetworkBehaviour
             }
         }
     }
-    
+
 
     public bool IsDead() => currentHP <= 0;
     //public bool CanAttack() => Player.gameManager.isOurTurn && waitTurn == 0 && casterType == Target.FRIENDLIES; (extension for future)
