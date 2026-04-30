@@ -22,13 +22,22 @@ public class MatchSetupSystem : NetworkBehaviour
         // {
         //     Debug.Log("Player :" + player.name);
         // }   //debug perpose 
-        GameAction drawCardStartGame = new DrawCardGA(null, 0);
-        foreach (PlayerController player in players)
+        // GameAction drawCardStartGame = new DrawCardGA(null, 0);
+        // foreach (PlayerController player in players)
+        // {
+        //     DrawCardGA drawCardGA = new DrawCardGA(player, 4);
+        //     drawCardStartGame.PerformReactions.Add(drawCardGA);
+        // }
+        // ActionSystem.Instance.Perform(drawCardStartGame);
+        GameAction setupGameAction = new SetupGameGA();
+        //Start turn
+        foreach (PlayerController p in players)
         {
-            DrawCardGA drawCardGA = new DrawCardGA(player, 4);
-            drawCardStartGame.PerformReactions.Add(drawCardGA);
+            setupGameAction.PerformReactions.Add(new DrawCardGA(p, 4));
         }
-        ActionSystem.Instance.Perform(drawCardStartGame);
+        ActionSystem.Instance.Perform(setupGameAction, () => TurnManagerSystem.Instance.Initialized(players));
+
+
 
     }
 
