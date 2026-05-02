@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Mirror;
+using Mirror.Examples.Basic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -58,32 +59,61 @@ public class DeckSystem : NetworkBehaviour
         drawPile.AddRange(discardPile);
         discardPile.Clear();
     }
+    //lOGIC FUNCTION DrawCardLogicGA allow sever to draw card and put card data  into client data
+    [Server]
+    public void DrawCardLogicGA(DrawCardGA drawCardLogicGA)
+    {
+        if (drawCardLogicGA.Player == null) return;
+        for (int i = 0; i < drawCardLogicGA.Amount; i++)
+        {
+            if (drawPile.Count == 0) RefillDeck();
+            if (drawPile.Count == 0) break;
+
+            CardInstance drawCard = drawPile.Draw();
+            CardInstanceData drawCardData = new CardInstanceData(drawCard);
+            drawCardLogicGA.Player.currentHand.Add(drawCardData);
+            drawCardLogicGA.DrawCardList.Add(drawCardData);
+
+        }
+        TargetPerformDrawAction(drawCardLogicGA.Player.connectionToClient, drawCardLogicGA.DrawCardList.ToArray());
+
+    }
+    [TargetRpc]
+    private void TargetPerformDrawAction(NetworkConnection conn, CardInstanceData[] cards)
+    {
+        PlayerController player = PlayerController.localPlayer;
+        if (player != null)
+        {
+            DrawCardGA action = new DrawCardGA(player, cards.Length);
+            action.DrawCardList.AddRange(cards);
+
+            // Gọi ActionSystem thực hiện diễn hoạt
+            ActionSystem.Instance.Perform(action);
+        }
+    }
     //DrawcardPerform will done at sever and while it add card into current hand of player
     //it will trigger a callback OnHandChanged
-    [Server]
     public IEnumerator DrawCardPerform(DrawCardGA drawCardGA)
     {
-        if (drawCardGA.Player == null) yield break;
-        Debug.Log("Player :" + drawCardGA.Player.name + " Start Drawing");
-        int actualAmount = Mathf.Min(drawCardGA.Amount, drawPile.Count);
-        int notDrawAmount = drawCardGA.Amount - actualAmount;
-        for (int i = 0; i < actualAmount; i++)
+        Debug.Log("Máy " + drawCardGA.Player.name + "perform rút " + drawCardGA.Amount + " lá bài");
+        if (drawCardGA.Player == null || drawCardGA.DrawCardList.Count == 0) yield break;
+        //Debug.Log($"Visual: {drawCardGA.Player.name} đang hiển thị {drawCardGA.DrawCardList.Count} lá bài.");
+        bool isMe = (drawCardGA.Player == PlayerController.localPlayer);
+        foreach (var cardData in drawCardGA.DrawCardList)
         {
-            CardInstance drawCard = drawPile.Draw();
-            drawCardGA.Player.currentHand.Add(new CardInstanceData(drawCard));
-        }
-        if (notDrawAmount > 0)
-        {
-            RefillDeck();
-            for (int i = 0; i < notDrawAmount; i++)
+            //Debug.Log("Check local: " + isMe);
+            if (isMe)
             {
-                CardInstance drawCard = drawPile.Draw();
-                drawCardGA.Player.currentHand.Add(new CardInstanceData(drawCard));
+                yield return CardSystem.Instance.DrawCard(cardData.ToCardInstance());
             }
+            // else
+            // {
+            //     //ui hiệu ứng rút bài của người khác nếu cần 
+            //     yield return null;
+            // }
         }
-        drawCardGA.Player.TargetDrawCardUI(drawCardGA.Player.connectionToClient, drawCardGA.Amount); 
-        yield break;
     }
+
 
 
 }

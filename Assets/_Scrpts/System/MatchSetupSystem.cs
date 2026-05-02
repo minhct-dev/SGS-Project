@@ -18,22 +18,18 @@ public class MatchSetupSystem : NetworkBehaviour
         PlayerController[] players = FindObjectsOfType<PlayerController>().Reverse().ToArray();
         Debug.Log("Number of client working:" + players.Length);
         Debug.Log("Players List: " + string.Join(", ", players.Select(players => players.name)));
-        // foreach (PlayerController player in players)
-        // {
-        //     Debug.Log("Player :" + player.name);
-        // }   //debug perpose 
-        // GameAction drawCardStartGame = new DrawCardGA(null, 0);
-        // foreach (PlayerController player in players)
-        // {
-        //     DrawCardGA drawCardGA = new DrawCardGA(player, 4);
-        //     drawCardStartGame.PerformReactions.Add(drawCardGA);
-        // }
-        // ActionSystem.Instance.Perform(drawCardStartGame);
+        foreach (PlayerController player in players)
+        {
+            Debug.Log("Player :" + player.name + "is room master: " + player.isRoomMaster);
+        }   //debug perpose 
         GameAction setupGameAction = new SetupGameGA();
         //Start turn
         foreach (PlayerController p in players)
         {
-            setupGameAction.PerformReactions.Add(new DrawCardGA(p, 4));
+            DrawCardGA drawCardGA = new DrawCardGA(p, 4);
+            deckSystem.DrawCardLogicGA(drawCardGA);
+            setupGameAction.PerformReactions.Add(drawCardGA);
+
         }
         ActionSystem.Instance.Perform(setupGameAction, () => TurnManagerSystem.Instance.Initialized(players));
 

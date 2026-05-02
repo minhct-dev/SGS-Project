@@ -9,7 +9,7 @@ public class TurnManagerSystem : NetworkBehaviour
     public static TurnManagerSystem Instance;
     [SyncVar(hook = nameof(OnTurnChanged))]
     public int currentPlayerIndex = -1;
-    private List<PlayerController> players = new();
+    private readonly SyncList<PlayerController> players = new SyncList<PlayerController>();
     private void Awake() => Instance = this;
 
     [SerializeField] GameObject playCardButtonUI;
@@ -19,7 +19,11 @@ public class TurnManagerSystem : NetworkBehaviour
     [Server]
     public void Initialized(PlayerController[] allPlayer)
     {
-        players = allPlayer.ToList();
+        players.Clear();
+        foreach (var p in allPlayer)
+        {
+            players.Add(p);
+        }
         NextTurn();
     }
     [Server]
@@ -44,8 +48,8 @@ public class TurnManagerSystem : NetworkBehaviour
         //Phase 1
 
         //Phase 2: Draw Card
-        DrawCardGA drawPhaseGA = new DrawCardGA(ActivePlayer, 2);
-        ActionSystem.Instance.Perform(drawPhaseGA);
+        // DrawCardGA drawPhaseGA = new DrawCardGA(ActivePlayer, 2);
+        // ActionSystem.Instance.Perform(drawPhaseGA);
         //phase 3 
 
         //Phase 4
@@ -56,11 +60,16 @@ public class TurnManagerSystem : NetworkBehaviour
     //hook run when turn changed 
     private void OnTurnChanged(int oldIndex, int newIndex)
     {
-        UpdateUI(newIndex);
+        if (newIndex >= 0 && newIndex < players.Count)
+        {
+            UpdateUI(newIndex);
+        }
+
     }
     private void UpdateUI(int activeIndex)
     {
         bool isMyTurn = NetworkClient.localPlayer.GetComponent<PlayerController>() == players[activeIndex];
+        Debug.Log("is my turn: " + isMyTurn);
         if (isMyTurn)
         {
             //turn on/off UI of play button 

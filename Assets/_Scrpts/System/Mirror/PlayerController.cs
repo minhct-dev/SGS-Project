@@ -8,7 +8,7 @@ using Mirror.Examples.Basic;
 [Serializable]
 public class PlayerController : NetworkBehaviour
 {
-    [SyncVar(hook = nameof(OnRoomMasterChanged))]
+    [SyncVar]
     public bool isRoomMaster = false;
     [Header("Player Info")]
     [SyncVar(hook = nameof(UpdatePlayerName))] public string username;
@@ -20,7 +20,6 @@ public class PlayerController : NetworkBehaviour
 
     [Header("Deck and Hand")]
     public readonly SyncListCardInstance currentHand = new();
-    private Queue<CardInstance> pendingCards = new();
 
     [Header("Stats")]
     [SyncVar] public int maxHP = 18;
@@ -53,10 +52,6 @@ public class PlayerController : NetworkBehaviour
         {
             UpdateEnemyInfo();
         }
-    }
-    void OnRoomMasterChanged(bool oldVal, bool newVal)
-    {
-        Debug.Log($"{username} is Room Master: {newVal}");
     }
     public override void OnStartLocalPlayer()
     {
@@ -97,33 +92,10 @@ public class PlayerController : NetworkBehaviour
         if (!isLocalPlayer) return;
         if (op == SyncListCardInstance.Operation.OP_ADD)
         {
-            Debug.Log("Card added to current hand");
-            //CardSystem.Instance.DrawCard(newItem.ToCardInstance());
-            pendingCards.Enqueue(newItem.ToCardInstance());
+            //Debug.Log("Card added to " + this.name + " hand");
         }
     }
-    //target RPC to tell player  in client perform drawcard UI
-    [TargetRpc]
-    public void TargetDrawCardUI(NetworkConnection conn, int amountCards)
-    {
 
-        //Debug.Log("Draw "+pendingCards.Count +" card UI");
-        if (!isLocalPlayer) return;
-        StartCoroutine(ProcessDrawCards(amountCards));
-    }
-    //proccess addcard to client 
-    public IEnumerator ProcessDrawCards(int amountCards)
-    {
-        //Cant use  waitforsecond like this because it depend on internet speed per client 
-        yield return new WaitUntil(() => pendingCards.Count == amountCards);
-        //int i = 0;
-        while (pendingCards.Count > 0)
-        {
-            //Debug.Log("draw " + i++);
-            var card = pendingCards.Dequeue();
-            yield return CardSystem.Instance.DrawCard(card);
-        }
-    }
     //Command to reduce card in hand when playcard
     [Command]
     public void CmdPlayCard(CardInstanceData cardInstanceData)
