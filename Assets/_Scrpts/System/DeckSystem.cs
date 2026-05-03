@@ -106,11 +106,11 @@ public class DeckSystem : NetworkBehaviour
             {
                 yield return CardSystem.Instance.DrawCard(cardData.ToCardInstance());
             }
-            // else
-            // {
-            //     //ui hiệu ứng rút bài của người khác nếu cần 
-            //     yield return null;
-            // }
+            else
+            {
+                //ui hiệu ứng rút bài của người khác nếu cần 
+                yield return null;
+            }
         }
     }
 
