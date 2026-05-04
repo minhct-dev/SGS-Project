@@ -1,3 +1,4 @@
+using Mirror.Examples.Basic;
 using UnityEngine;
 
 public class EnterButtonUI : MonoBehaviour
@@ -6,5 +7,9 @@ public class EnterButtonUI : MonoBehaviour
     {
         EnemyTurnGA enemyTurnGA = new();
         ActionSystem.Instance.Perform(enemyTurnGA);
-    } 
+        if (PlayerController.localPlayer != null)
+        {
+            PlayerController.localPlayer.CmdEndTurn();
+        }
+    }
 }

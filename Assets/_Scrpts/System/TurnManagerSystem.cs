@@ -48,8 +48,8 @@ public class TurnManagerSystem : NetworkBehaviour
         //Phase 1
 
         //Phase 2: Draw Card
-        //DrawCardGA drawPhaseGA = new DrawCardGA(ActivePlayer, 2);
-        //deckSystem.DrawCardLogicGA(drawPhaseGA);
+        DrawCardGA drawPhaseGA = new DrawCardGA(ActivePlayer, 2);
+        ActionSystem.Instance.Perform(drawPhaseGA);
         //phase 3 
 
         //Phase 4
@@ -83,11 +83,10 @@ public class TurnManagerSystem : NetworkBehaviour
             endTurnButtonUI.SetActive(false);
         }
     }
-    [Command(requiresAuthority = false)]
-    public void CmdEndTurn()
+    [Server]
+    public void RequestEndTurn(PlayerController playerRequest)
     {
-        //Only player in turn can call endturn
-        if (players[currentPlayerIndex].connectionToClient != connectionToClient) return;
+        if (players[currentPlayerIndex] != playerRequest) return;
         NextTurn();
     }
 }

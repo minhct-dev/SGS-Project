@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using Unity.VisualScripting;
 using Mirror.Examples.Basic;
+using System.Security.Cryptography;
 [Serializable]
 public class PlayerController : NetworkBehaviour
 {
@@ -111,7 +112,7 @@ public class PlayerController : NetworkBehaviour
         PlayCardGA playCardGA = new PlayCardGA(player, cardInstanceData);
         ActionSystem.Instance.Perform(playCardGA);
     }
-
+    //Command request to end turn 
     //Load UI -----------------------------------------
     [Command]
     public void CmdLoadPlayer(string user)
@@ -152,8 +153,12 @@ public class PlayerController : NetworkBehaviour
             }
         }
     }
-
-
+    //Command send to sever to request endturn and switch turn to other player
+    [Command]
+    public void CmdEndTurn()
+    {
+        TurnManagerSystem.Instance.RequestEndTurn(this);
+    }
     public bool IsDead() => currentHP <= 0;
     //public bool CanAttack() => Player.gameManager.isOurTurn && waitTurn == 0 && casterType == Target.FRIENDLIES; (extension for future)
     //public bool CantAttack() => Player.gameManager.isOurTurn && waitTurn > 0 && casterType == Target.FRIENDLIES; (extension for future)

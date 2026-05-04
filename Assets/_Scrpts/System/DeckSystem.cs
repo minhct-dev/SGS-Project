@@ -21,12 +21,12 @@ public class DeckSystem : NetworkBehaviour
     //discardPile is where player discard card and card will add to discardPile
     public List<CardInstance> discardPile { get; private set; } = new();
 
-    void OnEnable()
+    public override void OnStartServer()
     {
         ActionSystem.AttachPerformer<DrawCardGA>(DrawCardPerform);
     }
 
-    void OnDisable()
+    public override void OnStopServer()
     {
         ActionSystem.DetachPerformer<DrawCardGA>();
     }
