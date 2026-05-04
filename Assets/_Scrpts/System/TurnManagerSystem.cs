@@ -14,7 +14,7 @@ public class TurnManagerSystem : NetworkBehaviour
 
     [SerializeField] GameObject playCardButtonUI;
     [SerializeField] GameObject endTurnButtonUI;
-
+    [SerializeField] private DeckSystem deckSystem;
 
     [Server]
     public void Initialized(PlayerController[] allPlayer)
@@ -48,8 +48,8 @@ public class TurnManagerSystem : NetworkBehaviour
         //Phase 1
 
         //Phase 2: Draw Card
-        // DrawCardGA drawPhaseGA = new DrawCardGA(ActivePlayer, 2);
-        // ActionSystem.Instance.Perform(drawPhaseGA);
+        DrawCardGA drawPhaseGA = new DrawCardGA(ActivePlayer, 2);
+        deckSystem.DrawCardLogicGA(drawPhaseGA);
         //phase 3 
 
         //Phase 4

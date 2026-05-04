@@ -2383,6 +2383,7 @@ MonoBehaviour:
   currentPlayerIndex: -1
   playCardButtonUI: {fileID: 795839639}
   endTurnButtonUI: {fileID: 1079549933}
+  deckSystem: {fileID: 198807495}
 --- !u!1 &1543836455
 GameObject:
   m_ObjectHideFlags: 0

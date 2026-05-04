@@ -1,5 +1,5 @@
 using UnityEngine;
-
+//PlayCardGA is a game action represent for action play 1 card of player 
 public class PlayCardGA : GameAction
 {
     public CardInstanceData cardInstanceData;

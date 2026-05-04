@@ -17,12 +17,12 @@ MonoBehaviour:
   image: {fileID: 21300000, guid: 74b00918f215f3742ba806d9afcfd62f, type: 3}
   cardType: 1
   effects:
-  - rid: 2125067023938748484
+  - rid: 5375888469131001935
   description: "R\xFAt 2 l\xE1 b\xE0i"
   references:
     version: 2
     RefIds:
-    - rid: 2125067023938748484
+    - rid: 5375888469131001935
       type: {class: DrawCardsEffect, ns: , asm: Assembly-CSharp}
       data:
-        drawAmount: 2
+        drawAmount: 0

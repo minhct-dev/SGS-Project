@@ -31,8 +31,9 @@ public class MatchSetupSystem : NetworkBehaviour
             setupGameAction.PerformReactions.Add(drawCardGA);
 
         }
+        //Đây là giải pháp tạm thời và nó rất ngu @@
         ActionSystem.Instance.Perform(setupGameAction, () => TurnManagerSystem.Instance.Initialized(players));
-
+        //TurnManagerSystem.Instance.Initialized(players);
 
 
     }
