@@ -59,41 +59,27 @@ public class DeckSystem : NetworkBehaviour
         drawPile.AddRange(discardPile);
         discardPile.Clear();
     }
-    //lOGIC FUNCTION DrawCardLogicGA allow sever to draw card and put card data  into client data
-    [Server]
-    public void DrawCardLogicGA(DrawCardGA drawCardLogicGA)
+    private IEnumerator DrawCardPerform(DrawCardGA drawCardGA)
     {
-        if (drawCardLogicGA.Player == null) return;
-        for (int i = 0; i < drawCardLogicGA.Amount; i++)
+        if (drawCardGA.Player == null) yield break;
+        for (int i = 0; i < drawCardGA.Amount; i++)
         {
             if (drawPile.Count == 0) RefillDeck();
             if (drawPile.Count == 0) break;
-
             CardInstance drawCard = drawPile.Draw();
             CardInstanceData drawCardData = new CardInstanceData(drawCard);
-            drawCardLogicGA.Player.currentHand.Add(drawCardData);
-            drawCardLogicGA.DrawCardList.Add(drawCardData);
-
+            drawCardGA.Player.currentHand.Add(drawCardData);
+            drawCardGA.DrawCardList.Add(drawCardData);
         }
-        TargetPerformDrawAction(drawCardLogicGA.Player.connectionToClient, drawCardLogicGA.DrawCardList.ToArray());
-
+        TargetPerformDrawVisual(drawCardGA.Player.connectionToClient, drawCardGA);
+        yield return null;
     }
     [TargetRpc]
-    private void TargetPerformDrawAction(NetworkConnection conn, CardInstanceData[] cards)
+    private void TargetPerformDrawVisual(NetworkConnection conn, DrawCardGA drawCardGA)
     {
-        PlayerController player = PlayerController.localPlayer;
-        if (player != null)
-        {
-            DrawCardGA action = new DrawCardGA(player, cards.Length);
-            action.DrawCardList.AddRange(cards);
-
-            // Gọi ActionSystem thực hiện diễn hoạt
-            ActionSystem.Instance.Perform(action);
-        }
+        StartCoroutine(DrawVisualRountine(drawCardGA));
     }
-    //DrawcardPerform will done at sever and while it add card into current hand of player
-    //it will trigger a callback OnHandChanged
-    public IEnumerator DrawCardPerform(DrawCardGA drawCardGA)
+    public IEnumerator DrawVisualRountine(DrawCardGA drawCardGA)
     {
         Debug.Log("Máy " + drawCardGA.Player.name + "perform rút " + drawCardGA.Amount + " lá bài");
         if (drawCardGA.Player == null || drawCardGA.DrawCardList.Count == 0) yield break;
@@ -113,6 +99,8 @@ public class DeckSystem : NetworkBehaviour
             }
         }
     }
+
+
 
 
 

@@ -27,7 +27,6 @@ public class MatchSetupSystem : NetworkBehaviour
         foreach (PlayerController p in players)
         {
             DrawCardGA drawCardGA = new DrawCardGA(p, 4);
-            deckSystem.DrawCardLogicGA(drawCardGA);
             setupGameAction.PerformReactions.Add(drawCardGA);
 
         }

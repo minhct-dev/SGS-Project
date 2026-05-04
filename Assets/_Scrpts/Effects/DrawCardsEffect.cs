@@ -9,9 +9,5 @@ public class DrawCardsEffect : Effect
         DrawCardGA drawCardGA = new(user, drawAmount);
         return drawCardGA;
     }
-    public override void ExecuteLogic(PlayerController user)
-    {
-        DrawCardGA drawCardGA = new(user, drawAmount);
-        deckSystem.DrawCardLogicGA(drawCardGA);
-    }
+
 }

@@ -48,8 +48,8 @@ public class TurnManagerSystem : NetworkBehaviour
         //Phase 1
 
         //Phase 2: Draw Card
-        DrawCardGA drawPhaseGA = new DrawCardGA(ActivePlayer, 2);
-        deckSystem.DrawCardLogicGA(drawPhaseGA);
+        //DrawCardGA drawPhaseGA = new DrawCardGA(ActivePlayer, 2);
+        //deckSystem.DrawCardLogicGA(drawPhaseGA);
         //phase 3 
 
         //Phase 4
