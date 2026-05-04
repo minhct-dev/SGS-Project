@@ -48,7 +48,12 @@ public class DeckSystem : NetworkBehaviour
             new(daoCard, 13, Suit.Club),
             new(toolDraw2Card, 6, Suit.Club),
             new(daoCard, 6, Suit.Club),
-            new(daoCard, 6, Suit.Club)
+            new(daoCard, 6, Suit.Club),
+            new(toolDraw2Card, 8, Suit.Spade),
+            new(toolDraw2Card, 9, Suit.Spade),
+            new(toolDraw2Card, 9, Suit.Spade),
+            new(toolDraw2Card, 10, Suit.Spade),
+            new(toolDraw2Card, 10, Suit.Spade),
         };
 
     }

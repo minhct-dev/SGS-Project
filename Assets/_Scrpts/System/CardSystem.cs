@@ -17,7 +17,7 @@ public class CardSystem : Singleton<CardSystem>
     [SerializeField] private Transform playCardViewPoint;
     private readonly List<CardInstance> drawPile = new();
     private readonly List<CardInstance> discardPile = new();
-    
+
     void OnEnable()
     {
         //ActionSystem.AttachPerformer<DiscardAllCardGA>(DiscardAllCardPerformer);
@@ -36,7 +36,7 @@ public class CardSystem : Singleton<CardSystem>
 
     //publics
     public void Setup()
-    {  
+    {
     }
     //Reactions
     private void EnemyTurnPreReaction(EnemyTurnGA enemyTurnGA)
@@ -80,20 +80,13 @@ public class CardSystem : Singleton<CardSystem>
             yield return DiscardCard(cardView);
             PlayView.Instance.RemoveCard(cardView.Card);
         }
-        
+
         //perform effect
         foreach (var effect in playCardGA.cardInstanceData.ToCardInstance().Data.Effects)
         {
-            PerformEffectGA performEffectGA = new(effect,playCardGA.user);
+            PerformEffectGA performEffectGA = new(effect, playCardGA.user);
             ActionSystem.Instance.AddReaction(performEffectGA);
         }
-    }
-    
-    //Helpers
-    private void RefillDeck()
-    {
-        drawPile.AddRange(discardPile);
-        discardPile.Clear();
     }
 
     public IEnumerator DrawCard(CardInstance card)
