@@ -89,4 +89,9 @@ public class TurnManagerSystem : NetworkBehaviour
         if (players[currentPlayerIndex] != playerRequest) return;
         NextTurn();
     }
+    public PlayerController GetCurrentOnTurnPlayer()
+    {
+        if (currentPlayerIndex >= 0) return players[currentPlayerIndex];
+        return null;
+    }
 }

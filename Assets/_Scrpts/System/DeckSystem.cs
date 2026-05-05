@@ -16,6 +16,7 @@ public class DeckSystem : NetworkBehaviour
     [SerializeField] private HandView handView;
     [Header("Game Item")]
     //drawPile is full of 160 playcard in SGS where decksystem will take card from here and send to player
+    [SerializeField] private CardSystem cardSystem;
     public List<CardInstance> drawPile { get; private set; } = new();
 
     //discardPile is where player discard card and card will add to discardPile
@@ -82,7 +83,7 @@ public class DeckSystem : NetworkBehaviour
     [TargetRpc]
     private void TargetPerformDrawVisual(NetworkConnection conn, DrawCardGA drawCardGA)
     {
-        StartCoroutine(DrawVisualRountine(drawCardGA));
+        VisualQueueSystem.Instance.EnqueueVisual(DrawVisualRountine(drawCardGA));
     }
     public IEnumerator DrawVisualRountine(DrawCardGA drawCardGA)
     {
@@ -95,7 +96,7 @@ public class DeckSystem : NetworkBehaviour
             //Debug.Log("Check local: " + isMe);
             if (isMe)
             {
-                yield return CardSystem.Instance.DrawCard(cardData.ToCardInstance());
+                yield return cardSystem.DrawCard(cardData.ToCardInstance());
             }
             else
             {

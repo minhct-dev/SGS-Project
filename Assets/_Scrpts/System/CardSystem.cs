@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
 using DG.Tweening;
+using Mirror;
 using Mirror.Examples.Basic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class CardSystem : Singleton<CardSystem>
+public class CardSystem : NetworkBehaviour
 {
     [SerializeField] private HandView handView;
     [SerializeField] private PlayView playView;
@@ -18,7 +19,7 @@ public class CardSystem : Singleton<CardSystem>
     private readonly List<CardInstance> drawPile = new();
     private readonly List<CardInstance> discardPile = new();
 
-    void OnEnable()
+    public override void OnStartServer()
     {
         //ActionSystem.AttachPerformer<DiscardAllCardGA>(DiscardAllCardPerformer);
         ActionSystem.AttachPerformer<PlayCardGA>(PlayCardPerformer);
@@ -26,7 +27,7 @@ public class CardSystem : Singleton<CardSystem>
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
 
-    void OnDisable()
+    public override void OnStopServer()
     {
         //ActionSystem.DetachPerformer<DiscardAllCardGA>();
         ActionSystem.DetachPerformer<PlayCardGA>();
@@ -55,40 +56,36 @@ public class CardSystem : Singleton<CardSystem>
         //ActionSystem.Instance.AddReaction(drawCardGA);
     }
 
-    //Performers
-    // private IEnumerator DiscardAllCardPerformer(DiscardAllCardGA discardAllCardGA)
-    // {
-    //     foreach (CardInstance card in hand)
-    //     {
-    //         discardPile.Add(card);
-    //         CardView cardView = handView.RemoveCard(card);
-    //         yield return DiscardCard(cardView);
-    //     }
-    //     hand.Clear();
-    // }
     private IEnumerator PlayCardPerformer(PlayCardGA playCardGA)
     {
-        PlayerController user = playCardGA.user;
-        if (user.isLocalPlayer)
+        playCardGA.user.currentHand.Remove(playCardGA.cardInstanceData);
+        RpcPlayCardVisual(playCardGA.cardInstanceData);
+        CardInstance card = playCardGA.cardInstanceData.ToCardInstance();
+        foreach (var effect in card.Data.Effects)
         {
-            //remove lá bài trong list
-            CardView cardView = handView.RemoveCard(playCardGA.cardInstanceData.ToCardInstance());
-            //Debug.Log(cardView);
-            //CardViewHoveSystem.Instance.Hide(cardView);
+            PerformEffectGA performEffectGA = new(effect, playCardGA.user);
+            ActionSystem.Instance.AddReaction(performEffectGA);
+        }
+        yield return null;
+    }
+    [ClientRpc]
+    private void RpcPlayCardVisual(CardInstanceData cardData)
+    {
+        VisualQueueSystem.Instance.EnqueueVisual(PlayCardVisualRountine(cardData));
+    }
+    //Corountine play card perform 
+    private IEnumerator PlayCardVisualRountine(CardInstanceData cardData)
+    {
+        CardInstance card = cardData.ToCardInstance();
+        CardView cardView = handView.RemoveCard(card);
+        if (cardView != null)
+        {
             yield return playView.AddCard(cardView);
             yield return new WaitForSeconds(2f);
             yield return DiscardCard(cardView);
             PlayView.Instance.RemoveCard(cardView.Card);
         }
-
-        //perform effect
-        foreach (var effect in playCardGA.cardInstanceData.ToCardInstance().Data.Effects)
-        {
-            PerformEffectGA performEffectGA = new(effect, playCardGA.user);
-            ActionSystem.Instance.AddReaction(performEffectGA);
-        }
     }
-
     public IEnumerator DrawCard(CardInstance card)
     {
         CardView cardView = CardViewCreator.Instance.CreateCardView(card, drawPilePoint.position, drawPilePoint.rotation);
