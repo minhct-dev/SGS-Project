@@ -1,5 +1,6 @@
 using UnityEngine;
-
+using System;
+[Serializable]
 public class DrawCardsEffect : Effect
 {
     [SerializeField] private int drawAmount;

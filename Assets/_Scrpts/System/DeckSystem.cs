@@ -17,10 +17,10 @@ public class DeckSystem : NetworkBehaviour
     [Header("Game Item")]
     //drawPile is full of 160 playcard in SGS where decksystem will take card from here and send to player
     [SerializeField] private CardSystem cardSystem;
-    public List<CardInstance> drawPile { get; private set; } = new();
+    [SerializeField] public List<CardInstance> drawPile;
 
     //discardPile is where player discard card and card will add to discardPile
-    public List<CardInstance> discardPile { get; private set; } = new();
+    [SerializeField] public List<CardInstance> discardPile;
 
     public override void OnStartServer()
     {

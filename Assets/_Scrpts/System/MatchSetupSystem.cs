@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Mirror;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 public class MatchSetupSystem : NetworkBehaviour
 {
@@ -15,7 +16,7 @@ public class MatchSetupSystem : NetworkBehaviour
     public void StartGame()
     {
         deckSystem.BuildFullDeck();
-        PlayerController[] players = FindObjectsOfType<PlayerController>().Reverse().ToArray();
+        PlayerController[] players = Object.FindObjectsByType<PlayerController>();
         Debug.Log("Number of client working:" + players.Length);
         Debug.Log("Players List: " + string.Join(", ", players.Select(players => players.name)));
         foreach (PlayerController player in players)

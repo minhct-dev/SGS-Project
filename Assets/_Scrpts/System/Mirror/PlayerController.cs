@@ -6,6 +6,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using Mirror.Examples.Basic;
 using System.Security.Cryptography;
+using Object = UnityEngine.Object;
 [Serializable]
 public class PlayerController : NetworkBehaviour
 {
@@ -135,7 +136,7 @@ public class PlayerController : NetworkBehaviour
     public void UpdateEnemyInfo()
     {
         // Find all Players and add them to the list.
-        PlayerController[] onlinePlayers = FindObjectsOfType<PlayerController>();
+        PlayerController[] onlinePlayers = Object.FindObjectsByType<PlayerController>();
 
         // Loop through all online Players (should just be one other Player)
         foreach (PlayerController players in onlinePlayers)

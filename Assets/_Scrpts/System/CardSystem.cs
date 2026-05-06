@@ -16,6 +16,7 @@ public class CardSystem : NetworkBehaviour
     [SerializeField] private Transform drawPilePoint;
     [SerializeField] private Transform discardPilePoint;
     [SerializeField] private Transform playCardViewPoint;
+    //Biến thừa 
     private readonly List<CardInstance> drawPile = new();
     private readonly List<CardInstance> discardPile = new();
 
