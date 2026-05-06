@@ -111,17 +111,10 @@ public class PlayerController : NetworkBehaviour
             Debug.Log("Currently is not PLAY PHASE!!");
             return;
         }
-        RpcPlayCard(this.netId, cardInstanceData);
-    }
-    //Playcard RPC
-    [ClientRpc]
-    public void RpcPlayCard(uint netid, CardInstanceData cardInstanceData)
-    {
-        currentHand.Remove(cardInstanceData);
-        var player = NetworkClient.spawned[netid].GetComponent<PlayerController>();
-        PlayCardGA playCardGA = new PlayCardGA(player, cardInstanceData);
+        PlayCardGA playCardGA = new PlayCardGA(this, cardInstanceData);
         ActionSystem.Instance.Perform(playCardGA);
     }
+
     //Command request to end turn 
     //Load UI -----------------------------------------
     [Command]

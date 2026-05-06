@@ -59,7 +59,7 @@ public class CardSystem : NetworkBehaviour
     private IEnumerator PlayCardPerformer(PlayCardGA playCardGA)
     {
         playCardGA.user.currentHand.Remove(playCardGA.cardInstanceData);
-        RpcPlayCardVisual(playCardGA.cardInstanceData);
+        RpcPlayCardVisual(playCardGA.user, playCardGA.cardInstanceData);
         CardInstance card = playCardGA.cardInstanceData.ToCardInstance();
         foreach (var effect in card.Data.Effects)
         {
@@ -69,22 +69,31 @@ public class CardSystem : NetworkBehaviour
         yield return null;
     }
     [ClientRpc]
-    private void RpcPlayCardVisual(CardInstanceData cardData)
+    private void RpcPlayCardVisual(PlayerController user, CardInstanceData cardData)
     {
-        VisualQueueSystem.Instance.EnqueueVisual(PlayCardVisualRountine(cardData));
+        VisualQueueSystem.Instance.EnqueueVisual(PlayCardVisualRountine(user, cardData));
     }
     //Corountine play card perform 
-    private IEnumerator PlayCardVisualRountine(CardInstanceData cardData)
+    private IEnumerator PlayCardVisualRountine(PlayerController user, CardInstanceData cardData)
     {
+        bool isMe = (user == PlayerController.localPlayer);
         CardInstance card = cardData.ToCardInstance();
-        CardView cardView = handView.RemoveCard(card);
-        if (cardView != null)
+        if (isMe)
         {
-            yield return playView.AddCard(cardView);
-            yield return new WaitForSeconds(2f);
-            yield return DiscardCard(cardView);
-            PlayView.Instance.RemoveCard(cardView.Card);
+            CardView cardView = handView.RemoveCard(card);
+            if (cardView != null)
+            {
+                yield return playView.AddCard(cardView);
+                yield return new WaitForSeconds(2f);
+                yield return DiscardCard(cardView);
+                PlayView.Instance.RemoveCard(cardView.Card);
+            }
         }
+        else
+        {
+            Debug.Log($"[{user.name}] vừa đánh lá [{card.Data.name}]");
+        }
+
     }
     public IEnumerator DrawCard(CardInstance card)
     {
