@@ -101,13 +101,23 @@ public class PlayerController : NetworkBehaviour
     [Command]
     public void CmdPlayCard(CardInstanceData cardInstanceData)
     {
-        currentHand.Remove(cardInstanceData);
+        if (TurnManagerSystem.Instance.activePlayerNetId != this.netId)
+        {
+            Debug.Log($"Currently is not player {this.name} turn!!");
+            return;
+        }
+        if (TurnManagerSystem.Instance.currentPhase != TurnPhase.Play)
+        {
+            Debug.Log("Currently is not PLAY PHASE!!");
+            return;
+        }
         RpcPlayCard(this.netId, cardInstanceData);
     }
     //Playcard RPC
     [ClientRpc]
     public void RpcPlayCard(uint netid, CardInstanceData cardInstanceData)
     {
+        currentHand.Remove(cardInstanceData);
         var player = NetworkClient.spawned[netid].GetComponent<PlayerController>();
         PlayCardGA playCardGA = new PlayCardGA(player, cardInstanceData);
         ActionSystem.Instance.Perform(playCardGA);

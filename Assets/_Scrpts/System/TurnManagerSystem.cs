@@ -7,14 +7,17 @@ using System;
 public class TurnManagerSystem : NetworkBehaviour
 {
     public static TurnManagerSystem Instance;
-    [SyncVar(hook = nameof(OnTurnChanged))]
-    public int currentPlayerIndex = -1;
     private readonly SyncList<PlayerController> players = new SyncList<PlayerController>();
+    [SyncVar(hook = nameof(OnPhaseChanged))]
+    public TurnPhase currentPhase;
+    [SyncVar(hook = nameof(OnTurnOwnerChanged))]
+    public uint activePlayerNetId;
+    public int currentPlayerIndex = -1;
+
     private void Awake() => Instance = this;
 
     [SerializeField] GameObject playCardButtonUI;
     [SerializeField] GameObject endTurnButtonUI;
-    [SerializeField] private DeckSystem deckSystem;
 
     [Server]
     public void Initialized(PlayerController[] allPlayer)
@@ -24,74 +27,92 @@ public class TurnManagerSystem : NetworkBehaviour
         {
             players.Add(p);
         }
+        currentPlayerIndex = -1;
         NextTurn();
     }
     [Server]
     public void NextTurn()
     {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.Count();
-        StartCoroutine(ExecuteTurnPhase(players[currentPlayerIndex]));
+        activePlayerNetId = players[currentPlayerIndex].netId;
+        Debug.Log($"[Sever] bắt đầu lượt của {players[currentPlayerIndex].name}");
+        ChangePhase(TurnPhase.Start);
     }
     //Function to execute turnphase in SGS
     /*
+    Phase 0: Start turn
     Phase 1: judgment
     Phase 2: draw card
     Phase 3: play card
     Phase 4: discard
     phase 5: end turn 
-    
     */
     [Server]
-    public IEnumerator ExecuteTurnPhase(PlayerController ActivePlayer)
+    public void ChangePhase(TurnPhase nextPhase)
     {
-        Debug.Log($"Player {ActivePlayer.name} start turn");
-        //Phase 1
+        currentPhase = nextPhase;
+        Debug.Log($"[Sever] Chuyển sang phase: {currentPhase}");
+        PlayerController activePlayer = players[currentPlayerIndex];
 
-        //Phase 2: Draw Card
-        DrawCardGA drawPhaseGA = new DrawCardGA(ActivePlayer, 2);
-        ActionSystem.Instance.Perform(drawPhaseGA);
-        //phase 3 
-
-        //Phase 4
-
-        //Phase 5
-        yield return null;
+        switch (currentPhase)
+        {
+            case TurnPhase.Start:
+                //TODO: Hand skill on start turn 
+                ChangePhase(TurnPhase.Judgment);
+                break;
+            case TurnPhase.Judgment:
+                //TODO: Handle lá phán xét : lạc bất tư thục / Xử lý Binh Dục Cửu
+                //Nếu dính lạc bất tư thục nhảy sang Discard. Nếu không:
+                ChangePhase(TurnPhase.Draw);
+                break;
+            case TurnPhase.Draw:
+                //TODO: Rút 2 lá / xử lý kĩ năng lúc rút bài 
+                DrawCardGA drawPhaseGA = new DrawCardGA(activePlayer, 2);
+                ActionSystem.Instance.Perform(drawPhaseGA);
+                ChangePhase(TurnPhase.Play);
+                break;
+            case TurnPhase.Play:
+                // TODO: Tính toán xem trên tay có bao nhiêu lá, máu bao nhiêu.
+                // Nếu bài > Máu -> Yêu cầu Client vứt bài (Đóng băng Server chờ vứt)
+                // Nếu bài <= Máu -> Nhảy thẳng sang End
+                break;
+            case TurnPhase.Discard:
+                // TODO: Tính toán xem trên tay có bao nhiêu lá, máu bao nhiêu.
+                // Nếu bài > Máu -> Yêu cầu Client vứt bài (Đóng băng Server chờ vứt)
+                // Nếu bài <= Máu -> Nhảy thẳng sang End
+                ChangePhase(TurnPhase.End);
+                break;
+            case TurnPhase.End:
+                // Kích hoạt kỹ năng cuối lượt (Ví dụ: Bế Nguyệt của Điêu Thuyền)
+                NextTurn();
+                break;
+        }
     }
     //hook run when turn changed 
-    private void OnTurnChanged(int oldIndex, int newIndex)
+    private void OnTurnOwnerChanged(uint oldIndex, uint newIndex)
     {
-        if (newIndex >= 0 && newIndex < players.Count)
-        {
-            UpdateUI(newIndex);
-        }
-
+        UpdateUI();
     }
-    private void UpdateUI(int activeIndex)
+    private void OnPhaseChanged(TurnPhase oldPhase, TurnPhase newPhase)
     {
-        bool isMyTurn = NetworkClient.localPlayer.GetComponent<PlayerController>() == players[activeIndex];
+        UpdateUI();
+    }
+    private void UpdateUI()
+    {
+        if (NetworkClient.localPlayer == null) return;
+        bool isMyTurn = NetworkClient.localPlayer.netId == activePlayerNetId;
+        bool canPlay = isMyTurn && (currentPhase == TurnPhase.Play);
         Debug.Log("is my turn: " + isMyTurn);
-        if (isMyTurn)
-        {
-            //turn on/off UI of play button 
-            playCardButtonUI.SetActive(true);
-            endTurnButtonUI.SetActive(true);
-
-        }
-        else
-        {
-            playCardButtonUI.SetActive(false);
-            endTurnButtonUI.SetActive(false);
-        }
+        playCardButtonUI.SetActive(canPlay);
+        endTurnButtonUI.SetActive(canPlay);
     }
     [Server]
     public void RequestEndTurn(PlayerController playerRequest)
     {
-        if (players[currentPlayerIndex] != playerRequest) return;
-        NextTurn();
+        Debug.Log(playerRequest.name + " request end turn in turn phase: " + currentPhase);
+        if (playerRequest.netId != activePlayerNetId) return;
+        if (currentPhase != TurnPhase.Play) return;
+        ChangePhase(TurnPhase.Discard);
     }
-    public PlayerController GetCurrentOnTurnPlayer()
-    {
-        if (currentPlayerIndex >= 0) return players[currentPlayerIndex];
-        return null;
-    }
+
 }
