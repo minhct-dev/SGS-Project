@@ -12,6 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 109e18a1584d09f418383db0964a104a, type: 3}
   m_Name: BasicSatCard
   m_EditorClassIdentifier: 
+  id: 4502a5bfd34e766489bf412201effcc8
   cardName: "S\xE1t"
   image: {fileID: 21300000, guid: e6743535cdfd4b24cb888d8f76301766, type: 3}
   cardType: 0
+  requiredTarget: 1
+  effects: []
+  references:
+    version: 2
+    RefIds: []

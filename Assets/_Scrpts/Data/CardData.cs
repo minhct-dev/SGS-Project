@@ -11,6 +11,7 @@ public abstract class CardData : ScriptableObject
     [SerializeField] private string cardName;
     [SerializeField] private Sprite image;
     [SerializeField] private CardType cardType;
+    [SerializeField] private int requiredTarget;
     [field: SerializeReference, SR] private List<Effect> effects;
 
 
@@ -20,7 +21,7 @@ public abstract class CardData : ScriptableObject
     public CardType CardType => cardType;
     public virtual string Description => "";
     public List<Effect> Effects => effects;
-
+    public int RequiredTarget => requiredTarget;
     static Dictionary<string, CardData> _cache;
 
     public static Dictionary<string, CardData> Cache
@@ -45,10 +46,10 @@ public abstract class CardData : ScriptableObject
         // If you do change it and want to change back, just erase the uniqueID in the inspector and it will refill itself.
         if (id == "")
         {
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             string path = AssetDatabase.GetAssetPath(this);
             id = AssetDatabase.AssetPathToGUID(path);
-            #endif
+#endif
         }
     }
 }

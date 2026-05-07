@@ -12,6 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 109e18a1584d09f418383db0964a104a, type: 3}
   m_Name: BasicDaoCard
   m_EditorClassIdentifier: 
+  id: ec65d5429c8872c4ba818a4043a7dcd3
   cardName: "\u0110\xE0o"
   image: {fileID: 21300000, guid: 5088334147709174f80926f545564d30, type: 3}
   cardType: 0
+  requiredTarget: 1
+  effects: []
+  references:
+    version: 2
+    RefIds: []
