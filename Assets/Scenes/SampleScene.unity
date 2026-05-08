@@ -420,6 +420,8 @@ MonoBehaviour:
   toolDraw2Card: {fileID: 11400000, guid: 4dca661ceece013489c2450448120ccd, type: 2}
   handView: {fileID: 0}
   cardSystem: {fileID: 1408774762}
+  drawPile: []
+  discardPile: []
 --- !u!114 &198807496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1989,6 +1991,55 @@ Transform:
   - {fileID: 875573483}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1304997603
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1304997604}
+  - component: {fileID: 1304997605}
+  m_Layer: 0
+  m_Name: InputTargetingSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1304997604
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1304997603}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2112697245}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1304997605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1304997603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52df4c6eaec24314a88630bc765499f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InputTargetingSystem
+  currentState: 0
+  selectedCard: {fileID: 0}
+  selectedTargetNetIds: 
+  requiredTarget: 0
+  playCardButtonUI: {fileID: 795839639}
 --- !u!1 &1330338372
 GameObject:
   m_ObjectHideFlags: 0
@@ -2446,10 +2497,11 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+  currentPhase: 0
+  activePlayerNetId: 0
   currentPlayerIndex: -1
   playCardButtonUI: {fileID: 795839639}
   endTurnButtonUI: {fileID: 1079549933}
-  deckSystem: {fileID: 198807495}
 --- !u!1 &1543836455
 GameObject:
   m_ObjectHideFlags: 0
@@ -3245,6 +3297,7 @@ Transform:
   - {fileID: 1888930249}
   - {fileID: 1499957873}
   - {fileID: 839843363}
+  - {fileID: 1304997604}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807

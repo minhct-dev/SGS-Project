@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using DG.Tweening;
+using Telepathy;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -12,7 +13,7 @@ public abstract class CardView : MonoBehaviour
     public static CardView CurrentlySelectedCard { get; private set; } = null;
     private static bool isOneCardSelected = false;
     public CardInstance Card { get; private set; }
-    public Vector3 HandViewPosition { get;  set; }
+    public Vector3 HandViewPosition { get; set; }
 
 
 
@@ -28,8 +29,12 @@ public abstract class CardView : MonoBehaviour
             CurrentlySelectedCard.transform.DOMoveY(CurrentlySelectedCard.transform.position.y - 1, 0.2f).SetEase(Ease.OutCubic);
             isOneCardSelected = false;
             CurrentlySelectedCard = null;
+            if (InputTargetingSystem.Instance != null)
+            {
+                InputTargetingSystem.Instance.CancelSelection();
+            }
         }
-        
+
     }
     public static void ChooseCard()
     {
@@ -53,8 +58,13 @@ public abstract class CardView : MonoBehaviour
             this.transform.DOMoveY(this.transform.position.y + 1, 0.2f).SetEase(Ease.OutCubic);
             CurrentlySelectedCard = this;
             isOneCardSelected = true;
+
+            if (InputTargetingSystem.Instance != null)
+            {
+                InputTargetingSystem.Instance.OnCardClicked(this);
+            }
         }
     }
-    
+
 
 }
