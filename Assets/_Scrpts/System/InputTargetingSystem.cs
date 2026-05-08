@@ -35,15 +35,40 @@ public class InputTargetingSystem : Singleton<InputTargetingSystem>
             Debug.Log($"Waiting for choosing {this.requiredTarget} target for [{this.selectedCard.Card.Name} card]!");
         }
     }
+    public void OnPlayerAvatarClicked(PlayerController targetPlayer)
+    {
+        if (currentState != InputState.WaitingForTargets) return;
+        if (selectedCard == null) return;
+        //In case click again the player before
+        if (selectedTargetNetIds.Contains(targetPlayer.netId))
+        {
+            selectedTargetNetIds.Remove(targetPlayer.netId);
+        }
+        else
+        {
+            if (selectedTargetNetIds.Count < requiredTarget)
+            {
+                selectedTargetNetIds.Add(targetPlayer.netId);
+                if (selectedTargetNetIds.Count == requiredTarget)
+                {
+                    Debug.Log("Đã đủ mục tiêu! Hãy bấm nút đánh bài");
+                }
+            }
+
+        }
+    }
     public void CancelSelection()
     {
         selectedCard = null;
         selectedTargetNetIds.Clear();
         currentState = InputState.Idle;
+        requiredTarget = 0;
     }
     public bool IsReadyToPlay()
     {
         if (selectedCard == null) return false;
         return selectedTargetNetIds.Count == requiredTarget;
     }
+    public uint[] GetTargetIds() => selectedTargetNetIds.ToArray();
+    public CardView GetSelectedCard() => selectedCard;
 }

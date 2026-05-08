@@ -2,15 +2,19 @@ using UnityEngine;
 
 public class DealDamageGA : GameAction
 {
-    public PlayerController dealer;
-    public PlayerController reciever;
-    public int amount;
+    public PlayerController Source { get; private set; }
+    public PlayerController Reciever { get; private set; }
+    public int Amount { get; private set; }
+    public CardInstanceData SourceCard { get; private set; }
 
-    public DealDamageGA(PlayerController dealer, PlayerController reciever, int amount)
+    public bool isEvaded { get; set; } = false;
+
+    public DealDamageGA(PlayerController source, PlayerController reciever, int amount, CardInstanceData sourceCard)
     {
-        this.dealer = dealer;
-        this.reciever = reciever;
-        this.amount = amount;
+        this.Source = source;
+        this.Reciever = reciever;
+        this.Amount = amount;
+        this.SourceCard = sourceCard;
     }
 
 }

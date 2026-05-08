@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5576694454635398063}
   - component: {fileID: 352951941579977484}
   - component: {fileID: 23023384602120891}
+  - component: {fileID: 6553626801888433871}
   m_Layer: 5
   m_Name: BackLayer
   m_TagString: Untagged
@@ -75,6 +76,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6553626801888433871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 306492495956494905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
+  m_EffectColor: {r: 0.21568629, g: 0.21568629, b: 0.21568629, a: 1}
+  m_EffectDistance: {x: -1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &658687892545287563
 GameObject:
   m_ObjectHideFlags: 0
@@ -411,6 +427,7 @@ GameObject:
   - component: {fileID: 8947436398975725105}
   - component: {fileID: 2174570370713677868}
   - component: {fileID: 5630990774579027388}
+  - component: {fileID: 66234231905157393}
   m_Layer: 5
   m_Name: PlayerPortrait
   m_TagString: Untagged
@@ -464,6 +481,28 @@ MonoBehaviour:
   PlayerName: {fileID: 9216370328384571164}
   NumberOfCards: {fileID: 3216400901107701676}
   wrapper: {fileID: 4605372820175350976}
+  targetOutline: {fileID: 6553626801888433871}
+--- !u!65 &66234231905157393
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3361428963893318838}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 9.997493, y: 7.0356846, z: 1}
+  m_Center: {x: 0.46428424, y: 0.40824988, z: 0}
 --- !u!1 &3427020904062022456
 GameObject:
   m_ObjectHideFlags: 0
@@ -548,6 +587,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8623456734397297298}
+  - component: {fileID: 6491274061559567926}
+  - component: {fileID: 54761021370819648}
   m_Layer: 5
   m_Name: wrapper
   m_TagString: Untagged
@@ -579,6 +620,47 @@ RectTransform:
   m_AnchoredPosition: {x: 2.7509499, y: 0.41327715}
   m_SizeDelta: {x: 10.021899, y: 7.033354}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!223 &6491274061559567926
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4605372820175350976}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!114 &54761021370819648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4605372820175350976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &6473019628222725546
 GameObject:
   m_ObjectHideFlags: 0

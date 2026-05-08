@@ -4,9 +4,11 @@ public class PlayCardGA : GameAction
 {
     public CardInstanceData cardInstanceData;
     public PlayerController user;
-    public PlayCardGA(PlayerController user, CardInstanceData cardInstanceData)
+    public uint[] targetIds;
+    public PlayCardGA(PlayerController user, CardInstanceData cardInstanceData, uint[] targetIds)
     {
         this.cardInstanceData = cardInstanceData;
         this.user = user;
+        this.targetIds = targetIds;
     }
 }

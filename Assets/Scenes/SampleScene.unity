@@ -135,7 +135,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &111807453
 Transform:
   m_ObjectHideFlags: 0
@@ -163,8 +163,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a6617daf33b7c44fa598c38ec9c84cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardViewHover: {fileID: 0}
-  currentSelectedCard: {fileID: 0}
 --- !u!1 &116805122
 GameObject:
   m_ObjectHideFlags: 0
@@ -2879,7 +2877,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1888930249
 Transform:
   m_ObjectHideFlags: 0

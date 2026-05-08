@@ -100,7 +100,7 @@ public class PlayerController : NetworkBehaviour
 
     //Command to reduce card in hand when playcard
     [Command]
-    public void CmdPlayCard(CardInstanceData cardInstanceData)
+    public void CmdPlayCard(CardInstanceData cardInstanceData, uint[] listTargetIds)
     {
         if (TurnManagerSystem.Instance.activePlayerNetId != this.netId)
         {
@@ -112,7 +112,7 @@ public class PlayerController : NetworkBehaviour
             Debug.Log("Currently is not PLAY PHASE!!");
             return;
         }
-        PlayCardGA playCardGA = new PlayCardGA(this, cardInstanceData);
+        PlayCardGA playCardGA = new PlayCardGA(this, cardInstanceData, listTargetIds);
         ActionSystem.Instance.Perform(playCardGA);
     }
 
