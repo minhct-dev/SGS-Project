@@ -64,8 +64,15 @@ public class CardSystem : NetworkBehaviour
         CardInstance card = playCardGA.cardInstanceData.ToCardInstance();
         foreach (var effect in card.Data.Effects)
         {
-            PerformEffectGA performEffectGA = new(effect, playCardGA.user);
-            ActionSystem.Instance.AddReaction(performEffectGA);
+            GameAction generatedAction = effect.GetGameAction(
+                playCardGA.user,
+                playCardGA.targetIds,
+                playCardGA.cardInstanceData
+            );
+            if (generatedAction != null)
+            {
+                ActionSystem.Instance.AddReaction(generatedAction);
+            }
         }
         yield return null;
     }
