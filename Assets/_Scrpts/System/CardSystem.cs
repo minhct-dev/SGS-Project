@@ -105,7 +105,7 @@ public class CardSystem : NetworkBehaviour
     }
     public IEnumerator DrawCard(CardInstance card)
     {
-        CardView cardView = CardViewCreator.Instance.CreateCardView(card, drawPilePoint.position, drawPilePoint.rotation, drawPilePoint);
+        CardView cardView = CardViewCreator.Instance.CreateCardView(card, drawPilePoint.position, drawPilePoint.rotation, handView.transform);
         yield return handView.AddCard(cardView);
     }
     private IEnumerator DiscardCard(CardView cardView)

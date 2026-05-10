@@ -9,7 +9,7 @@ public class ToolCardView : CardView
     [SerializeField] private TMP_Text CardName;
     [SerializeField] private TMP_Text CardNumber;
     [SerializeField] private TMP_Text CardSuit;
-    [SerializeField] private Sprite imageSR;
+    [SerializeField] private Image imageSR;
     [SerializeField] private TMP_Text Description;
     [field: SerializeField] public override GameObject wrapper { get; set; }
 
@@ -19,7 +19,7 @@ public class ToolCardView : CardView
         CardName.text = card.Name;
         CardNumber.text = card.Number.ToString();
         CardSuit.text = card.Suit.ToSymbol();
-        imageSR = card.Image;
+        imageSR.sprite = card.Image;
         Description.text = card.GetDescription();
     }
 }
