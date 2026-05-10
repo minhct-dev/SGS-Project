@@ -1,6 +1,7 @@
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ToolCardView : CardView
 {
@@ -8,7 +9,7 @@ public class ToolCardView : CardView
     [SerializeField] private TMP_Text CardName;
     [SerializeField] private TMP_Text CardNumber;
     [SerializeField] private TMP_Text CardSuit;
-    [SerializeField] private SpriteRenderer imageSR;
+    [SerializeField] private Sprite imageSR;
     [SerializeField] private TMP_Text Description;
     [field: SerializeField] public override GameObject wrapper { get; set; }
 
@@ -18,7 +19,7 @@ public class ToolCardView : CardView
         CardName.text = card.Name;
         CardNumber.text = card.Number.ToString();
         CardSuit.text = card.Suit.ToSymbol();
-        imageSR.sprite = card.Image;
+        imageSR = card.Image;
         Description.text = card.GetDescription();
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using SerializeReferenceEditor;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class CardData : ScriptableObject
 {

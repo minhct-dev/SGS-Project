@@ -2082,7 +2082,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c47263542610b8478f68f1f9acf44db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  basicCardViewPrefap: {fileID: 4797313163566107911, guid: 82cdbdf9d027e0c4bac95993969c7360, type: 3}
+  basicCardViewPrefap: {fileID: 3120958008019484152, guid: 28dfd6def62b6354e933885d4768a228, type: 3}
   toolCardViewPrefap: {fileID: 3512706571123384209, guid: 23a121d48c11ba947b09b0035751480e, type: 3}
 --- !u!224 &1344272600 stripped
 RectTransform:

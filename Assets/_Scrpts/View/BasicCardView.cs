@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BasicCardView : CardView
 {
@@ -8,15 +9,21 @@ public class BasicCardView : CardView
     [SerializeField] private TMP_Text CardName;
     [SerializeField] private TMP_Text CardNumber;
     [SerializeField] private TMP_Text CardSuit;
-    [SerializeField] private SpriteRenderer imageSR;
+    //vừa mới chuyển từ sprite sang Image
+    [SerializeField] private Image imageSR;
 
     public override void Setup(CardInstance card)
     {
         base.Setup(card);
+
         //BasicCardData basicData = card.Data as BasicCardData;
         CardName.text = card.Name;
         CardNumber.text = card.Number.ToString();
         CardSuit.text = card.Suit.ToSymbol();
-        imageSR.sprite = card.Image;
+        if (card.Image != null)
+        {
+            imageSR.sprite = card.Image;
+            imageSR.preserveAspect = true;
+        }
     }
 }
