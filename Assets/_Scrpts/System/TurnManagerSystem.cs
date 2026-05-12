@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using Unity.VisualScripting;
 public class TurnManagerSystem : NetworkBehaviour
 {
     public static TurnManagerSystem Instance;
@@ -18,6 +19,8 @@ public class TurnManagerSystem : NetworkBehaviour
 
     [SerializeField] GameObject playCardButtonUI;
     [SerializeField] GameObject endTurnButtonUI;
+    [SerializeField] GameObject playDodgeButtonUI;
+    [SerializeField] GameObject CancelButtonUI;
 
     [Server]
     public void Initialized(PlayerController[] allPlayer)
@@ -114,5 +117,11 @@ public class TurnManagerSystem : NetworkBehaviour
         if (currentPhase != TurnPhase.Play) return;
         ChangePhase(TurnPhase.Discard);
     }
-
+    //Target of slash card ui 
+    [TargetRpc]
+    public void TargetAskForDodge(NetworkConnection target)
+    {
+        playDodgeButtonUI.SetActive(true);
+        CancelButtonUI.SetActive(false);
+    }
 }

@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using Mirror.Examples.Basic;
 using System.Security.Cryptography;
 using Object = UnityEngine.Object;
+using UnityEngine.Rendering;
 [Serializable]
 public class PlayerController : NetworkBehaviour
 {
@@ -33,6 +34,12 @@ public class PlayerController : NetworkBehaviour
 
     [HideInInspector] public static MatchSetupSystem matchSetupSystem;
     [SerializeField] private OtherPlayerPortrait otherPlayerPortraitPrefap;
+
+    [Header("Dodge State")]
+    public bool isAnsweringDodge = false;
+    public bool hasAnsweredDodge = false;
+    public bool isDodgeCardPlayed = false;
+    public CardInstanceData playedDodgeCard;
 
     //[HideInInspector] public PlayerInfo opponentInfo; // We can't pass a Player class through the Network, but we can pass structs. 
     // We store all our enemy's info in a PlayerInfo struct so we can pass it through the network when needed.
@@ -162,6 +169,50 @@ public class PlayerController : NetworkBehaviour
     public void CmdEndTurn()
     {
         TurnManagerSystem.Instance.RequestEndTurn(this);
+    }
+
+    //Function to ask player for Dodge card
+    [Server]
+    public IEnumerator AskForDodge()
+    {
+        isAnsweringDodge = true;
+        hasAnsweredDodge = false;
+        isDodgeCardPlayed = false;
+        playedDodgeCard = default;
+        TurnManagerSystem.Instance.TargetAskForDodge(this.connectionToClient);
+        float timeout = 15f;
+        while (!hasAnsweredDodge && timeout > 0)
+        {
+            timeout -= Time.deltaTime;
+            yield return null;
+        }
+        isAnsweringDodge = false;
+
+        // Nếu hết 15s mà Client chưa phản hồi (Treo máy, lag...) -> Ép thành bỏ qua (chịu chém)
+        if (!hasAnsweredDodge)
+        {
+            Debug.Log($"[Server] {this.name} đã hết thời gian suy nghĩ. Mặc định chịu sát thương!");
+            isDodgeCardPlayed = false;
+            playedDodgeCard = default;
+        }
+
+    }
+    [Command]
+    public void CmdAnswerDodge(bool hasPlayedCard, CardInstanceData cardData)
+    {
+        if (!isAnsweringDodge) return;
+        if (hasPlayedCard)
+        {
+            isDodgeCardPlayed = true;
+            playedDodgeCard = cardData;
+        }
+        else
+        {
+            isDodgeCardPlayed = false;
+            playedDodgeCard = default;
+        }
+
+        hasAnsweredDodge = true;
     }
     public bool IsDead() => currentHP <= 0;
     //public bool CanAttack() => Player.gameManager.isOurTurn && waitTurn == 0 && casterType == Target.FRIENDLIES; (extension for future)

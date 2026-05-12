@@ -20,6 +20,12 @@ public class CardSystem : NetworkBehaviour
     private readonly List<CardInstance> drawPile = new();
     private readonly List<CardInstance> discardPile = new();
 
+    public static CardSystem Instance;
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     public override void OnStartServer()
     {
         //ActionSystem.AttachPerformer<DiscardAllCardGA>(DiscardAllCardPerformer);
@@ -77,7 +83,7 @@ public class CardSystem : NetworkBehaviour
         yield return null;
     }
     [ClientRpc]
-    private void RpcPlayCardVisual(PlayerController user, CardInstanceData cardData)
+    public void RpcPlayCardVisual(PlayerController user, CardInstanceData cardData)
     {
         VisualQueueSystem.Instance.EnqueueVisual(PlayCardVisualRountine(user, cardData));
     }
