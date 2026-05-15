@@ -415,6 +415,7 @@ MonoBehaviour:
   syncInterval: 0
   satCard: {fileID: 11400000, guid: 4502a5bfd34e766489bf412201effcc8, type: 2}
   daoCard: {fileID: 11400000, guid: ec65d5429c8872c4ba818a4043a7dcd3, type: 2}
+  thiemCard: {fileID: 11400000, guid: 69f1543ca07ec224689e5c15f0a86ce0, type: 2}
   toolDraw2Card: {fileID: 11400000, guid: 4dca661ceece013489c2450448120ccd, type: 2}
   handView: {fileID: 0}
   cardSystem: {fileID: 1408774762}
@@ -1077,6 +1078,58 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 0
+--- !u!1 &754475420
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 754475421}
+  - component: {fileID: 754475422}
+  m_Layer: 5
+  m_Name: DodgeSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &754475421
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754475420}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1862563730}
+  - {fileID: 1287239495}
+  m_Father: {fileID: 875573483}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &754475422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754475420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed5858167706765438b6d36a5fcb98af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DodgeButtonUI
+  playDodgeButtonUI: {fileID: 1862563729}
+  CancelButtonUI: {fileID: 1287239494}
 --- !u!1 &764452104
 GameObject:
   m_ObjectHideFlags: 0
@@ -1427,9 +1480,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 615966474}
+  - {fileID: 754475421}
   - {fileID: 1079549934}
-  - {fileID: 1287239495}
-  - {fileID: 1862563730}
   - {fileID: 795839640}
   - {fileID: 1357053978}
   - {fileID: 1344272600}
@@ -2277,7 +2329,6 @@ GameObject:
   - component: {fileID: 1287239499}
   - component: {fileID: 1287239498}
   - component: {fileID: 1287239497}
-  - component: {fileID: 1287239500}
   m_Layer: 5
   m_Name: CancelButton
   m_TagString: Untagged
@@ -2298,7 +2349,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 886319120}
-  m_Father: {fileID: 875573483}
+  m_Father: {fileID: 754475421}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2349,7 +2400,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1287239500}
+      - m_Target: {fileID: 754475422}
         m_TargetAssemblyTypeName: DodgeButtonUI, Assembly-CSharp
         m_MethodName: OnCancelButtonClicked
         m_Mode: 1
@@ -2399,18 +2450,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1287239494}
   m_CullTransparentMesh: 1
---- !u!114 &1287239500
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1287239494}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed5858167706765438b6d36a5fcb98af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DodgeButtonUI
 --- !u!1 &1304997603
 GameObject:
   m_ObjectHideFlags: 0
@@ -2922,8 +2961,8 @@ MonoBehaviour:
   currentPlayerIndex: -1
   playCardButtonUI: {fileID: 795839639}
   endTurnButtonUI: {fileID: 1079549933}
-  playDodgeButtonUI: {fileID: 0}
-  CancelButtonUI: {fileID: 0}
+  playDodgeButtonUI: {fileID: 1862563729}
+  CancelButtonUI: {fileID: 1287239494}
 --- !u!1 &1543836455
 GameObject:
   m_ObjectHideFlags: 0
@@ -3179,7 +3218,6 @@ GameObject:
   - component: {fileID: 1862563734}
   - component: {fileID: 1862563733}
   - component: {fileID: 1862563732}
-  - component: {fileID: 1862563731}
   m_Layer: 5
   m_Name: PlayDodgeButton
   m_TagString: Untagged
@@ -3194,31 +3232,19 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1862563729}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 234848411}
-  m_Father: {fileID: 875573483}
+  m_Father: {fileID: 754475421}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -600, y: -180}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1862563731
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1862563729}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed5858167706765438b6d36a5fcb98af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DodgeButtonUI
 --- !u!114 &1862563732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3263,7 +3289,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1862563731}
+      - m_Target: {fileID: 754475422}
         m_TargetAssemblyTypeName: DodgeButtonUI, Assembly-CSharp
         m_MethodName: OnConfirmDodgeButtonClicked
         m_Mode: 1

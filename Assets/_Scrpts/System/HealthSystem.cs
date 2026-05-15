@@ -24,10 +24,19 @@ public class HealthSystem : MonoBehaviour
         //ask for Dogde card
         yield return dealDamageGA.Reciever.AskForDodge();
         //check if the slash is dogded or not 
+        if (dealDamageGA.Reciever.isDodgeCardPlayed)
+        {
+            DodgeGA dodgeGA = new DodgeGA(
+                dealDamageGA.Reciever,
+                dealDamageGA.Reciever.playedDodgeCard,
+                dealDamageGA
+            );
+            yield return DodgePerformer(dodgeGA);
+        }
         if (dealDamageGA.isEvaded)
         {
             Debug.Log($"{dealDamageGA.Reciever.name} đã né thành công!");
-            yield break;
+            yield break; // Ngừng luồng này, KHÔNG chạy xuống code trừ máu nữa
         }
         dealDamageGA.Reciever.currentHP -= dealDamageGA.Amount;
         //ui ------

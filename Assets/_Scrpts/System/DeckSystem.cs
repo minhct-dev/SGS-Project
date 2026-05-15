@@ -11,6 +11,7 @@ public class DeckSystem : NetworkBehaviour
     [Header("Card Data")]
     [SerializeField] private BasicCardData satCard;
     [SerializeField] private BasicCardData daoCard;
+    [SerializeField] private BasicCardData thiemCard;
     [SerializeField] private ToolCardData toolDraw2Card;
     [Header("UI Ref")]
     [SerializeField] private HandView handView;
@@ -52,9 +53,13 @@ public class DeckSystem : NetworkBehaviour
             new(daoCard, 6, Suit.Club),
             new(toolDraw2Card, 8, Suit.Spade),
             new(toolDraw2Card, 9, Suit.Spade),
-            new(toolDraw2Card, 9, Suit.Spade),
-            new(toolDraw2Card, 10, Suit.Spade),
-            new(toolDraw2Card, 10, Suit.Spade),
+            // new(toolDraw2Card, 9, Suit.Spade),
+            // new(toolDraw2Card, 10, Suit.Spade),
+            // new(toolDraw2Card, 10, Suit.Spade),
+            new(thiemCard, 2, Suit.Diamond),
+            new(thiemCard, 2, Suit.Heart),
+            new(thiemCard, 11, Suit.Heart),
+            new(thiemCard, 13, Suit.Diamond),
         };
 
     }

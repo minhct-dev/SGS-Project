@@ -122,6 +122,6 @@ public class TurnManagerSystem : NetworkBehaviour
     public void TargetAskForDodge(NetworkConnection target)
     {
         playDodgeButtonUI.SetActive(true);
-        CancelButtonUI.SetActive(false);
+        CancelButtonUI.SetActive(true);
     }
 }
