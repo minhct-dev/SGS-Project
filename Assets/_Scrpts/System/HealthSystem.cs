@@ -10,12 +10,14 @@ public class HealthSystem : MonoBehaviour
         ActionSystem.AttachPerformer<SlashGA>(SlashPerformer);
         ActionSystem.AttachPerformer<DodgeGA>(DodgePerformer);
         ActionSystem.AttachPerformer<PeachGA>(PeachPerformer);
+        ActionSystem.AttachPerformer<DrinkWineGA>(WinePerformer);
     }
     void OnDisable()
     {
         ActionSystem.DetachPerformer<EnemyTurnGA>();
         ActionSystem.DetachPerformer<SlashGA>();
         ActionSystem.DetachPerformer<DodgeGA>();
+        ActionSystem.DetachPerformer<DrinkWineGA>();
     }
 
     //performers
@@ -39,13 +41,19 @@ public class HealthSystem : MonoBehaviour
             Debug.Log($"{dealDamageGA.Reciever.name} đã né thành công!");
             yield break; // Ngừng luồng này, KHÔNG chạy xuống code trừ máu nữa
         }
-        dealDamageGA.Reciever.currentHP -= dealDamageGA.Amount;
+        int finalDamage = dealDamageGA.Amount;
+        if (dealDamageGA.Source.isDrunk)
+        {
+            finalDamage += 1;
+            dealDamageGA.Source.isDrunk = false;
+            Debug.Log("Sát thương được cường hóa bởi tửu!");
+        }
+        dealDamageGA.Reciever.currentHP -= finalDamage;
         //ui ------
         if (dealDamageGA.Reciever.currentHP <= 0)
         {
 
         }
-
         yield return null;
     }
     private IEnumerator DodgePerformer(DodgeGA dodgeGA)
@@ -66,6 +74,13 @@ public class HealthSystem : MonoBehaviour
         }
         //Todo: thêm hiệu ứng + máu
         Debug.Log($"{peachGA.User.name} đã dùng Đào hồi máu cho {peachGA.Target.name}! Máu hiện tại: {peachGA.Target.currentHP}/{peachGA.Target.maxHP}");
+        yield return null;
+    }
+    private IEnumerator WinePerformer(DrinkWineGA drinkWineGA)
+    {
+        drinkWineGA.User.isDrunk = true;
+        drinkWineGA.User.HasUseWineCard = true;
+        Debug.Log($"{drinkWineGA.User.name} đã uống tửu! Lá Sát tiếp theo sẽ +1 sát thương");
         yield return null;
     }
 
