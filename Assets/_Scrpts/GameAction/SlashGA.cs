@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DealDamageGA : GameAction
+public class SlashGA : GameAction
 {
     public PlayerController Source { get; private set; }
     public PlayerController Reciever { get; private set; }
@@ -9,7 +9,7 @@ public class DealDamageGA : GameAction
 
     public bool isEvaded { get; set; } = false;
 
-    public DealDamageGA(PlayerController source, PlayerController reciever, int amount, CardInstanceData sourceCard)
+    public SlashGA(PlayerController source, PlayerController reciever, int amount, CardInstanceData sourceCard)
     {
         this.Source = source;
         this.Reciever = reciever;

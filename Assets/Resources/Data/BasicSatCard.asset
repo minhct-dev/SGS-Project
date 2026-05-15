@@ -18,11 +18,11 @@ MonoBehaviour:
   cardType: 0
   requiredTarget: 1
   effects:
-  - rid: 5375888595445088330
+  - rid: 5375888725521203274
   references:
     version: 2
     RefIds:
-    - rid: 5375888595445088330
-      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+    - rid: 5375888725521203274
+      type: {class: SlashEffect, ns: , asm: Assembly-CSharp}
       data:
         amount: 1

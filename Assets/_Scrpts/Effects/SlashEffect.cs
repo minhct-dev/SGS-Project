@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using Mirror;
 [Serializable]
-public class DealDamageEffect : Effect
+public class SlashEffect : Effect
 {
     [SerializeField] private int amount = 1;
     public override GameAction GetGameAction(PlayerController user, uint[] targetIds, CardInstanceData sourceCard)
@@ -12,8 +12,9 @@ public class DealDamageEffect : Effect
         if (NetworkServer.spawned.TryGetValue(targetId, out NetworkIdentity identity))
         {
             PlayerController target = identity.GetComponent<PlayerController>();
-            if (target != null) return new DealDamageGA(user, target, amount, sourceCard);
+            if (target != null) return new SlashGA(user, target, amount, sourceCard);
         }
         return null;
     }
 }
+

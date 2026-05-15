@@ -7,19 +7,19 @@ public class HealthSystem : MonoBehaviour
     void OnEnable()
     {
         ActionSystem.AttachPerformer<EnemyTurnGA>(EnemyTurnPerformer);
-        ActionSystem.AttachPerformer<DealDamageGA>(DealDamagePerformer);
+        ActionSystem.AttachPerformer<SlashGA>(SlashPerformer);
         ActionSystem.AttachPerformer<DodgeGA>(DodgePerformer);
     }
     void OnDisable()
     {
         ActionSystem.DetachPerformer<EnemyTurnGA>();
-        ActionSystem.DetachPerformer<DealDamageGA>();
+        ActionSystem.DetachPerformer<SlashGA>();
         ActionSystem.DetachPerformer<DodgeGA>();
     }
 
     //performers
     //performers for dealing damage : slash card , champion skill,  ...
-    private IEnumerator DealDamagePerformer(DealDamageGA dealDamageGA)
+    private IEnumerator SlashPerformer(SlashGA dealDamageGA)
     {
         //ask for Dogde card
         yield return dealDamageGA.Reciever.AskForDodge();
