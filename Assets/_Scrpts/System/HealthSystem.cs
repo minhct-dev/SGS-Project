@@ -9,6 +9,7 @@ public class HealthSystem : MonoBehaviour
         ActionSystem.AttachPerformer<EnemyTurnGA>(EnemyTurnPerformer);
         ActionSystem.AttachPerformer<SlashGA>(SlashPerformer);
         ActionSystem.AttachPerformer<DodgeGA>(DodgePerformer);
+        ActionSystem.AttachPerformer<PeachGA>(PeachPerformer);
     }
     void OnDisable()
     {
@@ -56,6 +57,17 @@ public class HealthSystem : MonoBehaviour
         yield return null;
     }
 
+    private IEnumerator PeachPerformer(PeachGA peachGA)
+    {
+        peachGA.Target.currentHP += peachGA.HealAmount;
+        if (peachGA.Target.currentHP > peachGA.Target.maxHP)
+        {
+            peachGA.Target.currentHP = peachGA.Target.maxHP;
+        }
+        //Todo: thêm hiệu ứng + máu
+        Debug.Log($"{peachGA.User.name} đã dùng Đào hồi máu cho {peachGA.Target.name}! Máu hiện tại: {peachGA.Target.currentHP}/{peachGA.Target.maxHP}");
+        yield return null;
+    }
 
     private IEnumerator EnemyTurnPerformer(EnemyTurnGA enemyTurnGA)
     {

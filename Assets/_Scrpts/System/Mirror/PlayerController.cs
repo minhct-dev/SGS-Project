@@ -41,6 +41,10 @@ public class PlayerController : NetworkBehaviour
     public bool isDodgeCardPlayed = false;
     public CardInstanceData playedDodgeCard;
 
+    [Header("Status Buffs")]
+    [SyncVar] public bool isDrunk = false;
+    [SyncVar] public bool HasUseWineCard = false;
+
     //[HideInInspector] public PlayerInfo opponentInfo; // We can't pass a Player class through the Network, but we can pass structs. 
     // We store all our enemy's info in a PlayerInfo struct so we can pass it through the network when needed.
 
