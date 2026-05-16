@@ -13,7 +13,6 @@ public class PeachGA : GameAction
         this.Target = Target;
         this.PeachCard = peachCard;
         this.HealAmount = healAmount;
-
     }
 
 }

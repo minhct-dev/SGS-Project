@@ -17,7 +17,11 @@ MonoBehaviour:
   image: {fileID: 21300000, guid: 11e05ee3672f76c4daa6ce43cf545c30, type: 3}
   cardType: 0
   requiredTarget: 0
-  effects: []
+  effects:
+  - rid: 5375888752500277322
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 5375888752500277322
+      type: {class: WineEffect, ns: , asm: Assembly-CSharp}
+      data: 

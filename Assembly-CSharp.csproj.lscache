@@ -64,6 +64,7 @@ Assets/
   DrawCardsEffect.cs
   PeachEffect.cs
   SlashEffect.cs
+  WineEffect.cs
  _Scrpts/Extensions/
   CardSuitExtensions.cs
   CardType.cs

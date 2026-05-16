@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using DG.Tweening;
+using Mono.Cecil;
 using Telepathy;
 using TMPro;
 using UnityEngine;
@@ -65,6 +66,12 @@ public abstract class CardView : MonoBehaviour
             }
         }
     }
-
-
+    public bool IsPlayable()
+    {
+        if (this.Card.Data.Effects != null)
+        {
+            return this.Card.Data.Effects[0].IsPlayable(PlayerController.localPlayer, TurnManagerSystem.Instance.currentPhase);
+        }
+        return true;
+    }
 }

@@ -416,6 +416,7 @@ MonoBehaviour:
   satCard: {fileID: 11400000, guid: 4502a5bfd34e766489bf412201effcc8, type: 2}
   daoCard: {fileID: 11400000, guid: ec65d5429c8872c4ba818a4043a7dcd3, type: 2}
   thiemCard: {fileID: 11400000, guid: 69f1543ca07ec224689e5c15f0a86ce0, type: 2}
+  wineCard: {fileID: 11400000, guid: adcd5823b0a46f44fb23d6b81bdd4ef2, type: 2}
   toolDraw2Card: {fileID: 11400000, guid: 4dca661ceece013489c2450448120ccd, type: 2}
   handView: {fileID: 0}
   cardSystem: {fileID: 1408774762}
