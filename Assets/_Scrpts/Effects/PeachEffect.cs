@@ -1,5 +1,7 @@
 using UnityEngine;
-
+using System;
+using Mirror;
+[Serializable]
 public class PeachEffect : Effect
 {
     [SerializeField] private int amount = 1;
