@@ -80,7 +80,6 @@ Assets/
   DrinkWineGA.cs
   EnemyTurnGA.cs
   PeachGA.cs
-  PerformEffectGA.cs
   PlayCardGA.cs
   SetupGameGA.cs
   SlashGA.cs
