@@ -13,6 +13,7 @@ public abstract class CardData : ScriptableObject
     [SerializeField] private Sprite image;
     [SerializeField] private CardType cardType;
     [SerializeField] private int requiredTarget;
+    [SerializeField] private string description;
     [field: SerializeReference, SR] private List<Effect> effects;
 
 
@@ -20,7 +21,7 @@ public abstract class CardData : ScriptableObject
     public string CardName => cardName;
     public Sprite Image => image;
     public CardType CardType => cardType;
-    public virtual string Description => "";
+    public string Description => description;
     public List<Effect> Effects => effects;
     public int RequiredTarget => requiredTarget;
     static Dictionary<string, CardData> _cache;

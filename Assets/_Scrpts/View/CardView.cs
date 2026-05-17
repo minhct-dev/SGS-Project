@@ -66,6 +66,15 @@ public abstract class CardView : MonoBehaviour
             }
         }
     }
+    public virtual void OnMouseOver()
+    {
+        Debug.Log(this.Card.Name);
+        ToolTip.Instance.ShowToolTip(this.Card.Name, this.Card.Description);
+    }
+    public virtual void OnMouseExit()
+    {
+        ToolTip.Instance.HideToolTip();
+    }
     public bool IsPlayable()
     {
         if (this.Card.Data.Effects != null)

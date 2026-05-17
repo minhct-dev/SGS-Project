@@ -17,6 +17,7 @@ MonoBehaviour:
   image: {fileID: 21300000, guid: 529031a513c4673418ca8d4905aba32f, type: 3}
   cardType: 0
   requiredTarget: 0
+  description: "V\xF4 Hi\u1EC7u H\xF3a ch\u1EE9c n\u0103ng c\u1EE7a l\xE1 s\xE1t"
   effects: []
   references:
     version: 2

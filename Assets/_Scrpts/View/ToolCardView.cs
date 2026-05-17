@@ -20,6 +20,6 @@ public class ToolCardView : CardView
         CardNumber.text = card.Number.ToString();
         CardSuit.text = card.Suit.ToSymbol();
         imageSR.sprite = card.Image;
-        Description.text = card.GetDescription();
+        Description.text = card.Description;
     }
 }

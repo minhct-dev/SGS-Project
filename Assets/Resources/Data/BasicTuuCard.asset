@@ -17,6 +17,8 @@ MonoBehaviour:
   image: {fileID: 21300000, guid: 11e05ee3672f76c4daa6ce43cf545c30, type: 3}
   cardType: 0
   requiredTarget: 0
+  description: "S\u1EED d\u1EE5ng khi h\u1EA5p h\u1ED1i ho\u1EB7c c\u1ED9ng 1 s\xE1t
+    th\u01B0\u01A1ng khi d\xF9ng l\xE1 s\xE1t ti\u1EBFp theo"
   effects:
   - rid: 5375888752500277322
   references:

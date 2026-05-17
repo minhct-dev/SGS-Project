@@ -72,6 +72,7 @@ Assets/
   ListExtensions.cs
   PlayerType.cs
   Suit.cs
+  ToolTip.cs
   TurnPhase.cs
  _Scrpts/GameAction/
   DiscardAllCardGA.cs
