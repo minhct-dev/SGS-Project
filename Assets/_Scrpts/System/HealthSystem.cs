@@ -49,6 +49,7 @@ public class HealthSystem : MonoBehaviour
             Debug.Log("Sát thương được cường hóa bởi tửu!");
         }
         dealDamageGA.Reciever.currentHP -= finalDamage;
+        CardSystem.Instance.RpcClearPlayView();
         //ui ------
         if (dealDamageGA.Reciever.currentHP <= 0)
         {
@@ -74,6 +75,7 @@ public class HealthSystem : MonoBehaviour
         }
         //Todo: thêm hiệu ứng + máu
         Debug.Log($"{peachGA.User.name} đã dùng Đào hồi máu cho {peachGA.Target.name}! Máu hiện tại: {peachGA.Target.currentHP}/{peachGA.Target.maxHP}");
+        CardSystem.Instance.RpcClearPlayView();
         yield return null;
     }
     private IEnumerator WinePerformer(DrinkWineGA drinkWineGA)
@@ -81,6 +83,7 @@ public class HealthSystem : MonoBehaviour
         drinkWineGA.User.isDrunk = true;
         drinkWineGA.User.HasUseWineCard = true;
         Debug.Log($"{drinkWineGA.User.name} đã uống tửu! Lá Sát tiếp theo sẽ +1 sát thương");
+        CardSystem.Instance.RpcClearPlayView();
         yield return null;
     }
 

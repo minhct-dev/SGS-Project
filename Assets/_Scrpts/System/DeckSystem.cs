@@ -84,6 +84,7 @@ public class DeckSystem : NetworkBehaviour
             drawCardGA.DrawCardList.Add(drawCardData);
         }
         TargetPerformDrawVisual(drawCardGA.Player.connectionToClient, drawCardGA);
+        CardSystem.Instance.RpcClearPlayView();
         yield return null;
     }
     [TargetRpc]

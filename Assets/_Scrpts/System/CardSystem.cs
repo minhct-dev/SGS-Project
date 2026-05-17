@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Runtime.ExceptionServices;
 using DG.Tweening;
 using Mirror;
@@ -98,16 +99,47 @@ public class CardSystem : NetworkBehaviour
             if (cardView != null)
             {
                 yield return playView.AddCard(cardView);
-                yield return new WaitForSeconds(2f);
-                yield return DiscardCard(cardView);
-                PlayView.Instance.RemoveCard(cardView.Card);
+                //----------
             }
         }
         else
         {
             Debug.Log($"[{user.name}] vừa đánh lá [{card.Data.name}]");
+            UnityEngine.Vector3 spawnPosition = user.playerPosition;
+            CardView opponentCardView = CardViewCreator.Instance.CreateCardView(
+                card,
+                spawnPosition,
+                UnityEngine.Quaternion.identity,
+                playView.transform // Đặt PlayView làm cha để render chuẩn UI
+            );
+            if (opponentCardView != null)
+            {
+                opponentCardView.transform.position = spawnPosition;
+                opponentCardView.transform.localScale = UnityEngine.Vector3.zero;
+                opponentCardView.transform.DOScale(0.3f, 0.4f);
+                yield return opponentCardView.transform.DOMove(playView.transform.position, 0.4f).SetEase(Ease.OutQuad);
+                yield return playView.AddCard(opponentCardView);
+                //-----
+
+            }
+
         }
 
+    }
+    [ClientRpc]
+    public void RpcClearPlayView()
+    {
+        StartCoroutine(ClearPlayViewRountine());
+    }
+    private IEnumerator ClearPlayViewRountine()
+    {
+        List<CardView> cardsOnBoard = new List<CardView>(PlayView.Instance.playedCards);
+        foreach (var cardView in cardsOnBoard)
+        {
+            PlayView.Instance.RemoveCard(cardView.Card);
+            StartCoroutine(DiscardCard(cardView));
+        }
+        yield return null;
     }
     public IEnumerator DrawCard(CardInstance card)
     {
@@ -117,7 +149,7 @@ public class CardSystem : NetworkBehaviour
     private IEnumerator DiscardCard(CardView cardView)
     {
         discardPile.Add(cardView.Card);
-        cardView.transform.DOScale(Vector3.zero, 0.15f);
+        cardView.transform.DOScale(UnityEngine.Vector3.zero, 0.15f);
         Tween tween = cardView.transform.DOMove(discardPilePoint.position, 0.15f);
         yield return tween.WaitForCompletion();
         Destroy(cardView.gameObject);
