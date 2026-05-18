@@ -2,13 +2,12 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class HealthSystem : MonoBehaviour
+public class HealthSystem : Singleton<HealthSystem>
 {
     void OnEnable()
     {
         ActionSystem.AttachPerformer<EnemyTurnGA>(EnemyTurnPerformer);
         ActionSystem.AttachPerformer<SlashGA>(SlashPerformer);
-        ActionSystem.AttachPerformer<DodgeGA>(DodgePerformer);
         ActionSystem.AttachPerformer<PeachGA>(PeachPerformer);
         ActionSystem.AttachPerformer<DrinkWineGA>(WinePerformer);
     }
@@ -16,7 +15,6 @@ public class HealthSystem : MonoBehaviour
     {
         ActionSystem.DetachPerformer<EnemyTurnGA>();
         ActionSystem.DetachPerformer<SlashGA>();
-        ActionSystem.DetachPerformer<DodgeGA>();
         ActionSystem.DetachPerformer<DrinkWineGA>();
     }
 
@@ -31,14 +29,15 @@ public class HealthSystem : MonoBehaviour
         {
             DodgeGA dodgeGA = new DodgeGA(
                 dealDamageGA.Reciever,
-                dealDamageGA.Reciever.playedDodgeCard,
-                dealDamageGA
+                dealDamageGA.Reciever.playedDodgeCard
             );
+            dealDamageGA.isEvaded = true;
             yield return DodgePerformer(dodgeGA);
         }
         if (dealDamageGA.isEvaded)
         {
             Debug.Log($"{dealDamageGA.Reciever.name} đã né thành công!");
+            CardSystem.Instance.RpcClearPlayView();
             yield break; // Ngừng luồng này, KHÔNG chạy xuống code trừ máu nữa
         }
         int finalDamage = dealDamageGA.Amount;
@@ -57,11 +56,10 @@ public class HealthSystem : MonoBehaviour
         }
         yield return null;
     }
-    private IEnumerator DodgePerformer(DodgeGA dodgeGA)
+    public IEnumerator DodgePerformer(DodgeGA dodgeGA)
     {
         dodgeGA.User.currentHand.Remove(dodgeGA.DodgeCard);
         CardSystem.Instance.RpcPlayCardVisual(dodgeGA.User, dodgeGA.DodgeCard);
-        dodgeGA.TargetDamageAction.isEvaded = true;
         Debug.Log($"{dodgeGA.User.name} đã đánh lá Thiểm thành công! Hủy sát thương!");
         yield return null;
     }

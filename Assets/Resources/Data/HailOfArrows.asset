@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0e38d0995890a54b912df632f09524a, type: 3}
+  m_Name: HailOfArrows
+  m_EditorClassIdentifier: Assembly-CSharp::ToolCardData
+  id: fc93caf2567d4c54ab2b522040d8e3a9
+  cardName: Hail Of Arrows
+  image: {fileID: 21300000, guid: f7f81cd76274cfc46bf71b39089b2e81, type: 3}
+  cardType: 1
+  requiredTarget: 0
+  description: "S\u1EED d\u1EE5ng l\xEAn t\u1EA5t c\u1EA3 ng\u01B0\u1EDDi ch\u01A1i
+    tr\u1EEB b\u1EA1n. M\u1ED7i ng\u01B0\u1EDDi ch\u01A1i ch\u1ECDn \u0111\xE1nh
+    ra 1 l\xE1 thi\u1EC3m ho\u1EB7c nh\u1EADn 1 s\xE1t th\u01B0\u01A1ng"
+  effects:
+  - rid: 5375888800722976842
+  references:
+    version: 2
+    RefIds:
+    - rid: 5375888800722976842
+      type: {class: HailOfArrowsEffect, ns: , asm: Assembly-CSharp}
+      data: 

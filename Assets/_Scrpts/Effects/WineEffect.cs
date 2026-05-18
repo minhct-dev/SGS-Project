@@ -11,6 +11,7 @@ public class WineEffect : Effect
     }
     public override bool IsPlayable(PlayerController player, TurnPhase currentPhase)
     {
+        base.IsPlayable(player, currentPhase);
         // 1. Luật cứu mạng: Nếu đang bị chém sắp chết -> Luôn được uống!
         if (player.isAnsweringDodge /* hoặc isDying */)
         {

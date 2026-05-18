@@ -77,7 +77,7 @@ public abstract class CardView : MonoBehaviour
     }
     public bool IsPlayable()
     {
-        if (this.Card.Data.Effects != null)
+        if (this.Card.Data.Effects.Count != 0)
         {
             return this.Card.Data.Effects[0].IsPlayable(PlayerController.localPlayer, TurnManagerSystem.Instance.currentPhase);
         }

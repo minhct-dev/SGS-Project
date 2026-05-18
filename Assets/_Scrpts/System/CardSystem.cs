@@ -86,7 +86,7 @@ public class CardSystem : NetworkBehaviour
     [ClientRpc]
     public void RpcPlayCardVisual(PlayerController user, CardInstanceData cardData)
     {
-        VisualQueueSystem.Instance.EnqueueVisual(PlayCardVisualRountine(user, cardData));
+        StartCoroutine(PlayCardVisualRountine(user, cardData));
     }
     //Corountine play card perform 
     private IEnumerator PlayCardVisualRountine(PlayerController user, CardInstanceData cardData)
@@ -129,15 +129,20 @@ public class CardSystem : NetworkBehaviour
     [ClientRpc]
     public void RpcClearPlayView()
     {
-        StartCoroutine(ClearPlayViewRountine());
+        VisualQueueSystem.Instance.EnqueueVisual(ClearPlayViewRountine());
     }
     private IEnumerator ClearPlayViewRountine()
     {
+        yield return new WaitForSeconds(1.5f);
         List<CardView> cardsOnBoard = new List<CardView>(PlayView.Instance.playedCards);
         foreach (var cardView in cardsOnBoard)
         {
             PlayView.Instance.RemoveCard(cardView.Card);
             StartCoroutine(DiscardCard(cardView));
+        }
+        if (PlayerController.localPlayer != null)
+        {
+            PlayerController.localPlayer.isWaitingForServer = false;
         }
         yield return null;
     }

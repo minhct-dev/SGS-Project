@@ -31,8 +31,6 @@ public class PlayerController : NetworkBehaviour
     // Quicker access for UI scripts
     [HideInInspector] public static PlayerController localPlayer;
     [HideInInspector] public bool hasOpponent = false;
-
-    [HideInInspector] public static MatchSetupSystem matchSetupSystem;
     [SerializeField] private OtherPlayerPortrait otherPlayerPortraitPrefap;
 
     [Header("Dodge State")]
@@ -40,6 +38,8 @@ public class PlayerController : NetworkBehaviour
     public bool hasAnsweredDodge = false;
     public bool isDodgeCardPlayed = false;
     public CardInstanceData playedDodgeCard;
+    [Header("UI Lock State")]
+    [HideInInspector] public bool isWaitingForServer = false;
 
     [Header("Status Buffs")]
     [SyncVar] public bool isDrunk = false;

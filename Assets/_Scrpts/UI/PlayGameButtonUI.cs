@@ -2,7 +2,6 @@ using UnityEngine;
 using Mirror;
 public class PlayGameButtonUI : MonoBehaviour
 {
-    [SerializeField] public MatchSetupSystem matchSetupSystem;
     [SerializeField] public GameObject PlayGameButton;
     void Update()
     {
@@ -18,6 +17,6 @@ public class PlayGameButtonUI : MonoBehaviour
     }
     public void OnClick()
     {
-        matchSetupSystem.CmdStartGame();
+        MatchSetupSystem.Instance.CmdStartGame();
     }
 }
