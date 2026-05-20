@@ -420,6 +420,7 @@ MonoBehaviour:
   cardSystem: {fileID: 1408774762}
   drawPile: []
   discardPile: []
+  deckJsonFile: {fileID: 4900000, guid: 7c35986c49c4ec444bfae0bed4e82529, type: 3}
 --- !u!114 &198807496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1120,7 +1121,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: bf1e218595e8f8e469117d2752c3ccdb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f440425a78d15a64e955116e47c85f26, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2893,7 +2894,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db767ede69aa7b74bb0c820e7f5c9a2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  matchSetupSystem: {fileID: 2052856471}
   PlayGameButton: {fileID: 1357053977}
 --- !u!114 &1357053980
 MonoBehaviour:
@@ -3844,6 +3844,7 @@ MonoBehaviour:
   EndTurnButtonUI: {fileID: 1079549933}
   StartGameButtonUI: {fileID: 1357053977}
   deckSystem: {fileID: 198807495}
+  allPlayers: []
 --- !u!114 &2052856472
 MonoBehaviour:
   m_ObjectHideFlags: 0

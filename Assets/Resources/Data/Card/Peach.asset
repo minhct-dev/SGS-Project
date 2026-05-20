@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 109e18a1584d09f418383db0964a104a, type: 3}
-  m_Name: BasicDaoCard
+  m_Name: Peach
   m_EditorClassIdentifier: 
   id: ec65d5429c8872c4ba818a4043a7dcd3
   cardName: "\u0110\xE0o"

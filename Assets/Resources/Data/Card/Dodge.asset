@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 109e18a1584d09f418383db0964a104a, type: 3}
-  m_Name: BasicThiemCard
+  m_Name: Dodge
   m_EditorClassIdentifier: Assembly-CSharp::BasicCardData
   id: 69f1543ca07ec224689e5c15f0a86ce0
   cardName: "Thi\u1EC3m"

@@ -1,19 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using System.Linq;
 using Mirror;
 using Mirror.Examples.Basic;
 using Unity.VisualScripting;
 using UnityEngine;
-
+using Newtonsoft.Json;
+public class DeckEntry
+{
+    public string CardName; // Phải trùng tên file ScriptableObject
+    public int Number;
+    public string Suit;
+}
+public class DeckData
+{
+    public List<DeckEntry> Deck;
+}
 public class DeckSystem : NetworkBehaviour
 {
-    [Header("Card Data")]
-    [SerializeField] private BasicCardData satCard;
-    [SerializeField] private BasicCardData daoCard;
-    [SerializeField] private BasicCardData thiemCard;
-    [SerializeField] private BasicCardData wineCard;
-    [SerializeField] private ToolCardData toolDraw2Card;
     [Header("UI Ref")]
     [SerializeField] private HandView handView;
     [Header("Game Item")]
@@ -23,7 +28,9 @@ public class DeckSystem : NetworkBehaviour
 
     //discardPile is where player discard card and card will add to discardPile
     [SerializeField] public List<CardInstance> discardPile;
-
+    [Header("Data File")]
+    [SerializeField] private TextAsset deckJsonFile;
+    private Dictionary<string, CardData> soCache = new Dictionary<string, CardData>();
     public override void OnStartServer()
     {
         ActionSystem.AttachPerformer<DrawCardGA>(DrawCardPerform);
@@ -33,37 +40,67 @@ public class DeckSystem : NetworkBehaviour
     {
         ActionSystem.DetachPerformer<DrawCardGA>();
     }
+    private CardData LoadCardScripableObject(string cardName)
+    {
+        if (soCache.ContainsKey(cardName))
+            return soCache[cardName];
 
+        // Đường dẫn tương đối tính từ thư mục Resources
+        CardData loadedSO = Resources.Load<CardData>($"Data/Card/{cardName}");
+
+        if (loadedSO != null)
+        {
+            soCache.Add(cardName, loadedSO);
+            return loadedSO;
+        }
+        else
+        {
+            Debug.LogError($"Không tìm thấy ScriptableObject nào tên là '{cardName}' trong thư mục Resources/Card!");
+            return null;
+        }
+    }
     [Server]
     //Use to create full deck from the begining of the match 
     public void BuildFullDeck()
     {
-        drawPile = new List<CardInstance>
+        drawPile.Clear();
+        if (deckJsonFile == null)
         {
-            new(satCard, 5, Suit.Spade),
-            new(satCard, 8, Suit.Heart),
-            new(toolDraw2Card, 13, Suit.Club),
-            new(satCard, 6, Suit.Club),
-            new(satCard, 6, Suit.Club),
-            new(wineCard, 6, Suit.Club),
-            new(wineCard, 5, Suit.Spade),
-            new(toolDraw2Card, 8, Suit.Heart),
-            new(daoCard, 13, Suit.Club),
-            new(toolDraw2Card, 6, Suit.Club),
-            new(daoCard, 6, Suit.Club),
-            new(daoCard, 6, Suit.Club),
-            new(toolDraw2Card, 8, Suit.Spade),
-            new(toolDraw2Card, 9, Suit.Spade),
-            new(wineCard, 9, Suit.Spade),
-            new(wineCard, 10, Suit.Spade),
-            new(wineCard, 10, Suit.Spade),
-            new(thiemCard, 2, Suit.Diamond),
-            new(thiemCard, 2, Suit.Heart),
-            new(thiemCard, 11, Suit.Heart),
-            new(thiemCard, 13, Suit.Diamond),
-        };
+            Debug.LogError("Chưa gắn file StandardDeck.json vào DeckSystem!");
+            return;
+        }
+
+        // 3. Đọc dữ liệu từ file JSON
+        DeckData deckData = JsonConvert.DeserializeObject<DeckData>(deckJsonFile.text);
+
+        // 4. Vòng lặp đúc bài
+        foreach (DeckEntry entry in deckData.Deck)
+        {
+            // Tải ScriptableObject từ thư mục Resources/Cards
+            CardData cardSO = LoadCardScripableObject(entry.CardName);
+
+            if (cardSO != null)
+            {
+                // Ép kiểu chuỗi sang Enum Suit
+                if (Enum.TryParse(entry.Suit, out Suit parsedSuit))
+                {
+                    // Đúc lá bài mới và nhét vào xấp bài
+                    drawPile.Add(new CardInstance(cardSO, entry.Number, parsedSuit));
+                }
+                else
+                {
+                    Debug.LogError($"Sai tên chất bài ({entry.Suit}) ở lá {entry.CardName}");
+                }
+            }
+        }
+
+        // Đảo bài (Giả sử bạn có hàm Shuffle cho List)
+        // drawPile.Shuffle(); 
+        Debug.Log($"Đã tạo xong xấp bài với {drawPile.Count} lá!");
 
     }
+
+
     //refilldeck use to take all card in discardPile and refill the drawPile 
     [Server]
     private void RefillDeck()

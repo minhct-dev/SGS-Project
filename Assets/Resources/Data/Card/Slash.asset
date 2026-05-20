@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 109e18a1584d09f418383db0964a104a, type: 3}
-  m_Name: BasicSatCard
+  m_Name: Slash
   m_EditorClassIdentifier: 
   id: 4502a5bfd34e766489bf412201effcc8
   cardName: "S\xE1t"
