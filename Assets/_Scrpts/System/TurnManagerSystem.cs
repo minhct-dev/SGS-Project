@@ -113,6 +113,8 @@ public class TurnManagerSystem : NetworkBehaviour
     public void RequestEndTurn(PlayerController playerRequest)
     {
         Debug.Log(playerRequest.name + " request end turn in turn phase: " + currentPhase);
+        playerRequest.HasUseWineCard = false;
+        playerRequest.isDrunk = false;
         if (playerRequest.netId != activePlayerNetId) return;
         if (currentPhase != TurnPhase.Play) return;
         ChangePhase(TurnPhase.Discard);

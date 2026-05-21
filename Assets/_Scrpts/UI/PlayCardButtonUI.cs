@@ -13,6 +13,12 @@ public class PlayCardButtonUI : MonoBehaviour
             return;
         }
         CardView playedCard = InputTargetingSystem.Instance.GetSelectedCard();
+        if (!playedCard.IsPlayable())
+        {
+            Debug.Log("Chưa đủ điều kiện đánh bài!!!");
+            return;
+        }
+        PlayerController.localPlayer.isWaitingForServer = true;
         uint[] listTargetIds = InputTargetingSystem.Instance.GetTargetIds();
         //Debug.Log(playedCard.Card.Number + " " + playedCard.Card.Suit.ToSymbol());
         if (playedCard == null) return;

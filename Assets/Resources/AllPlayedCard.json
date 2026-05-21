@@ -1,0 +1,24 @@
+{
+    "Deck":[
+        { "CardName": "Slash", "Number": 5, "Suit": "Spade"},
+        { "CardName": "Slash", "Number": 8, "Suit": "Heart"},
+        { "CardName": "Slash", "Number": 13, "Suit": "Club"},
+        { "CardName": "Slash", "Number": 6, "Suit": "Spade"},
+        { "CardName": "DrawTwo", "Number": 13, "Suit": "Club"},
+        { "CardName": "Wine", "Number": 6, "Suit": "Club"},
+        { "CardName": "Wine", "Number": 5, "Suit": "Spade"},
+        { "CardName": "DrawTwo", "Number": 8, "Suit": "Heart"},
+        { "CardName": "Peach", "Number": 13, "Suit": "Club"},
+        { "CardName": "DrawTwo", "Number": 6, "Suit": "Club"},
+        { "CardName": "Peach", "Number": 2, "Suit": "Diamond"},
+        { "CardName": "Peach", "Number": 6, "Suit": "Club"},
+        { "CardName": "DrawTwo", "Number": 8, "Suit": "Spade"},
+        { "CardName": "DrawTwo", "Number": 9, "Suit": "Spade"},
+        { "CardName": "Wine", "Number": 9, "Suit": "Spade"},
+        { "CardName": "Wine", "Number": 10, "Suit": "Spade"},
+        { "CardName": "Dodge", "Number": 2, "Suit": "Diamond"},
+        { "CardName": "Dodge", "Number": 2, "Suit": "Heart"},
+        { "CardName": "Dodge", "Number": 11, "Suit": "Heart"},
+        { "CardName": "Dodge", "Number": 13, "Suit": "Diamond"}
+    ]
+}
