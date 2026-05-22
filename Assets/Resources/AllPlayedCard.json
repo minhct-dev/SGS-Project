@@ -19,6 +19,9 @@
         { "CardName": "Dodge", "Number": 2, "Suit": "Diamond"},
         { "CardName": "Dodge", "Number": 2, "Suit": "Heart"},
         { "CardName": "Dodge", "Number": 11, "Suit": "Heart"},
-        { "CardName": "Dodge", "Number": 13, "Suit": "Diamond"}
+        { "CardName": "Dodge", "Number": 13, "Suit": "Diamond"},
+        { "CardName": "HailOfArrow", "Number": 9, "Suit": "Diamond"},
+        { "CardName": "HailOfArrow", "Number": 9, "Suit": "Heart"},
+        { "CardName": "HailOfArrow", "Number": 3, "Suit": "Club"}
     ]
 }
