@@ -262,9 +262,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6146489920086982874}
   - component: {fileID: 346376696063133411}
-  - component: {fileID: 4029822972633584660}
   m_Layer: 5
-  m_Name: BasicCardView
+  m_Name: Card
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -311,23 +310,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 434.7204, y: 615.001, z: 0}
   m_Center: {x: -0.26723063, y: -0.6732463, z: 0.5}
---- !u!114 &4029822972633584660
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5183038757542400525}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45c0a43702c4d5948a81283408db594c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BasicCardView
-  <wrapper>k__BackingField: {fileID: 5183038757542400525}
-  CardName: {fileID: 3961745486953283905}
-  CardNumber: {fileID: 4305580816798385908}
-  CardSuit: {fileID: 4365878511218163032}
-  imageSR: {fileID: 7054088404815766081}
 --- !u!1 &6295332880965540953
 GameObject:
   m_ObjectHideFlags: 0
