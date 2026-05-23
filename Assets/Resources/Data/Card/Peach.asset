@@ -9,21 +9,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 109e18a1584d09f418383db0964a104a, type: 3}
+  m_Script: {fileID: 11500000, guid: 059d9d3dd7db69143af4092956a01b33, type: 3}
   m_Name: Peach
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardData
   id: ec65d5429c8872c4ba818a4043a7dcd3
-  cardName: "\u0110\xE0o"
-  image: {fileID: 21300000, guid: 5088334147709174f80926f545564d30, type: 3}
+  cardName: Peach
+  image: {fileID: -1817035522, guid: bb23f99e968ca984ea40a0f6e8ca4fa3, type: 3}
   cardType: 0
   requiredTarget: 0
-  description: "S\u1EED d\u1EE5ng khi H\u1EA5p h\u1ED1i ho\u1EB7c H\u1ED3i 1 m\xE1u"
+  description: "H\u1ED3i 1 m\xE1u"
   effects:
-  - rid: 5375888733063348299
+  - rid: 5375888905630646347
   references:
     version: 2
     RefIds:
-    - rid: 5375888733063348299
+    - rid: 5375888905630646347
       type: {class: PeachEffect, ns: , asm: Assembly-CSharp}
       data:
         amount: 1

@@ -9,21 +9,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0e38d0995890a54b912df632f09524a, type: 3}
+  m_Script: {fileID: 11500000, guid: 059d9d3dd7db69143af4092956a01b33, type: 3}
   m_Name: DrawTwo
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardData
   id: 4dca661ceece013489c2450448120ccd
-  cardName: "V\xF4 Trung Sinh H\u1EEFu"
-  image: {fileID: 21300000, guid: 6a8c345571133b54e8c1df0c6a109887, type: 3}
-  cardType: 1
+  cardName: Draw Two
+  image: {fileID: 1552995657, guid: 101165c01f5dfdf4e842229df5f81275, type: 3}
+  cardType: 0
   requiredTarget: 0
+  description: 
   effects:
-  - rid: 5375888469131001935
-  description: "R\xFAt 2 l\xE1 b\xE0i"
+  - rid: 5375888905630646351
   references:
     version: 2
     RefIds:
-    - rid: 5375888469131001935
+    - rid: 5375888905630646351
       type: {class: DrawCardsEffect, ns: , asm: Assembly-CSharp}
       data:
         drawAmount: 2

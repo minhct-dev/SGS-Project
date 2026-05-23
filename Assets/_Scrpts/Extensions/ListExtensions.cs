@@ -16,25 +16,15 @@ public static class ListExtensions
     //extension for exchanging from cardInstanceData from sever to cardinstance in client
     public static CardInstance ToCardInstance(this CardInstanceData data)
     {
-        var rawData = CardData.Cache[data.cardId];
-        if (data.cardType == CardType.BasicCard)
+        if (CardData.Cache.TryGetValue(data.cardId, out CardData rawData))
         {
-            BasicCardData basicCardData = rawData as BasicCardData;
-            return new CardInstance(basicCardData, data.Number, data.Suit)
-            {
-                IsFaceUp = data.IsFaceUp
-            };
-
-        }
-        else if (data.cardType == CardType.ToolCard)
-        {
-            ToolCardData toolCardData = rawData as ToolCardData;
-            return new CardInstance(toolCardData, data.Number, data.Suit)
+            return new CardInstance(rawData, data.Number, data.Suit)
             {
                 IsFaceUp = data.IsFaceUp
             };
         }
+        // Báo lỗi đỏ lên Console nếu Server gửi về một ID ma mà Client không có
+        Debug.LogError($"Không tìm thấy thẻ bài nào với ID: {data.cardId} trong Cache!");
         return null;
-        
     }
 }

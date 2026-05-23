@@ -4,13 +4,24 @@ using Mono.Cecil;
 using Telepathy;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
 
-public abstract class CardView : MonoBehaviour
+
+public class CardView : MonoBehaviour
 {
-    public abstract GameObject wrapper { get; set; }
+    [Header("UI References")]
+    [field: SerializeField] public GameObject wrapper { get; set; }
+    [SerializeField] private TMP_Text CardNumber;
+    [SerializeField] private Image imageSR;
+    [Header("Suit UI")]
+    [SerializeField] private Image suitImage;
+    [SerializeField] private Sprite spadeSprite;
+    [SerializeField] private Sprite heartSprite;
+    [SerializeField] private Sprite clubSprite;
+    [SerializeField] private Sprite diamondSprite;
+    [Header("UI Property")]
     public static CardView CurrentlySelectedCard { get; private set; } = null;
     private static bool isOneCardSelected = false;
     public CardInstance Card { get; private set; }
@@ -21,6 +32,35 @@ public abstract class CardView : MonoBehaviour
     public virtual void Setup(CardInstance card)
     {
         Card = card;
+        CardNumber.text = card.Number.ToString();
+        if (card.Suit == Suit.Heart || card.Suit == Suit.Diamond)
+        {
+            CardNumber.color = new Color(0.8f, 0.1f, 0.1f); // Đỏ thẫm
+        }
+        else
+        {
+            CardNumber.color = Color.black; // Đen
+        }
+        suitImage.sprite = GetSuitSprite(card.Suit);
+        suitImage.type = Image.Type.Simple;
+        suitImage.preserveAspect = true;
+        if (card.Image != null)
+        {
+            imageSR.sprite = card.Image;
+            imageSR.preserveAspect = true;
+        }
+    }
+
+    private Sprite GetSuitSprite(Suit suit)
+    {
+        return suit switch
+        {
+            Suit.Spade => spadeSprite,
+            Suit.Heart => heartSprite,
+            Suit.Club => clubSprite,
+            Suit.Diamond => diamondSprite,
+            _ => null
+        };
     }
     public static void ForceUnselect()
     {

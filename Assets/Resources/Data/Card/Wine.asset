@@ -9,21 +9,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 109e18a1584d09f418383db0964a104a, type: 3}
+  m_Script: {fileID: 11500000, guid: 059d9d3dd7db69143af4092956a01b33, type: 3}
   m_Name: Wine
-  m_EditorClassIdentifier: Assembly-CSharp::BasicCardData
+  m_EditorClassIdentifier: Assembly-CSharp::CardData
   id: adcd5823b0a46f44fb23d6b81bdd4ef2
-  cardName: "T\u1EEDu"
-  image: {fileID: 21300000, guid: 11e05ee3672f76c4daa6ce43cf545c30, type: 3}
+  cardName: Wine
+  image: {fileID: 600378372, guid: 908db013e00fbc649b7281298e9b1d4f, type: 3}
   cardType: 0
   requiredTarget: 0
-  description: "S\u1EED d\u1EE5ng khi h\u1EA5p h\u1ED1i ho\u1EB7c c\u1ED9ng 1 s\xE1t
-    th\u01B0\u01A1ng khi d\xF9ng l\xE1 s\xE1t ti\u1EBFp theo"
+  description: "T\u0103ng 1 s\xE1t th\u01B0\u01A1ng cho l\xE1 s\xE1t"
   effects:
-  - rid: 5375888752500277322
+  - rid: 5375888905630646348
   references:
     version: 2
     RefIds:
-    - rid: 5375888752500277322
+    - rid: 5375888905630646348
       type: {class: WineEffect, ns: , asm: Assembly-CSharp}
       data: 

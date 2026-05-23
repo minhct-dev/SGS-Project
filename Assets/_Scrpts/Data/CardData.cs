@@ -5,8 +5,8 @@ using SerializeReferenceEditor;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-
-public abstract class CardData : ScriptableObject
+[CreateAssetMenu(fileName = "CardData", menuName = "Data/CardData")]
+public class CardData : ScriptableObject
 {
     [SerializeField] string id = "";
     [SerializeField] private string cardName;
