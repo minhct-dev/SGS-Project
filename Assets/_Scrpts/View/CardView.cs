@@ -108,8 +108,16 @@ public class CardView : MonoBehaviour
     }
     public virtual void OnMouseOver()
     {
-        Debug.Log(this.Card.Name);
-        ToolTip.Instance.ShowToolTip(this.Card.Name, this.Card.Description);
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            Debug.Log(this.Card.Name);
+            ToolTip.Instance.ShowToolTip(this.Card.Name, this.Card.Description);
+        }
+        else if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            ToolTip.Instance.HideToolTip();
+        }
+
     }
     public virtual void OnMouseExit()
     {

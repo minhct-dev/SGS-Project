@@ -1,9 +1,13 @@
 using System;
 using System.Collections;
+using Mirror;
+using Mirror.Examples.Basic;
 using UnityEngine;
 
-public class HealthSystem : Singleton<HealthSystem>
+public class HealthSystem : NetworkBehaviour
 {
+    public static HealthSystem Instance;
+    private void Awake() => Instance = this;
     void OnEnable()
     {
         ActionSystem.AttachPerformer<EnemyTurnGA>(EnemyTurnPerformer);
@@ -16,6 +20,7 @@ public class HealthSystem : Singleton<HealthSystem>
         ActionSystem.DetachPerformer<EnemyTurnGA>();
         ActionSystem.DetachPerformer<SlashGA>();
         ActionSystem.DetachPerformer<DrinkWineGA>();
+        ActionSystem.DetachPerformer<PeachGA>();
     }
 
     //performers
@@ -92,4 +97,47 @@ public class HealthSystem : Singleton<HealthSystem>
         Debug.Log("Enemy Turn end");
         yield return new WaitForSeconds(2f);
     }
+    [Server]
+    private IEnumerator AskForCardPerformer(AskForCardGA askForCardGA)
+    {
+        PlayerController target = askForCardGA.Target;
+        float timeOut = askForCardGA.TimeOut;
+        if (target != null)
+        {
+
+            target.isSelecting = true;
+            target.isPlayedCard = false;
+            target.answeredCards = null;
+            TargetPromptForCard(target.connectionToClient, askForCardGA.CardID, askForCardGA.Amount, timeOut);
+            while (!target.isPlayedCard && timeOut > 0)
+            {
+                timeOut -= Time.deltaTime;
+                yield return null;
+            }
+            if (timeOut <= 0 && !target.isPlayedCard)
+            {
+                Debug.Log($"[Server] {target.name} đã hết giờ! Mặc định không đánh bài.");
+                target.isPlayedCard = false;
+
+                // Gọi RPC ép Client tắt UI (trường hợp Client afk)
+                TargetForceClosePrompt(connectionToClient);
+            }
+
+        }
+        yield return null;
+    }
+
+
+    [TargetRpc]
+    public void TargetPromptForCard(NetworkConnection player, string cardID, int amount, float timeOut)
+    {
+        PromptCardManager.Instance.AskPlayerForCard(cardID, amount, timeOut);
+    }
+    [TargetRpc]
+    public void TargetForceClosePrompt(NetworkConnection player)
+    {
+        PromptCardManager.Instance.ForceClosePrompt();
+        CardView.ForceUnselect();
+    }
+
 }

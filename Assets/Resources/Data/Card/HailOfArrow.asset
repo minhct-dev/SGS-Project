@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 059d9d3dd7db69143af4092956a01b33, type: 3}
   m_Name: HailOfArrow
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  id: 7f66201ea94b3304d809f2f37ba492e6
+  id: Tool_HailOfArrow
   cardName: Hail Of Arrows
   image: {fileID: -1341355740, guid: 73fa87866e9fc5647a49532dfd5893ee, type: 3}
   cardType: 0
   requiredTarget: 0
-  description: 
+  description: "M\u1ED7i ng\u01B0\u1EDDi ch\u01A1i ph\u1EA3i b\u1ECF ra 1 l\xE1 thi\u1EC3m
+    ho\u1EB7c nh\u1EADn 1 s\xE1t th\u01B0\u01A1ng"
   effects:
   - rid: 5375888905630646349
   references:

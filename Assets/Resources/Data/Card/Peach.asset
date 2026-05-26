@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 059d9d3dd7db69143af4092956a01b33, type: 3}
   m_Name: Peach
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  id: ec65d5429c8872c4ba818a4043a7dcd3
+  id: Basic_Peach
   cardName: Peach
   image: {fileID: -1817035522, guid: bb23f99e968ca984ea40a0f6e8ca4fa3, type: 3}
   cardType: 0

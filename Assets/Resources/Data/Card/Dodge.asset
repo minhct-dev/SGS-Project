@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 059d9d3dd7db69143af4092956a01b33, type: 3}
   m_Name: Dodge
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  id: a04615031d3b71e46ac6ec731ca64160
+  id: Basic_Dodge
   cardName: Dodge
   image: {fileID: -1336413874, guid: b9f63d43780ee1841819dee4530723be, type: 3}
   cardType: 0

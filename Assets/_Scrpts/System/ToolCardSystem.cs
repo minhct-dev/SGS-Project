@@ -32,5 +32,8 @@ public class ToolCardSystem : NetworkBehaviour
         }
         CardSystem.Instance.RpcClearPlayView();
     }
-
+    private IEnumerator BarbariansPerformer(BarbariansGA barbariansGA)
+    {
+        yield return null;
+    }
 }

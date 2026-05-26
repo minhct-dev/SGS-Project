@@ -10,19 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 059d9d3dd7db69143af4092956a01b33, type: 3}
-  m_Name: Wine
+  m_Name: Barbarians
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  id: Basic_Wine
-  cardName: Wine
-  image: {fileID: 600378372, guid: 908db013e00fbc649b7281298e9b1d4f, type: 3}
+  id: Tool_Barbarians
+  cardName: Barbarians
+  image: {fileID: -1056995924, guid: 04cc68663edddb748b3b892e8dd04d2a, type: 3}
   cardType: 0
   requiredTarget: 0
-  description: "T\u0103ng 1 s\xE1t th\u01B0\u01A1ng cho l\xE1 s\xE1t"
-  effects:
-  - rid: 5375888905630646348
+  description: "M\u1ED7i ng\u01B0\u1EDDi ch\u01A1i ph\u1EA3i b\u1ECF ra 1 l\xE1 s\xE1t
+    ho\u1EB7c nh\u1EADn 1 s\xE1t th\u01B0\u01A1ng"
+  effects: []
   references:
     version: 2
-    RefIds:
-    - rid: 5375888905630646348
-      type: {class: WineEffect, ns: , asm: Assembly-CSharp}
-      data: 
+    RefIds: []

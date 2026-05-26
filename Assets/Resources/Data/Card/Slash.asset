@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 059d9d3dd7db69143af4092956a01b33, type: 3}
   m_Name: Slash
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  id: 4502a5bfd34e766489bf412201effcc8
+  id: Basic_Slash
   cardName: Slash
   image: {fileID: 1439166007, guid: f738d854055ff4147b757baf9f066b30, type: 3}
   cardType: 0

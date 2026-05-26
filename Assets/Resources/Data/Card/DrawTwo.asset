@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 059d9d3dd7db69143af4092956a01b33, type: 3}
   m_Name: DrawTwo
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  id: 4dca661ceece013489c2450448120ccd
+  id: Tool_DrawTwo
   cardName: Draw Two
   image: {fileID: 1552995657, guid: 101165c01f5dfdf4e842229df5f81275, type: 3}
   cardType: 0
   requiredTarget: 0
-  description: 
+  description: "R\xFAt 2 l\xE1 b\xE0i "
   effects:
   - rid: 5375888905630646351
   references:

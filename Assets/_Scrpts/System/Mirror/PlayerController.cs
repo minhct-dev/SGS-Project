@@ -8,6 +8,7 @@ using Mirror.Examples.Basic;
 using System.Security.Cryptography;
 using Object = UnityEngine.Object;
 using UnityEngine.Rendering;
+using Mirror.BouncyCastle.Security;
 [Serializable]
 public class PlayerController : NetworkBehaviour
 {
@@ -38,6 +39,12 @@ public class PlayerController : NetworkBehaviour
     public bool hasAnsweredDodge = false;
     public bool isDodgeCardPlayed = false;
     public CardInstanceData playedDodgeCard;
+
+    [Header("Answering card state: ")]
+    public bool isSelecting = false;
+    public bool isPlayedCard = false;
+    public List<CardInstanceData> answeredCards = new List<CardInstanceData>();
+
     [Header("UI Lock State")]
     [HideInInspector] public bool isWaitingForServer = false;
 
@@ -218,7 +225,26 @@ public class PlayerController : NetworkBehaviour
 
         hasAnsweredDodge = true;
     }
+    [Command]
+    public void CmdSubmitRequestedCard(CardInstanceData cardData)
+    {
+        if (!isSelecting) return;
+        answeredCards.Add(cardData);
+        isSelecting = false; // Phá vỡ vòng lặp while trên Server ngay lập tức!
+        Debug.Log($"[Server] {gameObject.name} đã ném ra lá {cardData.cardId}");
+    }
+    [Command]
+    public void CmdCancelSubmitCard()
+    {
+        if (!isSelecting) return;
+
+        answeredCards = null;
+        isSelecting = false; // Phá vỡ vòng lặp while trên Server
+
+        Debug.Log($"[Server] {gameObject.name} chọn Bỏ qua/Không có bài.");
+    }
     public bool IsDead() => currentHP <= 0;
+
     //public bool CanAttack() => Player.gameManager.isOurTurn && waitTurn == 0 && casterType == Target.FRIENDLIES; (extension for future)
     //public bool CantAttack() => Player.gameManager.isOurTurn && waitTurn > 0 && casterType == Target.FRIENDLIES; (extension for future)
 }
