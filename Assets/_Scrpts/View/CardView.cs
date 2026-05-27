@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
 
 
 public class CardView : MonoBehaviour
@@ -15,19 +16,20 @@ public class CardView : MonoBehaviour
     [field: SerializeField] public GameObject wrapper { get; set; }
     [SerializeField] private TMP_Text CardNumber;
     [SerializeField] private Image imageSR;
+
     [Header("Suit UI")]
     [SerializeField] private Image suitImage;
     [SerializeField] private Sprite spadeSprite;
     [SerializeField] private Sprite heartSprite;
     [SerializeField] private Sprite clubSprite;
     [SerializeField] private Sprite diamondSprite;
+
     [Header("UI Property")]
-    public static CardView CurrentlySelectedCard { get; private set; } = null;
-    private static bool isOneCardSelected = false;
+    public static List<CardView> SelectedCards { get; private set; } = new();
+    public static int MaxSelectionAmount = 1;
+    //private static bool isOneCardSelected = false;
     public CardInstance Card { get; private set; }
     public Vector3 HandViewPosition { get; set; }
-
-
 
     public virtual void Setup(CardInstance card)
     {
@@ -35,11 +37,11 @@ public class CardView : MonoBehaviour
         CardNumber.text = card.Number.ToString();
         if (card.Suit == Suit.Heart || card.Suit == Suit.Diamond)
         {
-            CardNumber.color = new Color(0.8f, 0.1f, 0.1f); // Đỏ thẫm
+            CardNumber.color = new Color(0.8f, 0.1f, 0.1f);
         }
         else
         {
-            CardNumber.color = Color.black; // Đen
+            CardNumber.color = Color.black;
         }
         suitImage.sprite = GetSuitSprite(card.Suit);
         suitImage.type = Image.Type.Simple;
@@ -62,47 +64,65 @@ public class CardView : MonoBehaviour
             _ => null
         };
     }
-    public static void ForceUnselect()
+    public static void ForceUnselectAll()
     {
-        if (CurrentlySelectedCard != null)
+        foreach (var card in SelectedCards)
         {
-            //card down animate
-            CurrentlySelectedCard.transform.DOMoveY(CurrentlySelectedCard.transform.position.y - 1, 0.2f).SetEase(Ease.OutCubic);
-            isOneCardSelected = false;
-            CurrentlySelectedCard = null;
-            if (InputTargetingSystem.Instance != null)
+            if (card != null)
             {
-                InputTargetingSystem.Instance.CancelSelection();
+                card.transform.DOMoveY(card.transform.position.y - 1, 0.2f).SetEase(Ease.OutCubic);
             }
         }
-
+        SelectedCards.Clear();
+        if (InputTargetingSystem.Instance != null)
+        {
+            InputTargetingSystem.Instance.CancelSelection();
+        }
     }
-    public static void ChooseCard()
+    public static void ClearSelectionState()
     {
-        isOneCardSelected = false;
-        CurrentlySelectedCard = null;
-    }
-    public virtual GameObject GetWrapper()
-    {
-        return wrapper;
+        SelectedCards.Clear();
     }
     public virtual void OnMouseDown()
     {
         if (PlayView.Instance.playedCards.Contains(this)) return;
-        if (isOneCardSelected && CurrentlySelectedCard == this)
+        if (SelectedCards.Contains(this))
         {
-            ForceUnselect();
+            SelectedCards.Remove(this);
+            this.transform.DOMoveY(this.transform.position.y - 1, 0.2f).SetEase(Ease.OutCubic);
+
+            // Tùy chọn: Xử lý hủy ngắm mục tiêu nếu bỏ chọn bài
+            if (SelectedCards.Count == 0 && InputTargetingSystem.Instance != null)
+            {
+                InputTargetingSystem.Instance.CancelSelection();
+            }
         }
         else
         {
-            ForceUnselect();
-            this.transform.DOMoveY(this.transform.position.y + 1, 0.2f).SetEase(Ease.OutCubic);
-            CurrentlySelectedCard = this;
-            isOneCardSelected = true;
-
-            if (InputTargetingSystem.Instance != null)
+            switch (MaxSelectionAmount)
             {
-                InputTargetingSystem.Instance.OnCardClicked(this);
+                case 1:
+                    ForceUnselectAll();
+                    SelectedCards.Add(this);
+                    this.transform.DOMoveY(this.transform.position.y + 1, 0.2f).SetEase(Ease.OutCubic);
+                    if (InputTargetingSystem.Instance != null) InputTargetingSystem.Instance.OnCardClicked(this);
+                    break;
+
+                case > 1:
+                    if (SelectedCards.Count < MaxSelectionAmount)
+                    {
+                        SelectedCards.Add(this);
+                        this.transform.DOMoveY(this.transform.position.y + 1, 0.2f).SetEase(Ease.OutCubic);
+                    }
+                    else
+                    {
+                        Debug.Log($"[UI] Chỉ được chọn tối đa {MaxSelectionAmount} lá bài!");
+                    }
+                    break;
+
+                default:
+                    Debug.Log("Max selection amount <= 0");
+                    break;
             }
         }
     }
@@ -123,6 +143,7 @@ public class CardView : MonoBehaviour
     {
         ToolTip.Instance.HideToolTip();
     }
+    //chuyển qua multiple choice sẽ có sự khác biệt khi dùng hàm này
     public bool IsPlayable()
     {
         if (this.Card.Data.Effects.Count != 0)

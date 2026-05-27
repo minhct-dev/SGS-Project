@@ -14,6 +14,7 @@ public class HealthSystem : NetworkBehaviour
         ActionSystem.AttachPerformer<SlashGA>(SlashPerformer);
         ActionSystem.AttachPerformer<PeachGA>(PeachPerformer);
         ActionSystem.AttachPerformer<DrinkWineGA>(WinePerformer);
+        ActionSystem.AttachPerformer<AskForCardGA>(AskForCardPerformer);
     }
     void OnDisable()
     {
@@ -21,21 +22,22 @@ public class HealthSystem : NetworkBehaviour
         ActionSystem.DetachPerformer<SlashGA>();
         ActionSystem.DetachPerformer<DrinkWineGA>();
         ActionSystem.DetachPerformer<PeachGA>();
+        ActionSystem.DetachPerformer<AskForCardGA>();
     }
 
     //performers
     //performers for dealing damage : slash card , champion skill,  ...
     private IEnumerator SlashPerformer(SlashGA dealDamageGA)
     {
+        PlayerController receiver = dealDamageGA.Reciever;
         //ask for Dogde card
-        yield return dealDamageGA.Reciever.AskForDodge();
+        AskForCardGA askForCardGA = new AskForCardGA(dealDamageGA.Reciever, "Basic_Dodge", 1, 10f);
+        yield return AskForCardPerformer(askForCardGA);
         //check if the slash is dogded or not 
-        if (dealDamageGA.Reciever.isDodgeCardPlayed)
+        if (receiver.isPlayedCard && receiver.answeredCards != null && receiver.answeredCards.Count > 0)
         {
-            DodgeGA dodgeGA = new DodgeGA(
-                dealDamageGA.Reciever,
-                dealDamageGA.Reciever.playedDodgeCard
-            );
+            CardInstanceData dodgeCard = receiver.answeredCards[0];
+            DodgeGA dodgeGA = new DodgeGA(receiver, dodgeCard);
             dealDamageGA.isEvaded = true;
             yield return DodgePerformer(dodgeGA);
         }
@@ -98,7 +100,7 @@ public class HealthSystem : NetworkBehaviour
         yield return new WaitForSeconds(2f);
     }
     [Server]
-    private IEnumerator AskForCardPerformer(AskForCardGA askForCardGA)
+    public IEnumerator AskForCardPerformer(AskForCardGA askForCardGA)
     {
         PlayerController target = askForCardGA.Target;
         float timeOut = askForCardGA.TimeOut;
@@ -107,20 +109,18 @@ public class HealthSystem : NetworkBehaviour
 
             target.isSelecting = true;
             target.isPlayedCard = false;
-            target.answeredCards = null;
+            target.answeredCards.Clear();
             TargetPromptForCard(target.connectionToClient, askForCardGA.CardID, askForCardGA.Amount, timeOut);
-            while (!target.isPlayedCard && timeOut > 0)
+            while (target.isSelecting && timeOut > 0)
             {
                 timeOut -= Time.deltaTime;
                 yield return null;
             }
-            if (timeOut <= 0 && !target.isPlayedCard)
+            if (timeOut <= 0 && target.isSelecting)
             {
                 Debug.Log($"[Server] {target.name} đã hết giờ! Mặc định không đánh bài.");
-                target.isPlayedCard = false;
-
-                // Gọi RPC ép Client tắt UI (trường hợp Client afk)
-                TargetForceClosePrompt(connectionToClient);
+                target.isSelecting = false;
+                TargetForceClosePrompt(target.connectionToClient);
             }
 
         }
@@ -137,7 +137,7 @@ public class HealthSystem : NetworkBehaviour
     public void TargetForceClosePrompt(NetworkConnection player)
     {
         PromptCardManager.Instance.ForceClosePrompt();
-        CardView.ForceUnselect();
+        CardView.ForceUnselectAll();
     }
 
 }

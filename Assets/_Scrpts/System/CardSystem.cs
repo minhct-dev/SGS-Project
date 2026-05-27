@@ -31,37 +31,17 @@ public class CardSystem : NetworkBehaviour
     {
         //ActionSystem.AttachPerformer<DiscardAllCardGA>(DiscardAllCardPerformer);
         ActionSystem.AttachPerformer<PlayCardGA>(PlayCardPerformer);
-        ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
-        ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
 
     public override void OnStopServer()
     {
         //ActionSystem.DetachPerformer<DiscardAllCardGA>();
         ActionSystem.DetachPerformer<PlayCardGA>();
-        ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
-        ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
 
     //publics
     public void Setup()
     {
-    }
-    //Reactions
-    private void EnemyTurnPreReaction(EnemyTurnGA enemyTurnGA)
-    {
-        CardView currectSelectedCard = CardView.CurrentlySelectedCard;
-        if (currectSelectedCard != null)
-        {
-            ///CardViewHoveSystem.Instance.Hide(currectSelectedCard);
-        }
-        DiscardAllCardGA discardAllCardGA = new();
-        ActionSystem.Instance.AddReaction(discardAllCardGA);
-    }
-    private void EnemyTurnPostReaction(EnemyTurnGA enemyTurnGA)
-    {
-        //DrawCardGA drawCardGA = new(5);
-        //ActionSystem.Instance.AddReaction(drawCardGA);
     }
 
     private IEnumerator PlayCardPerformer(PlayCardGA playCardGA)
@@ -116,7 +96,7 @@ public class CardSystem : NetworkBehaviour
             {
                 opponentCardView.transform.position = spawnPosition;
                 opponentCardView.transform.localScale = UnityEngine.Vector3.zero;
-                opponentCardView.transform.DOScale(0.3f, 0.4f);
+                opponentCardView.transform.DOScale(0.7f, 0.4f);
                 yield return opponentCardView.transform.DOMove(playView.transform.position, 0.4f).SetEase(Ease.OutQuad);
                 yield return playView.AddCard(opponentCardView);
                 //-----

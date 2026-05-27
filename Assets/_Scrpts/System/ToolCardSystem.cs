@@ -21,9 +21,11 @@ public class ToolCardSystem : NetworkBehaviour
         {
             if (target == hailOfArrowsGA.User) continue;
             if (target.IsDead()) continue;
+
             Debug.Log($"Vạn Tiễn bay tới {target.name}. Đợi mục tiêu trả lời...");
-            yield return target.AskForDodge();
-            if (target.isDodgeCardPlayed)
+            AskForCardGA askForCardGA = new(target, "Basic_Dodge", 1, 10f);
+            yield return HealthSystem.Instance.AskForCardPerformer(askForCardGA);
+            if (target.isPlayedCard)
             {
                 yield return HealthSystem.Instance.DodgePerformer(new DodgeGA(target, target.playedDodgeCard));
                 continue;

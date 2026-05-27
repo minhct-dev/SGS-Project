@@ -229,18 +229,21 @@ public class PlayerController : NetworkBehaviour
     public void CmdSubmitRequestedCard(CardInstanceData cardData)
     {
         if (!isSelecting) return;
+        currentHand.Remove(cardData);
+        CardSystem.Instance.RpcPlayCardVisual(this, cardData);
         answeredCards.Add(cardData);
         isSelecting = false; // Phá vỡ vòng lặp while trên Server ngay lập tức!
+        isPlayedCard = true;
         Debug.Log($"[Server] {gameObject.name} đã ném ra lá {cardData.cardId}");
     }
     [Command]
     public void CmdCancelSubmitCard()
     {
         if (!isSelecting) return;
-
-        answeredCards = null;
+        answeredCards.Clear();
         isSelecting = false; // Phá vỡ vòng lặp while trên Server
-
+        isPlayedCard = false;
+        CardView.ForceUnselectAll();
         Debug.Log($"[Server] {gameObject.name} chọn Bỏ qua/Không có bài.");
     }
     public bool IsDead() => currentHP <= 0;
