@@ -36,10 +36,7 @@ public class HealthSystem : NetworkBehaviour
         //check if the slash is dogded or not 
         if (receiver.isPlayedCard && receiver.answeredCards != null && receiver.answeredCards.Count > 0)
         {
-            CardInstanceData dodgeCard = receiver.answeredCards[0];
-            DodgeGA dodgeGA = new DodgeGA(receiver, dodgeCard);
             dealDamageGA.isEvaded = true;
-            yield return DodgePerformer(dodgeGA);
         }
         if (dealDamageGA.isEvaded)
         {

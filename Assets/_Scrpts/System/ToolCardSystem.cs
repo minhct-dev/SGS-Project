@@ -27,7 +27,6 @@ public class ToolCardSystem : NetworkBehaviour
             yield return HealthSystem.Instance.AskForCardPerformer(askForCardGA);
             if (target.isPlayedCard)
             {
-                yield return HealthSystem.Instance.DodgePerformer(new DodgeGA(target, target.playedDodgeCard));
                 continue;
             }
             target.currentHP -= 1;
