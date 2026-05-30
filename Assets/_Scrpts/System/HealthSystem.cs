@@ -15,6 +15,7 @@ public class HealthSystem : NetworkBehaviour
         ActionSystem.AttachPerformer<PeachGA>(PeachPerformer);
         ActionSystem.AttachPerformer<DrinkWineGA>(WinePerformer);
         ActionSystem.AttachPerformer<AskForCardGA>(AskForCardPerformer);
+        ActionSystem.AttachPerformer<PeachGardenGA>(PeachGardenPerformer);
     }
     void OnDisable()
     {
@@ -23,6 +24,7 @@ public class HealthSystem : NetworkBehaviour
         ActionSystem.DetachPerformer<DrinkWineGA>();
         ActionSystem.DetachPerformer<PeachGA>();
         ActionSystem.DetachPerformer<AskForCardGA>();
+        ActionSystem.DetachPerformer<PeachGardenGA>();
     }
 
     //performers
@@ -137,4 +139,21 @@ public class HealthSystem : NetworkBehaviour
         CardView.ForceUnselectAll();
     }
 
+    private IEnumerator PeachGardenPerformer(PeachGardenGA peachGardenGA)
+    {
+        PlayerController[] targets = MatchSetupSystem.Instance.getAllPlayers();
+        foreach (PlayerController target in targets)
+        {
+            if (target.IsDead()) continue;
+            target.currentHP += peachGardenGA.HealAmount;
+            if (target.currentHP > target.maxHP)
+            {
+                target.currentHP = target.maxHP;
+            }
+            //Todo: thêm hiệu ứng + máu
+            Debug.Log($"{peachGardenGA.User} đã dùng Đào viên kết nghĩa hồi máu cho {target.name}! Máu hiện tại: {target.currentHP}/{target.maxHP}");
+        }
+        CardSystem.Instance.RpcClearPlayView();
+        yield return null;
+    }
 }

@@ -150,6 +150,6 @@ public class CardView : MonoBehaviour
         {
             return this.Card.Data.Effects[0].IsPlayable(PlayerController.localPlayer, TurnManagerSystem.Instance.currentPhase);
         }
-        return true;
+        return false;
     }
 }

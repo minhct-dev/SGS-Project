@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 059d9d3dd7db69143af4092956a01b33, type: 3}
-  m_Name: Barbarians
+  m_Name: PeachGarden
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  id: Tool_Barbarians
-  cardName: Barbarians
-  image: {fileID: -1056995924, guid: 04cc68663edddb748b3b892e8dd04d2a, type: 3}
-  cardType: 0
+  id: Tool_PeachGarden
+  cardName: Peach Garden
+  image: {fileID: 304383105, guid: da21d5562570bc647975b019377e5924, type: 3}
+  cardType: 1
   requiredTarget: 0
-  description: "M\u1ED7i ng\u01B0\u1EDDi ch\u01A1i ph\u1EA3i b\u1ECF ra 1 l\xE1 s\xE1t
-    ho\u1EB7c nh\u1EADn 1 s\xE1t th\u01B0\u01A1ng"
+  description: "T\u1EA5t c\u1EA3 ng\u01B0\u1EDDi ch\u01A1i h\u1ED3i 1 m\xE1u"
   effects:
-  - rid: 5375889068043796557
+  - rid: 5375889068043796558
   references:
     version: 2
     RefIds:
-    - rid: 5375889068043796557
-      type: {class: BarbariansEffect, ns: , asm: Assembly-CSharp}
-      data: 
+    - rid: 5375889068043796558
+      type: {class: PeachGardenEffect, ns: , asm: Assembly-CSharp}
+      data:
+        amount: 1

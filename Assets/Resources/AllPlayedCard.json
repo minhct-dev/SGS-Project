@@ -22,6 +22,12 @@
         { "CardName": "Dodge", "Number": 13, "Suit": "Diamond"},
         { "CardName": "HailOfArrow", "Number": 9, "Suit": "Diamond"},
         { "CardName": "HailOfArrow", "Number": 9, "Suit": "Heart"},
-        { "CardName": "HailOfArrow", "Number": 3, "Suit": "Club"}
+        { "CardName": "HailOfArrow", "Number": 3, "Suit": "Club"},
+        { "CardName": "Barbarians", "Number": 3, "Suit": "Club"},
+        { "CardName": "Barbarians", "Number": 3, "Suit": "Club"},
+        { "CardName": "Barbarians", "Number": 3, "Suit": "Club"},
+        { "CardName": "PeachGarden", "Number": 3, "Suit": "Diamond"},
+        { "CardName": "PeachGarden", "Number": 3, "Suit": "Diamond"},
+        { "CardName": "PeachGarden", "Number": 3, "Suit": "Heart"}
     ]
 }
