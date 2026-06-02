@@ -182,49 +182,6 @@ public class PlayerController : NetworkBehaviour
         TurnManagerSystem.Instance.RequestEndTurn(this);
     }
 
-    //Function to ask player for Dodge card
-    [Server]
-    public IEnumerator AskForDodge()
-    {
-        isAnsweringDodge = true;
-        hasAnsweredDodge = false;
-        isDodgeCardPlayed = false;
-        playedDodgeCard = default;
-        TurnManagerSystem.Instance.TargetAskForDodge(this.connectionToClient);
-        float timeout = 15f;
-        while (!hasAnsweredDodge && timeout > 0)
-        {
-            timeout -= Time.deltaTime;
-            yield return null;
-        }
-        isAnsweringDodge = false;
-
-        // Nếu hết 15s mà Client chưa phản hồi (Treo máy, lag...) -> Ép thành bỏ qua (chịu chém)
-        if (!hasAnsweredDodge)
-        {
-            Debug.Log($"[Server] {this.name} đã hết thời gian suy nghĩ. Mặc định chịu sát thương!");
-            isDodgeCardPlayed = false;
-            playedDodgeCard = default;
-        }
-
-    }
-    [Command]
-    public void CmdAnswerDodge(bool hasPlayedCard, CardInstanceData cardData)
-    {
-        if (!isAnsweringDodge) return;
-        if (hasPlayedCard)
-        {
-            isDodgeCardPlayed = true;
-            playedDodgeCard = cardData;
-        }
-        else
-        {
-            isDodgeCardPlayed = false;
-            playedDodgeCard = default;
-        }
-
-        hasAnsweredDodge = true;
-    }
     [Command]
     public void CmdSubmitRequestedCard(CardInstanceData cardData)
     {

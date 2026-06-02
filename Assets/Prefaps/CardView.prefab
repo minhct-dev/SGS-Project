@@ -222,7 +222,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3408449775161652128}
   - component: {fileID: 6311859075418760593}
-  - component: {fileID: 3363110595566913632}
+  - component: {fileID: 4476587450889286211}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -239,7 +239,7 @@ RectTransform:
   m_GameObject: {fileID: 1652989455048614226}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.49999997, y: 0.49999997, z: 0.49999997}
+  m_LocalScale: {x: 0.49999994, y: 0.49999997, z: 0.49999997}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4227035818380152778}
@@ -259,7 +259,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1652989455048614226}
   m_CullTransparentMesh: 1
---- !u!114 &3363110595566913632
+--- !u!114 &4476587450889286211
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -279,11 +279,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1341355740, guid: 73fa87866e9fc5647a49532dfd5893ee, type: 3}
+  m_Sprite: {fileID: -1056995924, guid: 04cc68663edddb748b3b892e8dd04d2a, type: 3}
   m_Type: 1
-  m_PreserveAspect: 1
+  m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 0
+  m_FillMethod: 4
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -362,7 +362,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardView
   <wrapper>k__BackingField: {fileID: 5183038757542400525}
   CardNumber: {fileID: 5643607424535073170}
-  imageSR: {fileID: 3363110595566913632}
+  imageSR: {fileID: 4476587450889286211}
   suitImage: {fileID: 5450574413362925478}
   spadeSprite: {fileID: 21300000, guid: 034686981f1577a46a2673905c82ebea, type: 3}
   heartSprite: {fileID: 21300000, guid: 2cc6abc00b8449744b5572141817e64c, type: 3}
