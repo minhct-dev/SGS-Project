@@ -12,7 +12,7 @@ public class CardViewCreator : Singleton<CardViewCreator>
         rect.localRotation = rotation;
         rect.localScale = Vector3.zero;
         cardView.Setup(Card);
-        rect.DOScale(0.7f, 0.15f).SetEase(Ease.OutBack);
+        rect.DOScale(0.4f, 0.15f).SetEase(Ease.OutBack);
         return cardView;
     }
 }
