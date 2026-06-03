@@ -13,10 +13,10 @@ public class WineEffect : Effect
     {
         base.IsPlayable(player, currentPhase);
         // 1. Luật cứu mạng: Nếu đang bị chém sắp chết -> Luôn được uống!
-        if (player.isAnsweringDodge /* hoặc isDying */)
-        {
-            return true;
-        }
+        // if (player.isAnsweringDodge /* hoặc isDying */)
+        // {
+        //     return true;
+        // }
 
         // 2. Luật Play Phase: Chỉ được uống nếu chưa uống
         if (currentPhase == TurnPhase.Play)

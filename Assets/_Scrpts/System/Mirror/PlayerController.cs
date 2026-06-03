@@ -34,12 +34,6 @@ public class PlayerController : NetworkBehaviour
     [HideInInspector] public bool hasOpponent = false;
     [SerializeField] private OtherPlayerPortrait otherPlayerPortraitPrefap;
 
-    [Header("Dodge State")]
-    public bool isAnsweringDodge = false;
-    public bool hasAnsweredDodge = false;
-    public bool isDodgeCardPlayed = false;
-    public CardInstanceData playedDodgeCard;
-
     [Header("Answering card state: ")]
     public bool isSelecting = false;
     public bool isPlayedCard = false;
