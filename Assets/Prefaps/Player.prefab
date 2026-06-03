@@ -65,11 +65,17 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+  isRoomMaster: 0
   username: 
-  maxHP: 10
+  maxHP: 4
   currentHP: 0
-  playerType: 0
+  playerPosition: {x: 0, y: 0, z: 0}
   hasOpponent: 0
-  playerPosition: {fileID: 0}
   otherPlayerPortraitPrefap: {fileID: 5630990774579027388, guid: c3f98ea672a187f48a9b1c8d15d47202, type: 3}
+  isSelecting: 0
+  isPlayedCard: 0
+  answeredCards: []
+  isWaitingForServer: 0
+  isDrunk: 0
+  HasUseWineCard: 0
   firstPlayer: 0

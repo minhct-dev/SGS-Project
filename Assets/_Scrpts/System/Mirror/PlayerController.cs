@@ -26,7 +26,7 @@ public class PlayerController : NetworkBehaviour
     public readonly SyncListCardInstance currentHand = new();
 
     [Header("Stats")]
-    [SyncVar] public int maxHP = 18;
+    [SyncVar] public int maxHP = 4;
     [SyncVar] public int currentHP = 0;
     [SyncVar] public Vector3 playerPosition;
     // Quicker access for UI scripts
@@ -69,11 +69,14 @@ public class PlayerController : NetworkBehaviour
     }
     public override void OnStartLocalPlayer()
     {
+        base.OnStartLocalPlayer();
         localPlayer = this;
         //Debug.Log($"OnStartLocalPlayer {gameObject.name}");
         // Get and update the player's username and stats
+        LocalPlayerUI ui = FindAnyObjectByType<LocalPlayerUI>();
         CmdLoadPlayer(PlayerPrefs.GetString("Name"));
-        CmdLoadHP(20);
+        ui.InitializeUI(this);
+        CmdLoadHP(4);
     }
 
     public override void OnStartClient()

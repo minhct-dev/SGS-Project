@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4193191997436549142}
   - component: {fileID: 5336561286688694894}
-  - component: {fileID: -8600483287790011446}
   m_Layer: 5
   m_Name: LocalPlayerDisplay
   m_TagString: Untagged
@@ -51,31 +50,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46f445a0bd2fcb14d8ffa04b5fbc5cc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LocalPlayerUI
-  syncDirection: 0
-  syncMode: 0
-  syncInterval: 0
   CommanderPortrait: {fileID: 7981016747332846375}
   DeputyCommanderPortrait: {fileID: 1784574865447458724}
   AvatarPanel: {fileID: 6293334078881281582}
   CountryName: {fileID: 264799270478927941}
   PlayerName: {fileID: 7918448791343984033}
---- !u!114 &-8600483287790011446
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2169406681540460741}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Mirror::Mirror.NetworkIdentity
-  sceneId: 0
-  _assetId: 2646717000
-  serverOnly: 0
-  visibility: 0
-  hasSpawned: 0
+  hpContainer: {fileID: 7459901701168249403}
+  hpSlotPrefab: {fileID: 6437423961521874071, guid: 7058cc06fecee4e45832c986dc45c251, type: 3}
+  fullHPSeedSprite: {fileID: 482799724, guid: f714ef8a2bc58294eb116b7b91543cd7, type: 3}
+  emptyHPSeedSprite: {fileID: 1704314212, guid: 9bacd84db43780945aed8ac3670570b8, type: 3}
 --- !u!1 &3999240012486675105
 GameObject:
   m_ObjectHideFlags: 0
