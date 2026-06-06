@@ -32,7 +32,7 @@ public class PlayerController : NetworkBehaviour
     // Quicker access for UI scripts
     [HideInInspector] public static PlayerController localPlayer;
     [HideInInspector] public bool hasOpponent = false;
-    [SerializeField] private OtherPlayerPortrait otherPlayerPortraitPrefap;
+    [SerializeField] private PlayerUI playerUI;
 
     [Header("Answering card state: ")]
     public bool isSelecting = false;
@@ -86,7 +86,7 @@ public class PlayerController : NetworkBehaviour
         if (!isLocalPlayer)
         {
             int positionIndex = PlayerPortraitCreator.Instance.GetNextAvailableIndex();
-            OtherPlayerPortrait playerportrait = PlayerPortraitCreator.Instance.CreatePlayerPotrait(otherPlayerPortraitPrefap, this, positionIndex);
+            PlayerUI playerportrait = PlayerPortraitCreator.Instance.CreatePlayerPotrait(playerUI, this, positionIndex);
             playerPosition = playerportrait.gameObject.transform.position;
         }
         if (isLocalPlayer)
@@ -201,7 +201,7 @@ public class PlayerController : NetworkBehaviour
         Debug.Log($"[Server] {gameObject.name} chọn Bỏ qua/Không có bài.");
     }
     public bool IsDead() => currentHP <= 0;
-
+    public bool isMyTurn() => TurnManagerSystem.Instance.activePlayerNetId == this.netId;
     //public bool CanAttack() => Player.gameManager.isOurTurn && waitTurn == 0 && casterType == Target.FRIENDLIES; (extension for future)
     //public bool CantAttack() => Player.gameManager.isOurTurn && waitTurn > 0 && casterType == Target.FRIENDLIES; (extension for future)
 }

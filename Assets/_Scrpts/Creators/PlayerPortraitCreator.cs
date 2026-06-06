@@ -14,7 +14,7 @@ public class PlayerPortraitCreator : Singleton<PlayerPortraitCreator>
         new Vector3(-910,0,0),
         new Vector3(875,0,0),
     };
-    public OtherPlayerPortrait CreatePlayerPotrait(OtherPlayerPortrait prefaps, PlayerController player, int positionIndex)
+    public PlayerUI CreatePlayerPotrait(PlayerUI prefaps, PlayerController player, int positionIndex)
     {
         if (positionIndex < 0 || positionIndex >= PortraitPositions.Length)
         {
@@ -22,7 +22,7 @@ public class PlayerPortraitCreator : Singleton<PlayerPortraitCreator>
             return null;
         }
         //, PortraitPositions[positionIndex], Quaternion.identity
-        OtherPlayerPortrait playerPortrait = Instantiate(prefaps, parentInstantiate.transform);
+        PlayerUI playerPortrait = Instantiate(prefaps, parentInstantiate.transform);
         playerPortrait.GetComponent<RectTransform>().anchoredPosition = PortraitPositions[positionIndex];
         playerPortrait.assignPlayer = player;
         return playerPortrait;
@@ -32,6 +32,5 @@ public class PlayerPortraitCreator : Singleton<PlayerPortraitCreator>
     {
         return currentIndex++;
     }
-    
+
 }
- 

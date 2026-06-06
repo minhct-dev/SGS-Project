@@ -71,7 +71,7 @@ MonoBehaviour:
   currentHP: 0
   playerPosition: {x: 0, y: 0, z: 0}
   hasOpponent: 0
-  otherPlayerPortraitPrefap: {fileID: 5630990774579027388, guid: c3f98ea672a187f48a9b1c8d15d47202, type: 3}
+  playerUI: {fileID: 473740970376677413, guid: 904249f4ae59ecf4ab45672ab2fcaf9c, type: 3}
   isSelecting: 0
   isPlayedCard: 0
   answeredCards: []

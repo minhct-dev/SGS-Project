@@ -5,17 +5,17 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Linq;
 
-public class LocalPlayerUI : MonoBehaviour
+public class PlayerUI : MonoBehaviour
 {
-    [Header("UI and Animator")]
     [SerializeField] private UnityEngine.UI.Image CommanderPortrait;
     [SerializeField] private UnityEngine.UI.Image DeputyCommanderPortrait;
     [SerializeField] private UnityEngine.UI.Image AvatarPanel;
     [SerializeField] private UnityEngine.UI.Image CountryName;
     [SerializeField] private TMP_Text PlayerName;
+    [SerializeField] private TMP_Text NumberOfCards;
     [SerializeField] private Animator animator;
-
     [Header("UI Containers")]
     [SerializeField] private Transform hpContainer;
     [SerializeField] private GameObject hpSlotPrefab;
@@ -23,24 +23,39 @@ public class LocalPlayerUI : MonoBehaviour
     [Header("HP Sprites")]
     [SerializeField] private Sprite fullHPSeedSprite;
     [SerializeField] private Sprite emptyHPSeedSprite;
-    private PlayerController localPlayer;
-    //[field: SerializeField] private GameObject wrapper { get; set; }
     private List<UnityEngine.UI.Image> hpSeedImages = new List<UnityEngine.UI.Image>();
-
+    public PlayerController assignPlayer { get; set; } = null;
+    void Start()
+    {
+        InitializeUI();
+    }
     void Update()
     {
-        if (localPlayer == null) return;
-        //wrapper.SetActive(true);
-        //Debug.Log("connect to local success , Name:" + player.name + " , maxHP =" + player.maxHP +", currHP ="+player.currentHP);
-        PlayerName.text = localPlayer.username;
-        UpdateCurrentHP(localPlayer.currentHP);
-        animator.SetBool("isMyTurn", localPlayer.isMyTurn());
-        //if (player && player.hasEnemy) enemyInfo = player.enemyInfo;
+        PlayerName.text = assignPlayer.name;
+        NumberOfCards.text = assignPlayer.currentHand.Count.ToString();
+        animator.SetBool("IsMyTurn", assignPlayer.isMyTurn());
+        UpdateCurrentHP(assignPlayer.currentHP);
+        UpdateBorderVisual();
     }
-    public void InitializeUI(PlayerController player)
+    public void InitializeUI()
     {
-        localPlayer = player;
-        SetupMaxHP(player.maxHP);
+        SetupMaxHP(assignPlayer.maxHP);
+    }
+    public virtual void OnMouseDown()
+    {
+        Debug.Log("Clicked");
+        if (assignPlayer == null) return;
+        if (InputTargetingSystem.Instance != null)
+        {
+            InputTargetingSystem.Instance.OnPlayerAvatarClicked(assignPlayer);
+        }
+    }
+
+    private void UpdateBorderVisual()
+    {
+        uint[] currentTargets = InputTargetingSystem.Instance.GetTargetIds();
+        bool isSelected = currentTargets != null && currentTargets.Contains(assignPlayer.netId);
+        animator.SetBool("IsTargeted", isSelected);
     }
     public void SetupMaxHP(int maxHP)
     {
