@@ -14,6 +14,8 @@ public class PlayerPortraitCreator : Singleton<PlayerPortraitCreator>
         new Vector3(-910,0,0),
         new Vector3(875,0,0),
     };
+    public List<PlayerUI> SpawnedPortraits { get; private set; } = new List<PlayerUI>();
+
     public PlayerUI CreatePlayerPotrait(PlayerUI prefaps, PlayerController player, int positionIndex)
     {
         if (positionIndex < 0 || positionIndex >= PortraitPositions.Length)
@@ -25,6 +27,7 @@ public class PlayerPortraitCreator : Singleton<PlayerPortraitCreator>
         PlayerUI playerPortrait = Instantiate(prefaps, parentInstantiate.transform);
         playerPortrait.GetComponent<RectTransform>().anchoredPosition = PortraitPositions[positionIndex];
         playerPortrait.assignPlayer = player;
+        SpawnedPortraits.Add(playerPortrait);
         return playerPortrait;
     }
 

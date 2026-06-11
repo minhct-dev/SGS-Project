@@ -19,6 +19,7 @@ public class PlayerUI : MonoBehaviour
     [Header("UI Containers")]
     [SerializeField] private Transform hpContainer;
     [SerializeField] private GameObject hpSlotPrefab;
+    [SerializeField] private GameObject DarkLayer;
 
     [Header("HP Sprites")]
     [SerializeField] private Sprite fullHPSeedSprite;
@@ -36,6 +37,13 @@ public class PlayerUI : MonoBehaviour
         animator.SetBool("IsMyTurn", assignPlayer.isMyTurn());
         UpdateCurrentHP(assignPlayer.currentHP);
         UpdateBorderVisual();
+    }
+    void OnDestroy()
+    {
+        if (PlayerPortraitCreator.Instance != null)
+        {
+            PlayerPortraitCreator.Instance.SpawnedPortraits.Remove(this);
+        }
     }
     public void InitializeUI()
     {
@@ -89,5 +97,10 @@ public class PlayerUI : MonoBehaviour
                 hpSeedImages[i].sprite = emptyHPSeedSprite;
             }
         }
+    }
+    public void UpdateTargetableState(bool isTargetable)
+    {
+        animator.SetBool("IsTargetable", isTargetable);
+        DarkLayer.SetActive(isTargetable);
     }
 }

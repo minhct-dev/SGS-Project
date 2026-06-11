@@ -26,12 +26,17 @@ public class InputTargetingSystem : Singleton<InputTargetingSystem>
         if (requiredTarget == 0)
         {
             currentState = InputState.Idle;
-
         }
         else
         {
             currentState = InputState.WaitingForTargets;
             //Cần có code để biểu thị valid target
+            List<PlayerUI> allPortraits = PlayerPortraitCreator.Instance.SpawnedPortraits;
+            foreach (var portrait in allPortraits)
+            {
+                // Cần có code check logic
+                portrait.UpdateTargetableState(true);
+            }
             Debug.Log($"Waiting for choosing {this.requiredTarget} target for [{this.selectedCard.Card.Name} card]!");
         }
     }
@@ -63,11 +68,22 @@ public class InputTargetingSystem : Singleton<InputTargetingSystem>
         selectedTargetNetIds.Clear();
         currentState = InputState.Idle;
         requiredTarget = 0;
+        ResetAllPortraitsUI();
     }
     public bool IsReadyToPlay()
     {
         if (selectedCard == null) return false;
         return selectedTargetNetIds.Count == requiredTarget;
+    }
+    private void ResetAllPortraitsUI()
+    {
+        if (PlayerPortraitCreator.Instance == null) return;
+
+        List<PlayerUI> allPortraits = PlayerPortraitCreator.Instance.SpawnedPortraits;
+        foreach (var portrait in allPortraits)
+        {
+            portrait.UpdateTargetableState(false);
+        }
     }
     public uint[] GetTargetIds() => selectedTargetNetIds.ToArray();
     public CardView GetSelectedCard() => selectedCard;
