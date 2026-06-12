@@ -54,4 +54,9 @@ public class ToolCardSystem : NetworkBehaviour
         }
         CardSystem.Instance.RpcClearPlayView();
     }
+
+    private IEnumerator BreakPerformer(BreakGA breakGA)
+    {
+        yield return null;
+    }
 }
