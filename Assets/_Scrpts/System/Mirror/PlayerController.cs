@@ -38,6 +38,7 @@ public class PlayerController : NetworkBehaviour
     public bool isSelecting = false;
     public bool isPlayedCard = false;
     public List<CardInstanceData> answeredCards = new List<CardInstanceData>();
+    public CardInteractData chosenInteractData;
 
     [Header("UI Lock State")]
     [HideInInspector] public bool isWaitingForServer = false;
@@ -107,12 +108,31 @@ public class PlayerController : NetworkBehaviour
     private void OnHandChanged(SyncListCardInstance.Operation op, int index, CardInstanceData oldItem, CardInstanceData newItem)
     {
         if (!isLocalPlayer) return;
-        if (op == SyncListCardInstance.Operation.OP_ADD)
+        switch (op)
         {
-            //Debug.Log("Card added to " + this.name + " hand");
+            case SyncListCardInstance.Operation.OP_ADD:
+                // Bài được thêm vào tay
+                // (newItem chứa dữ liệu lá bài mới, oldItem là null/default)
+                // Debug.Log("Card added to " + this.name + " hand");
+                break;
+
+            case SyncListCardInstance.Operation.OP_REMOVEAT:
+                // BÀI BỊ XÓA KHỎI TAY NẰM Ở ĐÂY
+                // (oldItem chứa dữ liệu của lá bài vừa bị xóa, newItem là null/default)
+                OnHandRemove(index);
+                break;
+
+            case SyncListCardInstance.Operation.OP_CLEAR:
+                // (Tùy chọn) Phòng trường hợp bạn dùng hàm currentHand.Clear() để lột sạch bài
+                Debug.Log("Toàn bộ bài trên tay đã bị xóa sạch!");
+                break;
         }
     }
-
+    private void OnHandRemove(int index)
+    {
+        // TODO: Viết code update UI ở đây. 
+        CardSystem.Instance.RemoveCardVisualAtIndex(index);
+    }
     //Command to reduce card in hand when playcard
     [Command]
     public void CmdPlayCard(CardInstanceData cardInstanceData, uint[] listTargetIds)
@@ -199,6 +219,31 @@ public class PlayerController : NetworkBehaviour
         isPlayedCard = false;
         CardView.ForceUnselectAll();
         Debug.Log($"[Server] {gameObject.name} chọn Bỏ qua/Không có bài.");
+    }
+
+    /// <summary>
+    /// Hàm này được gọi từ TargetInventoryUIManager ở Client để gửi kết quả lên Server
+    /// </summary>
+    [Command]
+    public void CmdInteractWithTargetCard(CardArea area, int handIndex, string cardId)
+    {
+        // Rào chắn bảo mật: Nếu Server không yêu cầu chọn bài mà Client cố tình gửi lệnh lên thì chặn lại (Chống Hack)
+        if (!isSelecting)
+        {
+            Debug.LogWarning($"[Security] {gameObject.name} cố tình gửi lệnh chọn bài trái phép!");
+            return;
+        }
+
+        // Lưu lại dữ liệu người chơi vừa chọn
+        chosenInteractData = new CardInteractData
+        {
+            Area = area,
+            HandIndex = handIndex,
+            CardId = cardId
+        };
+
+        // Quan trọng nhất: Tắt cờ trạng thái để Vòng lặp while() trong BreakPerformer được mở khóa và chạy tiếp!
+        isSelecting = false;
     }
     public bool IsDead() => currentHP <= 0;
     public bool isMyTurn() => TurnManagerSystem.Instance.activePlayerNetId == this.netId;

@@ -18,7 +18,6 @@ public class CardSystem : NetworkBehaviour
     [SerializeField] private Transform discardPilePoint;
     [SerializeField] private Transform playCardViewPoint;
     //Biến thừa 
-    private readonly List<CardInstance> drawPile = new();
     private readonly List<CardInstance> discardPile = new();
 
     public static CardSystem Instance;
@@ -131,13 +130,28 @@ public class CardSystem : NetworkBehaviour
         CardView cardView = CardViewCreator.Instance.CreateCardView(card, drawPilePoint.position, drawPilePoint.rotation, handView.transform);
         yield return handView.AddCard(cardView);
     }
-    private IEnumerator DiscardCard(CardView cardView)
+    public IEnumerator DiscardCard(CardView cardView)
     {
         discardPile.Add(cardView.Card);
         cardView.transform.DOScale(UnityEngine.Vector3.zero, 0.15f);
         Tween tween = cardView.transform.DOMove(discardPilePoint.position, 0.15f);
         yield return tween.WaitForCompletion();
         Destroy(cardView.gameObject);
+    }
+
+    public void RemoveCardVisualAtIndex(int index)
+    {
+        // 1. Kiểm tra an toàn xem index có hợp lệ trên UI không
+        if (index >= 0 && index < handView.transform.childCount)
+        {
+            // 2. Lấy đúng cái GameObject CardView ở vị trí index đó
+            CardView cardToDiscard = handView.transform.GetChild(index).GetComponent<CardView>();
+
+            if (cardToDiscard != null)
+            {
+                StartCoroutine(DiscardCard(cardToDiscard));
+            }
+        }
     }
 
 
