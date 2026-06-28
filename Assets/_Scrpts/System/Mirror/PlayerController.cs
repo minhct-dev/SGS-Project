@@ -118,7 +118,6 @@ public class PlayerController : NetworkBehaviour
 
             case SyncListCardInstance.Operation.OP_REMOVEAT:
                 // BÀI BỊ XÓA KHỎI TAY NẰM Ở ĐÂY
-                // (oldItem chứa dữ liệu của lá bài vừa bị xóa, newItem là null/default)
                 OnHandRemove(index);
                 break;
 
@@ -128,9 +127,10 @@ public class PlayerController : NetworkBehaviour
                 break;
         }
     }
+    //Call when one card in player's hand removed
     private void OnHandRemove(int index)
     {
-        // TODO: Viết code update UI ở đây. 
+        // TODO: code update UI 
         CardSystem.Instance.RemoveCardVisualAtIndex(index);
     }
     //Command to reduce card in hand when playcard

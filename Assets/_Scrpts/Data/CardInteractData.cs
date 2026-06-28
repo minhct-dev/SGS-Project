@@ -2,6 +2,6 @@
 public struct CardInteractData
 {
     public CardArea Area;
-    public int HandIndex;       // Dùng cho Hand
-    public string CardId;       // Dùng cho Equip / Judgment
+    public int HandIndex;       // Hand index number for card in hand
+    public string CardId;       // ID for Equipment card / Judgment card
 }

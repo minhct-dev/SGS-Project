@@ -141,12 +141,9 @@ public class CardSystem : NetworkBehaviour
 
     public void RemoveCardVisualAtIndex(int index)
     {
-        // 1. Kiểm tra an toàn xem index có hợp lệ trên UI không
         if (index >= 0 && index < handView.transform.childCount)
         {
-            // 2. Lấy đúng cái GameObject CardView ở vị trí index đó
             CardView cardToDiscard = handView.transform.GetChild(index).GetComponent<CardView>();
-
             if (cardToDiscard != null)
             {
                 StartCoroutine(DiscardCard(cardToDiscard));

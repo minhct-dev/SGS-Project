@@ -2703,7 +2703,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -154, y: 84.999985}
+  m_AnchoredPosition: {x: -153.99994, y: 85}
   m_SizeDelta: {x: -308, y: -532}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1061838270
@@ -2758,6 +2758,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TargetInventoryUI
   TargetInventoryPanel: {fileID: 1061838268}
   PanelName: {fileID: 1791436922}
+  handContainer: {fileID: 1006541096}
+  cardBackPrefab: {fileID: 8667254101980723561, guid: 4aced2b7fba54af48a942a3624390b07, type: 3}
 --- !u!1 &1079549933
 GameObject:
   m_ObjectHideFlags: 0
